@@ -174,7 +174,9 @@ export default function HomeScreen({ navigation }) {
           <ModernCard type="success" style={styles.fullWidthCard}>
             <View style={styles.stepsContent}>
               <View style={styles.stepsHeader}>
-                <Ionicons name="walk" size={28} color="#4facfe" />
+                <View style={styles.iconContainer}>
+                  <Ionicons name="walk" size={28} color="white" />
+                </View>
                 <Text style={styles.stepsTitle}>Daily Steps</Text>
               </View>
               <View style={styles.stepsMain}>
@@ -184,12 +186,14 @@ export default function HomeScreen({ navigation }) {
                   <Text style={styles.stepsMotivation}>Keep walking! You're doing great! 🚶‍♀️</Text>
                 </View>
                 <View style={styles.stepsCharacter}>
-                  <AnimatedCharacter
-                    type="walking"
-                    size={80}
-                    color="#4facfe"
-                    showText={false}
-                  />
+                  <View style={styles.characterContainer}>
+                    <Text style={styles.characterEmoji}>🚶‍♀️</Text>
+                    <View style={styles.stepTrail}>
+                      <Text style={styles.stepEmoji}>👣</Text>
+                      <Text style={styles.stepEmoji}>👣</Text>
+                      <Text style={styles.stepEmoji}>👣</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
               <View style={styles.stepsProgress}>
@@ -208,7 +212,9 @@ export default function HomeScreen({ navigation }) {
           <ModernCard type="info" style={styles.fullWidthCard}>
             <View style={styles.waterContent}>
               <View style={styles.waterHeader}>
-                <Ionicons name="water" size={28} color="#a8edea" />
+                <View style={[styles.iconContainer, { backgroundColor: '#0d9488' }]}>
+                  <Ionicons name="water" size={28} color="white" />
+                </View>
                 <Text style={styles.waterTitle}>Water Intake</Text>
               </View>
               <View style={styles.waterMain}>
@@ -218,12 +224,14 @@ export default function HomeScreen({ navigation }) {
                   <Text style={styles.waterMotivation}>Stay hydrated! 💧</Text>
                 </View>
                 <View style={styles.waterCharacter}>
-                  <AnimatedCharacter
-                    type="water"
-                    size={80}
-                    color="#a8edea"
-                    showText={false}
-                  />
+                  <View style={styles.characterContainer}>
+                    <Text style={styles.characterEmoji}>💧</Text>
+                    <View style={styles.waterDrops}>
+                      <Text style={styles.waterDropEmoji}>💧</Text>
+                      <Text style={styles.waterDropEmoji}>💧</Text>
+                      <Text style={styles.waterDropEmoji}>💧</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
               <View style={styles.waterControls}>
@@ -250,7 +258,9 @@ export default function HomeScreen({ navigation }) {
           <ModernCard type="warning" style={styles.calorieCardMax}>
             <View style={styles.calorieContentMax}>
               <View style={styles.calorieHeaderMax}>
-                <Ionicons name="flame" size={32} color="#fa709a" />
+                <View style={[styles.iconContainer, { backgroundColor: '#be185d', width: 50, height: 50 }]}>
+                  <Ionicons name="flame" size={32} color="white" />
+                </View>
                 <Text style={styles.calorieTitleMax}>Calories Burned Today</Text>
               </View>
               <View style={styles.calorieMainMax}>
@@ -284,7 +294,9 @@ export default function HomeScreen({ navigation }) {
         {/* Quick Actions */}
         <ModernCard type="glass" style={styles.quickActionsCard}>
           <View style={styles.quickActionsHeader}>
-            <Ionicons name="flash" size={24} color="#667eea" />
+            <View style={[styles.iconContainer, { backgroundColor: '#4338ca' }]}>
+              <Ionicons name="flash" size={24} color="white" />
+            </View>
             <Text style={styles.quickActionsTitle}>Quick Actions</Text>
           </View>
           
@@ -483,6 +495,22 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   
+  // Icon Container
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#4facfe',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  
   // Steps Card Styles
   stepsContent: {
     padding: 20,
@@ -526,6 +554,31 @@ const styles = StyleSheet.create({
   },
   stepsCharacter: {
     marginLeft: 16,
+  },
+  characterContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  characterEmoji: {
+    fontSize: 60,
+    marginBottom: 8,
+  },
+  stepTrail: {
+    flexDirection: 'row',
+    gap: 4,
+  },
+  stepEmoji: {
+    fontSize: 16,
+    opacity: 0.7,
+  },
+  waterDrops: {
+    flexDirection: 'row',
+    gap: 4,
+    marginTop: 8,
+  },
+  waterDropEmoji: {
+    fontSize: 16,
+    opacity: 0.7,
   },
   stepsProgress: {
     alignItems: 'center',
