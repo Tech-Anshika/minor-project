@@ -251,6 +251,10 @@ export default function YogaScreen() {
 
   // Session management
   const startYogaSession = (pose) => {
+    // Reset animations first
+    fadeAnim.setValue(0);
+    scaleAnim.setValue(1);
+    
     const session = [pose];
     setSessionPoses(session);
     setCurrentPose(pose);
@@ -280,6 +284,10 @@ export default function YogaScreen() {
   };
 
   const startQuickSession = () => {
+    // Reset animations first
+    fadeAnim.setValue(0);
+    scaleAnim.setValue(1);
+    
     const quickSession = yogaPoses.slice(0, 3); // First 3 poses
     setSessionPoses(quickSession);
     setCurrentPose(quickSession[0]);
@@ -291,6 +299,21 @@ export default function YogaScreen() {
     setIsPaused(false);
     startTimer();
     startPoseTimer(quickSession[0].durationSeconds);
+    
+    // Animate entrance
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1.05,
+        tension: 100,
+        friction: 8,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   const nextPose = () => {
@@ -341,6 +364,10 @@ export default function YogaScreen() {
     setCurrentPoseIndex(0);
     setSessionPoses([]);
     
+    // Reset animations
+    fadeAnim.setValue(0);
+    scaleAnim.setValue(1);
+
     Alert.alert(
       'Session Complete! 🎉',
       `Great job! You completed ${sessionPoses.length} poses in ${formatTime(sessionTime)}.`,

@@ -17,6 +17,11 @@ export default function AnimatedCharacter({
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
+    // Reset animations
+    bounceAnim.setValue(0);
+    walkAnim.setValue(0);
+    pulseAnim.setValue(1);
+
     // Bouncing animation
     const bounce = Animated.loop(
       Animated.sequence([
@@ -65,19 +70,26 @@ export default function AnimatedCharacter({
       ])
     );
 
+    // Start appropriate animations based on type
+    let activeAnimations = [];
+    
     if (type === 'walking') {
+      activeAnimations = [bounce, walk];
       bounce.start();
       walk.start();
     } else if (type === 'celebrating') {
+      activeAnimations = [pulse];
       pulse.start();
     } else {
+      activeAnimations = [bounce];
       bounce.start();
     }
 
     return () => {
-      bounce.stop();
-      walk.stop();
-      pulse.stop();
+      // Stop all animations
+      activeAnimations.forEach(animation => {
+        animation.stop();
+      });
     };
   }, [type]);
 
