@@ -206,7 +206,7 @@ export default function HomeScreen({ navigation }) {
             </View>
             <ModernProgressRing
               progress={(cycleData.currentDay / cycleData.cycleLength) * 100}
-              size={80}
+              size={100}
               color="white"
               backgroundColor="rgba(255,255,255,0.3)"
               centerText={`Day ${cycleData.currentDay}`}
@@ -287,14 +287,14 @@ export default function HomeScreen({ navigation }) {
           <ModernCard type="success" style={styles.statCard}>
             <View style={styles.statCardContent}>
               <View style={styles.statIconContainer}>
-                <Ionicons name="walk" size={24} color="#4facfe" />
+                <Ionicons name="walk" size={28} color="#4facfe" />
               </View>
               <View style={styles.statInfo}>
                 <Text style={styles.statValue}>{todayStats.steps.toLocaleString()}</Text>
                 <Text style={styles.statLabel}>Steps Today</Text>
                 <ModernProgressRing
                   progress={(todayStats.steps / 10000) * 100}
-                  size={50}
+                  size={60}
                   color="#4facfe"
                   backgroundColor="#E0E0E0"
                   showPercentage={false}
@@ -306,14 +306,14 @@ export default function HomeScreen({ navigation }) {
           <ModernCard type="info" style={styles.statCard}>
             <View style={styles.statCardContent}>
               <View style={styles.statIconContainer}>
-                <Ionicons name="water" size={24} color="#a8edea" />
+                <Ionicons name="water" size={28} color="#a8edea" />
               </View>
               <View style={styles.statInfo}>
                 <Text style={styles.statValue}>{todayStats.water}/8</Text>
                 <Text style={styles.statLabel}>Glasses</Text>
                 <ModernProgressRing
                   progress={(todayStats.water / 8) * 100}
-                  size={50}
+                  size={60}
                   color="#a8edea"
                   backgroundColor="#E0E0E0"
                   showPercentage={false}
@@ -327,14 +327,14 @@ export default function HomeScreen({ navigation }) {
           <ModernCard type="warning" style={styles.statCard}>
             <View style={styles.statCardContent}>
               <View style={styles.statIconContainer}>
-                <Ionicons name="flame" size={24} color="#fa709a" />
+                <Ionicons name="flame" size={28} color="#fa709a" />
               </View>
               <View style={styles.statInfo}>
                 <Text style={styles.statValue}>{todayStats.calories}</Text>
                 <Text style={styles.statLabel}>Calories</Text>
                 <ModernProgressRing
                   progress={(todayStats.calories / 2000) * 100}
-                  size={50}
+                  size={60}
                   color="#fa709a"
                   backgroundColor="#E0E0E0"
                   showPercentage={false}
@@ -346,7 +346,7 @@ export default function HomeScreen({ navigation }) {
           <ModernCard type="secondary" style={styles.statCard}>
             <View style={styles.statCardContent}>
               <View style={styles.statIconContainer}>
-                <Ionicons name="heart" size={24} color="#f093fb" />
+                <Ionicons name="heart" size={28} color="#f093fb" />
               </View>
               <View style={styles.statInfo}>
                 <Text style={styles.statValue}>{todayStats.mood}</Text>
@@ -526,40 +526,41 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     marginHorizontal: 20,
-    marginVertical: 4,
+    marginVertical: 8,
   },
   statCard: {
     flex: 1,
-    marginHorizontal: 4,
+    marginHorizontal: 6,
   },
   statCardContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 20,
   },
   statIconContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 16,
   },
   statInfo: {
     flex: 1,
     alignItems: 'center',
   },
   statValue: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   statLabel: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.8)',
-    marginBottom: 8,
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.9)',
+    marginBottom: 12,
+    fontWeight: '600',
   },
   moodIndicator: {
     width: 30,

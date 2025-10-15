@@ -50,7 +50,7 @@ export default function WaterTracker({
   };
 
   const CardContent = () => (
-    <View style={[styles.container, { width: size + 40, height: size + 40 }]}>
+    <View style={[styles.container, { width: size + 60, height: size + 100 }]}>
       <View style={styles.content}>
         <Svg width={size} height={size} style={styles.svg}>
           {/* Background Circle */}
@@ -97,7 +97,7 @@ export default function WaterTracker({
           onPress={removeGlass}
           disabled={currentGlasses === 0}
         >
-          <Ionicons name="remove" size={20} color="#ff6b6b" />
+          <Ionicons name="remove" size={24} color="#ff6b6b" />
         </TouchableOpacity>
         
         <TouchableOpacity 
@@ -105,7 +105,7 @@ export default function WaterTracker({
           onPress={addGlass}
           disabled={currentGlasses >= goal}
         >
-          <Ionicons name="add" size={20} color="#4caf50" />
+          <Ionicons name="add" size={24} color="#4caf50" />
         </TouchableOpacity>
       </View>
       
@@ -166,19 +166,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   glassCount: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   glassLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 10,
+    fontWeight: '600',
   },
   motivationalText: {
-    fontSize: 12,
-    color: '#999',
+    fontSize: 14,
+    color: '#666',
     textAlign: 'center',
+    fontWeight: '500',
   },
   controls: {
     flexDirection: 'row',
@@ -186,12 +188,17 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   controlButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: '#f5f5f5',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   goalContainer: {
     marginTop: 16,

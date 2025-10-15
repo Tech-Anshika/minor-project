@@ -38,18 +38,19 @@ export default function ModernCard({
   const getCardStyle = () => {
     const baseStyle = {
       borderRadius: 20,
-      padding: 20,
-      marginVertical: 8,
-      marginHorizontal: 4,
+      padding: 24,
+      marginVertical: 12,
+      marginHorizontal: 6,
+      minHeight: 120,
       ...style,
     };
 
     if (shadow) {
       baseStyle.shadowColor = '#000';
-      baseStyle.shadowOffset = { width: 0, height: 4 };
-      baseStyle.shadowOpacity = 0.1;
-      baseStyle.shadowRadius = 8;
-      baseStyle.elevation = 5;
+      baseStyle.shadowOffset = { width: 0, height: 6 };
+      baseStyle.shadowOpacity = 0.15;
+      baseStyle.shadowRadius = 12;
+      baseStyle.elevation = 8;
     }
 
     return baseStyle;

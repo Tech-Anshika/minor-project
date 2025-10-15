@@ -38,7 +38,7 @@ export default function StepCounter({
   };
 
   const CardContent = () => (
-    <View style={[styles.container, { width: size + 40, height: size + 40 }]}>
+    <View style={[styles.container, { width: size + 60, height: size + 80 }]}>
       <View style={styles.content}>
         <Svg width={size} height={size} style={styles.svg}>
           {/* Background Circle */}
@@ -135,19 +135,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   stepCount: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   stepLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 10,
+    fontWeight: '600',
   },
   motivationalText: {
-    fontSize: 12,
-    color: '#999',
+    fontSize: 14,
+    color: '#666',
     textAlign: 'center',
+    fontWeight: '500',
   },
   goalContainer: {
     marginTop: 16,
