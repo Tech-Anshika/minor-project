@@ -40,14 +40,16 @@ export default function PeriodLogScreen() {
   ];
 
   const symptomOptions = [
-    { id: 'cramps', label: 'Cramps', icon: 'medical' },
-    { id: 'bloating', label: 'Bloating', icon: 'resize' },
-    { id: 'headache', label: 'Headache', icon: 'headset' },
-    { id: 'fatigue', label: 'Fatigue', icon: 'moon' },
-    { id: 'mood_swings', label: 'Mood Swings', icon: 'happy' },
-    { id: 'back_pain', label: 'Back Pain', icon: 'fitness' },
-    { id: 'breast_tenderness', label: 'Breast Tenderness', icon: 'heart' },
-    { id: 'acne', label: 'Acne', icon: 'medical' },
+    // Column 1
+    { id: 'cramps', label: 'Cramps', icon: 'medical', column: 1 },
+    { id: 'headache', label: 'Headache', icon: 'headset', column: 1 },
+    { id: 'mood_swings', label: 'Mood Swings', icon: 'happy', column: 1 },
+    { id: 'breast_tenderness', label: 'Breast Tenderness', icon: 'heart', column: 1 },
+    // Column 2
+    { id: 'bloating', label: 'Bloating', icon: 'resize', column: 2 },
+    { id: 'fatigue', label: 'Fatigue', icon: 'moon', column: 2 },
+    { id: 'back_pain', label: 'Back Pain', icon: 'fitness', column: 2 },
+    { id: 'acne', label: 'Acne', icon: 'medical', column: 2 },
   ];
 
   const moodOptions = [
@@ -304,39 +306,78 @@ export default function PeriodLogScreen() {
             </View>
             <Text style={styles.symptomsSubtitle}>Select all that apply</Text>
           </View>
-          <View style={styles.symptomsGrid}>
-            {symptomOptions.map((symptom) => (
-              <TouchableOpacity
-                key={symptom.id}
-                style={[
-                  styles.symptomOption,
-                  periodData.symptoms.includes(symptom.id) && styles.selectedSymptomOption
-                ]}
-                onPress={() => handleSymptomToggle(symptom.id)}
-              >
-                <View style={[
-                  styles.symptomIconContainer,
-                  { backgroundColor: periodData.symptoms.includes(symptom.id) ? '#0d9488' : '#f0f9ff' }
-                ]}>
-                  <Ionicons 
-                    name={symptom.icon} 
-                    size={20} 
-                    color={periodData.symptoms.includes(symptom.id) ? 'white' : '#0d9488'} 
-                  />
-                </View>
-                <Text style={[
-                  styles.symptomLabel,
-                  periodData.symptoms.includes(symptom.id) && styles.selectedSymptomLabel
-                ]}>
-                  {symptom.label}
-                </Text>
-                {periodData.symptoms.includes(symptom.id) && (
-                  <View style={styles.symptomCheckmark}>
-                    <Ionicons name="checkmark-circle" size={16} color="#0d9488" />
+          <View style={styles.symptomsContainer}>
+            {/* Column 1 */}
+            <View style={styles.symptomsColumn}>
+              {symptomOptions.filter(symptom => symptom.column === 1).map((symptom) => (
+                <TouchableOpacity
+                  key={symptom.id}
+                  style={[
+                    styles.symptomOption,
+                    periodData.symptoms.includes(symptom.id) && styles.selectedSymptomOption
+                  ]}
+                  onPress={() => handleSymptomToggle(symptom.id)}
+                >
+                  <View style={[
+                    styles.symptomIconContainer,
+                    { backgroundColor: periodData.symptoms.includes(symptom.id) ? '#0d9488' : '#f0f9ff' }
+                  ]}>
+                    <Ionicons 
+                      name={symptom.icon} 
+                      size={20} 
+                      color={periodData.symptoms.includes(symptom.id) ? 'white' : '#0d9488'} 
+                    />
                   </View>
-                )}
-              </TouchableOpacity>
-            ))}
+                  <Text style={[
+                    styles.symptomLabel,
+                    periodData.symptoms.includes(symptom.id) && styles.selectedSymptomLabel
+                  ]}>
+                    {symptom.label}
+                  </Text>
+                  {periodData.symptoms.includes(symptom.id) && (
+                    <View style={styles.symptomCheckmark}>
+                      <Ionicons name="checkmark-circle" size={16} color="#0d9488" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            {/* Column 2 */}
+            <View style={styles.symptomsColumn}>
+              {symptomOptions.filter(symptom => symptom.column === 2).map((symptom) => (
+                <TouchableOpacity
+                  key={symptom.id}
+                  style={[
+                    styles.symptomOption,
+                    periodData.symptoms.includes(symptom.id) && styles.selectedSymptomOption
+                  ]}
+                  onPress={() => handleSymptomToggle(symptom.id)}
+                >
+                  <View style={[
+                    styles.symptomIconContainer,
+                    { backgroundColor: periodData.symptoms.includes(symptom.id) ? '#0d9488' : '#f0f9ff' }
+                  ]}>
+                    <Ionicons 
+                      name={symptom.icon} 
+                      size={20} 
+                      color={periodData.symptoms.includes(symptom.id) ? 'white' : '#0d9488'} 
+                    />
+                  </View>
+                  <Text style={[
+                    styles.symptomLabel,
+                    periodData.symptoms.includes(symptom.id) && styles.selectedSymptomLabel
+                  ]}>
+                    {symptom.label}
+                  </Text>
+                  {periodData.symptoms.includes(symptom.id) && (
+                    <View style={styles.symptomCheckmark}>
+                      <Ionicons name="checkmark-circle" size={16} color="#0d9488" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         </ModernCard>
 
@@ -717,14 +758,16 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     fontStyle: 'italic',
   },
-  symptomsGrid: {
+  symptomsContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
+    gap: 12,
+  },
+  symptomsColumn: {
+    flex: 1,
     gap: 8,
   },
   symptomOption: {
-    width: (width - 80) / 2,
     flexDirection: 'column',
     alignItems: 'center',
     padding: 12,
@@ -734,6 +777,7 @@ const styles = StyleSheet.create({
     borderColor: '#E2E8F0',
     minHeight: 80,
     justifyContent: 'center',
+    position: 'relative',
   },
   selectedSymptomOption: {
     backgroundColor: '#F0FDF4',
