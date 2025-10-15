@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
   stepsTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#4facfe',
+    color: '#2c5aa0',
     marginLeft: 12,
   },
   stepsMain: {
@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
   stepsValue: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#4facfe',
+    color: '#1e3a8a',
     marginBottom: 4,
   },
   stepsLabel: {
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
   },
   stepsMotivation: {
     fontSize: 14,
-    color: '#999',
+    color: '#374151',
     fontWeight: '500',
   },
   stepsCharacter: {
@@ -543,7 +543,7 @@ const styles = StyleSheet.create({
   waterTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#a8edea',
+    color: '#0d9488',
     marginLeft: 12,
   },
   waterMain: {
@@ -558,7 +558,7 @@ const styles = StyleSheet.create({
   waterValue: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#a8edea',
+    color: '#0f766e',
     marginBottom: 4,
   },
   waterLabel: {
@@ -569,7 +569,7 @@ const styles = StyleSheet.create({
   },
   waterMotivation: {
     fontSize: 14,
-    color: '#999',
+    color: '#374151',
     fontWeight: '500',
   },
   waterCharacter: {
@@ -615,7 +615,7 @@ const styles = StyleSheet.create({
   calorieTitleMax: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fa709a',
+    color: '#be185d',
     marginLeft: 12,
   },
   calorieMainMax: {
@@ -625,7 +625,7 @@ const styles = StyleSheet.create({
   calorieValueMax: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#fa709a',
+    color: '#9d174d',
     marginBottom: 8,
   },
   calorieUnitMax: {
@@ -648,7 +648,7 @@ const styles = StyleSheet.create({
   },
   calorieMotivationText: {
     fontSize: 16,
-    color: '#fa709a',
+    color: '#be185d',
     fontWeight: '600',
   },
 
@@ -665,7 +665,7 @@ const styles = StyleSheet.create({
   quickActionsTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#667eea',
+    color: '#4338ca',
     marginLeft: 12,
   },
   quickActionsGrid: {
@@ -696,7 +696,7 @@ const styles = StyleSheet.create({
   quickActionText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#667eea',
+    color: '#4338ca',
     textAlign: 'center',
   },
 
