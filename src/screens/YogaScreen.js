@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AnimatedCharacter from '../components/AnimatedCharacter';
+import PoseDemonstration from '../components/PoseDemonstration';
 
 const { width } = Dimensions.get('window');
 
@@ -26,6 +27,9 @@ export default function YogaScreen() {
   const [isPaused, setIsPaused] = useState(false);
   const [sessionPoses, setSessionPoses] = useState([]);
   const [currentPoseIndex, setCurrentPoseIndex] = useState(0);
+  const [showDemonstration, setShowDemonstration] = useState(false);
+  const [demonstrationPose, setDemonstrationPose] = useState(null);
+  const [isDemonstrationPlaying, setIsDemonstrationPlaying] = useState(false);
   
   const timerRef = useRef(null);
   const poseTimerRef = useRef(null);
@@ -350,6 +354,43 @@ export default function YogaScreen() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Pose demonstration functions
+  const startPoseDemonstration = (pose) => {
+    setDemonstrationPose(pose);
+    setShowDemonstration(true);
+    setIsDemonstrationPlaying(true);
+  };
+
+  const closeDemonstration = () => {
+    setShowDemonstration(false);
+    setDemonstrationPose(null);
+    setIsDemonstrationPlaying(false);
+  };
+
+  const handleDemonstrationComplete = () => {
+    setIsDemonstrationPlaying(false);
+    Alert.alert(
+      'Demonstration Complete! 🎉',
+      'Ready to start your practice?',
+      [
+        { text: 'Watch Again', onPress: () => setIsDemonstrationPlaying(true) },
+        { text: 'Start Practice', onPress: () => {
+          closeDemonstration();
+          startYogaSession(demonstrationPose);
+        }},
+        { text: 'Close', onPress: closeDemonstration }
+      ]
+    );
+  };
+
+  const handleDemonstrationPause = () => {
+    setIsDemonstrationPlaying(false);
+  };
+
+  const handleDemonstrationPlay = () => {
+    setIsDemonstrationPlaying(true);
+  };
+
   // Cleanup timers on unmount
   useEffect(() => {
     return () => {
@@ -357,6 +398,19 @@ export default function YogaScreen() {
       stopPoseTimer();
     };
   }, []);
+
+  // Pose Demonstration Interface
+  if (showDemonstration && demonstrationPose) {
+    return (
+      <PoseDemonstration
+        pose={demonstrationPose}
+        isPlaying={isDemonstrationPlaying}
+        onComplete={handleDemonstrationComplete}
+        onPause={handleDemonstrationPause}
+        onPlay={handleDemonstrationPlay}
+      />
+    );
+  }
 
   // Yoga Session Interface
   if (isSessionActive && currentPose) {
@@ -538,13 +592,23 @@ export default function YogaScreen() {
               ))}
             </View>
 
-            <TouchableOpacity 
-              style={styles.startButton}
-              onPress={() => startYogaSession(pose)}
-            >
-              <Ionicons name="play" size={20} color="white" />
-              <Text style={styles.startButtonText}>Start Session</Text>
-            </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity 
+                style={[styles.actionButton, styles.demoButton]}
+                onPress={() => startPoseDemonstration(pose)}
+              >
+                <Ionicons name="videocam" size={20} color="#E91E63" />
+                <Text style={styles.demoButtonText}>Watch Demo</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={[styles.actionButton, styles.startButton]}
+                onPress={() => startYogaSession(pose)}
+              >
+                <Ionicons name="play" size={20} color="white" />
+                <Text style={styles.startButtonText}>Start Session</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ))}
       </View>
@@ -702,17 +766,35 @@ const styles = StyleSheet.create({
     color: '#666',
     marginLeft: 8,
   },
-  startButton: {
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  actionButton: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E91E63',
     paddingVertical: 12,
     borderRadius: 12,
   },
+  demoButton: {
+    backgroundColor: '#FFF5F8',
+    borderWidth: 1,
+    borderColor: '#E91E63',
+  },
+  demoButtonText: {
+    color: '#E91E63',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: 8,
+  },
+  startButton: {
+    backgroundColor: '#E91E63',
+  },
   startButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     marginLeft: 8,
   },
