@@ -83,7 +83,7 @@ export default function AnimatedCharacter({
             </View>
           </>
         )}
-      </Animated.View>
+      </View>
       
       {showText && text && (
         <View style={styles.textContainer}>
