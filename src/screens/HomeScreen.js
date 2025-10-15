@@ -100,6 +100,21 @@ export default function HomeScreen({ navigation }) {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View style={styles.headerSection}>
+          <View style={styles.headerTop}>
+            <View style={styles.appTitleContainer}>
+              <Text style={styles.appTitle}>PcoSense</Text>
+              <View style={styles.titleBadge}>
+                <Text style={styles.badgeText}>Health Companion</Text>
+              </View>
+            </View>
+            <View style={styles.statusContainer}>
+              <View style={styles.statusIndicator}>
+                <View style={styles.statusDot} />
+                <Text style={styles.statusText}>Active</Text>
+              </View>
+            </View>
+          </View>
+          
           <View style={styles.greetingContainer}>
             <Text style={styles.greeting}>
               Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'},
@@ -109,13 +124,11 @@ export default function HomeScreen({ navigation }) {
               Ready to take care of your health today?
             </Text>
           </View>
+          
           <View style={styles.characterContainer}>
-            <AnimatedCharacter
-              type="walking"
-              size={70}
-              color="white"
-              showText={false}
-            />
+            <View style={styles.avatarCircle}>
+              <Text style={styles.avatarEmoji}>👩‍⚕️</Text>
+            </View>
           </View>
         </View>
 
@@ -200,8 +213,8 @@ export default function HomeScreen({ navigation }) {
                 <ModernProgressRing
                   progress={(todayStats.steps / 10000) * 100}
                   size={100}
-                  color="#4facfe"
-                  backgroundColor="#E0E0E0"
+                  color="#1e3a8a"
+                  backgroundColor="#E5E7EB"
                   showPercentage={true}
                 />
               </View>
@@ -246,8 +259,8 @@ export default function HomeScreen({ navigation }) {
                 <ModernProgressRing
                   progress={(todayStats.water / 8) * 100}
                   size={80}
-                  color="#a8edea"
-                  backgroundColor="#E0E0E0"
+                  color="#0f766e"
+                  backgroundColor="#E5E7EB"
                   showPercentage={true}
                 />
               </View>
@@ -272,8 +285,8 @@ export default function HomeScreen({ navigation }) {
                 <ModernProgressRing
                   progress={(todayStats.calories / 2000) * 100}
                   size={120}
-                  color="#fa709a"
-                  backgroundColor="#E0E0E0"
+                  color="#9d174d"
+                  backgroundColor="#E5E7EB"
                   showPercentage={true}
                 />
               </View>
@@ -372,15 +385,65 @@ const styles = StyleSheet.create({
   
   // Header Section
   headerSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingTop: 60,
     paddingBottom: 20,
   },
-  greetingContainer: {
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  appTitleContainer: {
     flex: 1,
+  },
+  appTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 4,
+    textShadowColor: 'rgba(0,0,0,0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  titleBadge: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+    alignSelf: 'flex-start',
+  },
+  badgeText: {
+    fontSize: 12,
+    color: 'white',
+    fontWeight: '600',
+  },
+  statusContainer: {
+    alignItems: 'flex-end',
+  },
+  statusIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#4ade80',
+    marginRight: 6,
+  },
+  statusText: {
+    fontSize: 12,
+    color: 'white',
+    fontWeight: '600',
+  },
+  greetingContainer: {
+    marginBottom: 16,
   },
   greeting: {
     fontSize: 24,
@@ -397,7 +460,23 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   characterContainer: {
-    marginLeft: 16,
+    alignItems: 'center',
+  },
+  avatarCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  avatarEmoji: {
+    fontSize: 40,
   },
 
   // Cycle Card
