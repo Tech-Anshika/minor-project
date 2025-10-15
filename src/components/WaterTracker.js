@@ -50,7 +50,7 @@ export default function WaterTracker({
   };
 
   const CardContent = () => (
-    <View style={[styles.container, { width: size + 60, height: size + 100 }]}>
+    <View style={[styles.container, { width: '100%', height: size + 120 }]}>
       <View style={styles.content}>
         <Svg width={size} height={size} style={styles.svg}>
           {/* Background Circle */}

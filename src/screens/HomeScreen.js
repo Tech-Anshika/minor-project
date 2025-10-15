@@ -168,52 +168,54 @@ export default function HomeScreen({ navigation }) {
           </View>
         </ModernCard>
 
-        {/* Stats Grid */}
-        <View style={styles.statsGrid}>
-          <View style={styles.statsRow}>
-            <StepCounter 
-              steps={todayStats.steps} 
-              goal={10000} 
-              size={120}
-              style={styles.statCard}
-            />
-            <WaterTracker 
-              glasses={todayStats.water} 
-              goal={8} 
-              size={120}
-              style={styles.statCard}
-            />
-          </View>
+        {/* Stats Section - Single Column */}
+        <View style={styles.statsSection}>
+          {/* Steps Card */}
+          <StepCounter 
+            steps={todayStats.steps} 
+            goal={10000} 
+            size={140}
+            style={styles.fullWidthCard}
+          />
           
-          <View style={styles.statsRow}>
-            <ModernCard type="warning" style={styles.calorieCard}>
-              <View style={styles.calorieContent}>
-                <View style={styles.calorieHeader}>
-                  <Ionicons name="flame" size={24} color="#fa709a" />
-                  <Text style={styles.calorieTitle}>Calories</Text>
-                </View>
-                <View style={styles.calorieMain}>
-                  <Text style={styles.calorieValue}>{todayStats.calories}</Text>
-                  <Text style={styles.calorieUnit}>calories</Text>
-                </View>
-                <View style={styles.calorieProgress}>
-                  <ModernProgressRing
-                    progress={(todayStats.calories / 2000) * 100}
-                    size={60}
-                    color="#fa709a"
-                    backgroundColor="#E0E0E0"
-                    showPercentage={false}
-                  />
-                </View>
+          {/* Water Card */}
+          <WaterTracker 
+            glasses={todayStats.water} 
+            goal={8} 
+            size={140}
+            style={styles.fullWidthCard}
+          />
+          
+          {/* Calories Card */}
+          <ModernCard type="warning" style={styles.fullWidthCard}>
+            <View style={styles.calorieContent}>
+              <View style={styles.calorieHeader}>
+                <Ionicons name="flame" size={28} color="#fa709a" />
+                <Text style={styles.calorieTitle}>Calories Burned</Text>
               </View>
-            </ModernCard>
+              <View style={styles.calorieMain}>
+                <Text style={styles.calorieValue}>{todayStats.calories}</Text>
+                <Text style={styles.calorieUnit}>calories</Text>
+                <Text style={styles.calorieGoal}>Goal: 2000 calories</Text>
+              </View>
+              <View style={styles.calorieProgress}>
+                <ModernProgressRing
+                  progress={(todayStats.calories / 2000) * 100}
+                  size={80}
+                  color="#fa709a"
+                  backgroundColor="#E0E0E0"
+                  showPercentage={true}
+                />
+              </View>
+            </View>
+          </ModernCard>
 
-            <MoodTracker 
-              mood={todayStats.mood} 
-              size={120}
-              style={styles.statCard}
-            />
-          </View>
+          {/* Mood Card */}
+          <MoodTracker 
+            mood={todayStats.mood} 
+            size={140}
+            style={styles.fullWidthCard}
+          />
         </View>
 
         {/* Quick Actions */}
@@ -409,53 +411,51 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 
-  // Stats Grid
-  statsGrid: {
+  // Stats Section - Single Column
+  statsSection: {
     paddingHorizontal: 20,
     marginBottom: 20,
   },
-  statsRow: {
-    flexDirection: 'row',
+  fullWidthCard: {
     marginBottom: 16,
-    gap: 12,
-  },
-  statCard: {
-    flex: 1,
-  },
-  calorieCard: {
-    flex: 1,
-    minHeight: 160,
   },
   calorieContent: {
-    flex: 1,
-    padding: 16,
-    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
   },
   calorieHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 16,
   },
   calorieTitle: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#fa709a',
-    marginLeft: 8,
+    marginLeft: 12,
   },
   calorieMain: {
+    flex: 1,
     alignItems: 'center',
-    marginBottom: 12,
+    marginRight: 20,
   },
   calorieValue: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: 'bold',
     color: '#fa709a',
     marginBottom: 4,
   },
   calorieUnit: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#666',
     fontWeight: '600',
+    marginBottom: 4,
+  },
+  calorieGoal: {
+    fontSize: 14,
+    color: '#999',
+    fontWeight: '500',
   },
   calorieProgress: {
     alignItems: 'center',

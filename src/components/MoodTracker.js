@@ -43,7 +43,7 @@ export default function MoodTracker({
   };
 
   const CardContent = () => (
-    <View style={[styles.container, { width: size + 40, height: size + 40 }]}>
+    <View style={[styles.container, { width: '100%', height: size + 100 }]}>
       <View style={styles.content}>
         {/* Mood Display */}
         <View style={[styles.moodCircle, { backgroundColor: currentMoodData.color }]}>
