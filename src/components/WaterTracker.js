@@ -1,201 +1,143 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AnimatedCharacter from './AnimatedCharacter';
+import Svg, { Circle } from 'react-native-svg';
 
 const { width } = Dimensions.get('window');
 
 export default function WaterTracker({ 
-  currentGlasses = 0, 
-  goalGlasses = 8, 
-  onAddGlass = () => {} 
+  glasses = 0, 
+  goal = 8, 
+  onPress = null,
+  size = 120,
+  strokeWidth = 8
 }) {
-  const [animatedGlasses, setAnimatedGlasses] = useState(0);
-  const progressAnim = useRef(new Animated.Value(0)).current;
-  const glassAnim = useRef(new Animated.Value(0)).current;
-  const splashAnim = useRef(new Animated.Value(0)).current;
-
-  const progress = Math.min((currentGlasses / goalGlasses) * 100, 100);
-  const isGoalReached = currentGlasses >= goalGlasses;
+  const [currentGlasses, setCurrentGlasses] = useState(glasses);
 
   useEffect(() => {
-    // Animate progress
-    Animated.timing(progressAnim, {
-      toValue: progress,
-      duration: 1000,
-      useNativeDriver: false,
-    }).start();
+    setCurrentGlasses(glasses);
+  }, [glasses]);
 
-    // Animate glass filling
-    Animated.timing(glassAnim, {
-      toValue: currentGlasses,
-      duration: 1200,
-      useNativeDriver: false,
-    }).start();
+  const progress = Math.min((currentGlasses / goal) * 100, 100);
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
 
-    // Animate glass counter
-    let glassInterval;
-    if (currentGlasses > animatedGlasses) {
-      glassInterval = setInterval(() => {
-        setAnimatedGlasses(prev => {
-          const increment = Math.ceil((currentGlasses - prev) / 10);
-          return Math.min(prev + increment, currentGlasses);
-        });
-      }, 100);
-    }
-
-    return () => {
-      if (glassInterval) clearInterval(glassInterval);
-    };
-  }, [currentGlasses, progress]);
-
-  const handleAddGlass = () => {
-    // Splash animation
-    Animated.sequence([
-      Animated.timing(splashAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(splashAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start();
-
-    onAddGlass();
+  const getProgressColor = () => {
+    if (progress < 30) return '#ff6b6b';
+    if (progress < 60) return '#ffa726';
+    if (progress < 90) return '#66bb6a';
+    return '#4caf50';
   };
 
-  const getMotivationalMessage = () => {
-    if (isGoalReached) {
-      return "💧 Hydration Master! You're amazing!";
-    } else if (progress >= 75) {
-      return "🌊 Almost there! Just a bit more!";
-    } else if (progress >= 50) {
-      return "💦 Great job! Keep hydrating!";
-    } else if (progress >= 25) {
-      return "🚰 Good start! Keep drinking water!";
-    } else {
-      return "💧 Let's stay hydrated today!";
+  const getMotivationalText = () => {
+    if (progress < 30) return 'Stay hydrated!';
+    if (progress < 60) return 'Keep drinking!';
+    if (progress < 90) return 'Almost there!';
+    return 'Great job!';
+  };
+
+  const addGlass = () => {
+    if (currentGlasses < goal) {
+      setCurrentGlasses(prev => prev + 1);
     }
   };
 
-  const getCharacterType = () => {
-    if (isGoalReached) return 'celebrating';
-    if (progress >= 75) return 'water';
-    return 'water';
+  const removeGlass = () => {
+    if (currentGlasses > 0) {
+      setCurrentGlasses(prev => prev - 1);
+    }
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.titleContainer}>
-          <Ionicons name="water" size={24} color="#2196F3" />
-          <Text style={styles.title}>Water Intake</Text>
-        </View>
-        <View style={styles.goalContainer}>
-          <Text style={styles.goalText}>Goal: {goalGlasses} glasses</Text>
-        </View>
-      </View>
-
+  const CardContent = () => (
+    <View style={[styles.container, { width: size + 40, height: size + 40 }]}>
       <View style={styles.content}>
-        <AnimatedCharacter
-          type={getCharacterType()}
-          size={80}
-          color={isGoalReached ? '#4CAF50' : '#2196F3'}
-          showText={false}
-        />
-
-        <View style={styles.statsContainer}>
-          <View style={styles.glassContainer}>
-            <Text style={styles.glassCount}>
-              {animatedGlasses} / {goalGlasses}
-            </Text>
-            <Text style={styles.glassLabel}>glasses</Text>
-          </View>
-
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBar}>
-              <Animated.View
-                style={[
-                  styles.progressFill,
-                  {
-                    width: progressAnim.interpolate({
-                      inputRange: [0, 100],
-                      outputRange: ['0%', '100%'],
-                    }),
-                    backgroundColor: isGoalReached ? '#4CAF50' : '#2196F3',
-                  },
-                ]}
-              />
-            </View>
-            <Text style={styles.progressText}>
-              {Math.round(progress)}% Complete
-            </Text>
-          </View>
-
+        <Svg width={size} height={size} style={styles.svg}>
+          {/* Background Circle */}
+          <Circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="#E0E0E0"
+            strokeWidth={strokeWidth}
+            fill="transparent"
+          />
+          
+          {/* Progress Circle */}
+          <Circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={getProgressColor()}
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          />
+        </Svg>
+        
+        {/* Center Content */}
+        <View style={styles.centerContent}>
+          <Text style={[styles.glassCount, { color: getProgressColor() }]}>
+            {currentGlasses}
+          </Text>
+          <Text style={styles.glassLabel}>glasses</Text>
           <Text style={styles.motivationalText}>
-            {getMotivationalMessage()}
+            {getMotivationalText()}
           </Text>
         </View>
       </View>
-
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={[
-            styles.addButton,
-            isGoalReached && styles.disabledButton
-          ]}
-          onPress={handleAddGlass}
-          disabled={isGoalReached}
-          activeOpacity={0.8}
+      
+      {/* Controls */}
+      <View style={styles.controls}>
+        <TouchableOpacity 
+          style={[styles.controlButton, { opacity: currentGlasses > 0 ? 1 : 0.3 }]}
+          onPress={removeGlass}
+          disabled={currentGlasses === 0}
         >
-          <Animated.View
-            style={[
-              styles.buttonContent,
-              {
-                transform: [
-                  {
-                    scale: splashAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, 1.1],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            <Ionicons 
-              name="add-circle" 
-              size={24} 
-              color={isGoalReached ? '#CCC' : 'white'} 
-            />
-            <Text style={[
-              styles.addButtonText,
-              isGoalReached && styles.disabledButtonText
-            ]}>
-              {isGoalReached ? 'Goal Reached!' : 'Add Glass'}
-            </Text>
-          </Animated.View>
+          <Ionicons name="remove" size={20} color="#ff6b6b" />
         </TouchableOpacity>
-
-        {isGoalReached && (
-          <View style={styles.achievementBadge}>
-            <Ionicons name="trophy" size={16} color="#FFD700" />
-            <Text style={styles.achievementText}>Hydration Goal Achieved!</Text>
-          </View>
-        )}
+        
+        <TouchableOpacity 
+          style={[styles.controlButton, { opacity: currentGlasses < goal ? 1 : 0.3 }]}
+          onPress={addGlass}
+          disabled={currentGlasses >= goal}
+        >
+          <Ionicons name="add" size={20} color="#4caf50" />
+        </TouchableOpacity>
+      </View>
+      
+      {/* Goal Progress */}
+      <View style={styles.goalContainer}>
+        <Text style={styles.goalText}>
+          {Math.round(progress)}% of daily goal
+        </Text>
+        <View style={styles.goalBar}>
+          <View 
+            style={[
+              styles.goalProgress, 
+              { 
+                width: `${progress}%`,
+                backgroundColor: getProgressColor()
+              }
+            ]} 
+          />
+        </View>
       </View>
     </View>
   );
+
+  if (onPress) {
+    return (
+      <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+        <CardContent />
+      </TouchableOpacity>
+    );
+  }
+
+  return <CardContent />;
 }
 
 const styles = StyleSheet.create({
@@ -203,135 +145,72 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
-    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginLeft: 8,
-  },
-  goalContainer: {
-    backgroundColor: '#E3F2FD',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  goalText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#2196F3',
+    shadowRadius: 8,
+    elevation: 5,
   },
   content: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'center',
+    position: 'relative',
   },
-  statsContainer: {
-    flex: 1,
-    marginLeft: 16,
+  svg: {
+    position: 'absolute',
   },
-  glassContainer: {
+  centerContent: {
     alignItems: 'center',
-    marginBottom: 12,
+    justifyContent: 'center',
   },
   glassCount: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    marginBottom: 4,
   },
   glassLabel: {
     fontSize: 14,
     color: '#666',
-    marginTop: -4,
-  },
-  progressContainer: {
-    marginBottom: 12,
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 4,
-    overflow: 'hidden',
     marginBottom: 8,
   },
-  progressFill: {
-    height: '100%',
-    borderRadius: 4,
+  motivationalText: {
+    fontSize: 12,
+    color: '#999',
+    textAlign: 'center',
   },
-  progressText: {
+  controls: {
+    flexDirection: 'row',
+    marginTop: 16,
+    gap: 20,
+  },
+  controlButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  goalContainer: {
+    marginTop: 16,
+    width: '100%',
+  },
+  goalText: {
     fontSize: 12,
     color: '#666',
     textAlign: 'center',
-  },
-  motivationalText: {
-    fontSize: 14,
-    color: '#2196F3',
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  footer: {
-    alignItems: 'center',
-  },
-  addButton: {
-    backgroundColor: '#2196F3',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 25,
     marginBottom: 8,
-    shadowColor: '#2196F3',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
   },
-  disabledButton: {
+  goalBar: {
+    height: 4,
     backgroundColor: '#E0E0E0',
-    shadowOpacity: 0,
-    elevation: 0,
+    borderRadius: 2,
+    overflow: 'hidden',
   },
-  buttonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 8,
-  },
-  disabledButtonText: {
-    color: '#999',
-  },
-  achievementBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF8DC',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#FFD700',
-  },
-  achievementText: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#B8860B',
-    marginLeft: 4,
+  goalProgress: {
+    height: '100%',
+    borderRadius: 2,
   },
 });

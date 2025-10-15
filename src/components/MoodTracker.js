@@ -1,185 +1,100 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AnimatedCharacter from './AnimatedCharacter';
 
 const { width } = Dimensions.get('window');
 
-const moods = [
-  { id: 'happy', emoji: '😊', color: '#4CAF50', label: 'Happy' },
-  { id: 'excited', emoji: '🤩', color: '#FF9800', label: 'Excited' },
-  { id: 'calm', emoji: '😌', color: '#9C27B0', label: 'Calm' },
-  { id: 'tired', emoji: '😴', color: '#607D8B', label: 'Tired' },
-  { id: 'stressed', emoji: '😰', color: '#F44336', label: 'Stressed' },
-  { id: 'sad', emoji: '😢', color: '#2196F3', label: 'Sad' },
-];
-
 export default function MoodTracker({ 
-  currentMood = 'happy', 
-  onMoodChange = () => {} 
+  mood = 'neutral', 
+  onPress = null,
+  size = 120
 }) {
-  const [selectedMood, setSelectedMood] = useState(currentMood);
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-  const bounceAnim = useRef(new Animated.Value(0)).current;
+  const [currentMood, setCurrentMood] = useState(mood);
 
   useEffect(() => {
-    // Bounce animation when mood changes
-    Animated.sequence([
-      Animated.timing(bounceAnim, {
-        toValue: -5,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(bounceAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start();
+    setCurrentMood(mood);
+  }, [mood]);
 
-    // Pulse animation for selected mood
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.05,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, [selectedMood]);
+  const moods = [
+    { id: 'very-sad', emoji: '😢', color: '#ff6b6b', label: 'Very Sad' },
+    { id: 'sad', emoji: '😔', color: '#ffa726', label: 'Sad' },
+    { id: 'neutral', emoji: '😐', color: '#ffc107', label: 'Neutral' },
+    { id: 'happy', emoji: '😊', color: '#66bb6a', label: 'Happy' },
+    { id: 'very-happy', emoji: '😄', color: '#4caf50', label: 'Very Happy' },
+  ];
 
-  const handleMoodSelect = (moodId) => {
-    setSelectedMood(moodId);
-    onMoodChange(moodId);
-  };
+  const currentMoodData = moods.find(m => m.id === currentMood) || moods[2];
 
-  const getCurrentMoodData = () => {
-    return moods.find(mood => mood.id === selectedMood) || moods[0];
-  };
-
-  const getMotivationalMessage = () => {
-    switch (selectedMood) {
-      case 'happy':
-        return "🌟 Your positivity is shining bright!";
-      case 'excited':
-        return "🚀 You're full of energy today!";
-      case 'calm':
-        return "🧘‍♀️ Peace and tranquility within you!";
-      case 'tired':
-        return "💤 Take some rest, you deserve it!";
-      case 'stressed':
-        return "🤗 It's okay to feel this way. Take deep breaths!";
+  const getMotivationalText = () => {
+    switch (currentMood) {
+      case 'very-sad':
+        return 'It\'s okay to feel this way. Take care of yourself.';
       case 'sad':
-        return "💙 This feeling will pass. You're stronger than you know!";
+        return 'This feeling will pass. You\'re stronger than you know.';
+      case 'neutral':
+        return 'A balanced mood is perfectly fine.';
+      case 'happy':
+        return 'Great to see you feeling good!';
+      case 'very-happy':
+        return 'Your happiness is contagious!';
       default:
-        return "💖 How are you feeling today?";
+        return 'How are you feeling today?';
     }
   };
 
-  const getCharacterType = () => {
-    switch (selectedMood) {
-      case 'happy':
-      case 'excited':
-        return 'celebrating';
-      case 'calm':
-        return 'yoga';
-      case 'tired':
-        return 'sleep';
-      case 'stressed':
-      case 'sad':
-        return 'heart';
-      default:
-        return 'heart';
-    }
-  };
-
-  const currentMoodData = getCurrentMoodData();
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.titleContainer}>
-          <Ionicons name="heart" size={24} color={currentMoodData.color} />
-          <Text style={styles.title}>Today's Mood</Text>
-        </View>
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeText}>Right now</Text>
-        </View>
-      </View>
-
+  const CardContent = () => (
+    <View style={[styles.container, { width: size + 40, height: size + 40 }]}>
       <View style={styles.content}>
-        <Animated.View
-          style={[
-            styles.characterWrapper,
-            {
-              transform: [
-                { translateY: bounceAnim },
-                { scale: pulseAnim },
-              ],
-            },
-          ]}
-        >
-          <AnimatedCharacter
-            type={getCharacterType()}
-            size={80}
-            color={currentMoodData.color}
-            showText={false}
-          />
-        </Animated.View>
-
+        {/* Mood Display */}
+        <View style={[styles.moodCircle, { backgroundColor: currentMoodData.color }]}>
+          <Text style={styles.moodEmoji}>{currentMoodData.emoji}</Text>
+        </View>
+        
+        {/* Mood Info */}
         <View style={styles.moodInfo}>
-          <Text style={[styles.moodEmoji, { fontSize: 48 }]}>
-            {currentMoodData.emoji}
-          </Text>
           <Text style={[styles.moodLabel, { color: currentMoodData.color }]}>
             {currentMoodData.label}
           </Text>
           <Text style={styles.motivationalText}>
-            {getMotivationalMessage()}
+            {getMotivationalText()}
           </Text>
         </View>
       </View>
-
+      
+      {/* Mood Selector */}
       <View style={styles.moodSelector}>
-        <Text style={styles.selectorTitle}>How are you feeling?</Text>
-        <View style={styles.moodGrid}>
-          {moods.map((mood) => (
-            <TouchableOpacity
-              key={mood.id}
-              style={[
-                styles.moodOption,
-                selectedMood === mood.id && styles.selectedMoodOption,
-                { borderColor: mood.color },
-              ]}
-              onPress={() => handleMoodSelect(mood.id)}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.moodEmojiSmall}>{mood.emoji}</Text>
-              <Text style={[
-                styles.moodLabelSmall,
-                selectedMood === mood.id && { color: mood.color }
-              ]}>
-                {mood.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {moods.map((moodItem) => (
+          <TouchableOpacity
+            key={moodItem.id}
+            style={[
+              styles.moodButton,
+              {
+                backgroundColor: currentMood === moodItem.id 
+                  ? moodItem.color 
+                  : '#f5f5f5',
+                borderColor: currentMood === moodItem.id 
+                  ? moodItem.color 
+                  : '#e0e0e0',
+              }
+            ]}
+            onPress={() => setCurrentMood(moodItem.id)}
+          >
+            <Text style={styles.moodButtonEmoji}>{moodItem.emoji}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );
+
+  if (onPress) {
+    return (
+      <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+        <CardContent />
+      </TouchableOpacity>
+    );
+  }
+
+  return <CardContent />;
 }
 
 const styles = StyleSheet.create({
@@ -187,104 +102,63 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
-    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginLeft: 8,
-  },
-  timeContainer: {
-    backgroundColor: '#FFF5F5',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  timeText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#E91E63',
+    shadowRadius: 8,
+    elevation: 5,
   },
   content: {
-    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 20,
   },
-  characterWrapper: {
-    marginRight: 16,
-  },
-  moodInfo: {
-    flex: 1,
+  moodCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   moodEmoji: {
-    marginBottom: 8,
+    fontSize: 32,
+  },
+  moodInfo: {
+    alignItems: 'center',
   },
   moodLabel: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
   },
   motivationalText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#666',
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 16,
   },
   moodSelector: {
-    marginTop: 8,
-  },
-  selectorTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  moodGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
+    width: '100%',
   },
-  moodOption: {
-    width: (width - 80) / 3,
+  moodButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#E0E0E0',
-    backgroundColor: '#FAFAFA',
-    marginBottom: 8,
-  },
-  selectedMoodOption: {
-    backgroundColor: '#FFF5F5',
     borderWidth: 2,
   },
-  moodEmojiSmall: {
-    fontSize: 24,
-    marginBottom: 4,
-  },
-  moodLabelSmall: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#666',
-    textAlign: 'center',
+  moodButtonEmoji: {
+    fontSize: 20,
   },
 });

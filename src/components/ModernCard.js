@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { View, StyleSheet, Animated, TouchableOpacity, Dimensions } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -14,33 +14,10 @@ export default function ModernCard({
   shadow = true,
   gradient = true
 }) {
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  const shadowAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (animated) {
-      Animated.parallel([
-        Animated.spring(scaleAnim, {
-          toValue: 1,
-          tension: 100,
-          friction: 8,
-          useNativeDriver: true,
-        }),
-        Animated.timing(shadowAnim, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: false,
-        }),
-      ]).start();
-    }
-  }, [animated]);
-
   const getGradientColors = () => {
     switch (type) {
       case 'primary':
         return ['#667eea', '#764ba2'];
-      case 'secondary':
-        return ['#f093fb', '#f5576c'];
       case 'success':
         return ['#4facfe', '#00f2fe'];
       case 'warning':
@@ -48,91 +25,60 @@ export default function ModernCard({
       case 'info':
         return ['#a8edea', '#fed6e3'];
       case 'period':
-        return ['#ff9a9e', '#fecfef'];
-      case 'follicular':
-        return ['#a8edea', '#fed6e3'];
-      case 'ovulation':
-        return ['#ffecd2', '#fcb69f'];
-      case 'luteal':
-        return ['#d299c2', '#fef9d7'];
+        return ['#E91E63', '#F8BBD9'];
       case 'glass':
-        return ['rgba(255, 255, 255, 0.25)', 'rgba(255, 255, 255, 0.1)'];
-      default:
-        return ['#ffffff', '#f8f9fa'];
-    }
-  };
-
-  const getShadowColor = () => {
-    switch (type) {
-      case 'primary':
-        return 'rgba(102, 126, 234, 0.3)';
+        return ['rgba(255,255,255,0.1)', 'rgba(255,255,255,0.05)'];
       case 'secondary':
-        return 'rgba(240, 147, 251, 0.3)';
-      case 'success':
-        return 'rgba(79, 172, 254, 0.3)';
-      case 'warning':
-        return 'rgba(250, 112, 154, 0.3)';
-      case 'info':
-        return 'rgba(168, 237, 234, 0.3)';
+        return ['#f093fb', '#f5576c'];
       default:
-        return 'rgba(0, 0, 0, 0.1)';
+        return ['#667eea', '#764ba2'];
     }
   };
 
-  const handlePressIn = () => {
-    Animated.spring(scaleAnim, {
-      toValue: 0.95,
-      tension: 300,
-      friction: 10,
-      useNativeDriver: true,
-    }).start();
+  const getCardStyle = () => {
+    const baseStyle = {
+      borderRadius: 20,
+      padding: 20,
+      marginVertical: 8,
+      marginHorizontal: 4,
+      ...style,
+    };
+
+    if (shadow) {
+      baseStyle.shadowColor = '#000';
+      baseStyle.shadowOffset = { width: 0, height: 4 };
+      baseStyle.shadowOpacity = 0.1;
+      baseStyle.shadowRadius = 8;
+      baseStyle.elevation = 5;
+    }
+
+    return baseStyle;
   };
 
-  const handlePressOut = () => {
-    Animated.spring(scaleAnim, {
-      toValue: 1,
-      tension: 300,
-      friction: 10,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const CardContent = () => (
-    <Animated.View
-      style={[
-        styles.container,
-        {
-          transform: [{ scale: scaleAnim }],
-          shadowOpacity: shadow ? shadowAnim : 0,
-        },
-        style,
-      ]}
-    >
-      {gradient ? (
+  const CardContent = () => {
+    if (gradient) {
+      return (
         <LinearGradient
           colors={getGradientColors()}
-          style={styles.gradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
+          style={getCardStyle()}
         >
           {children}
         </LinearGradient>
-      ) : (
-        <View style={[styles.content, { backgroundColor: '#ffffff' }]}>
-          {children}
-        </View>
-      )}
-    </Animated.View>
-  );
+      );
+    }
+
+    return (
+      <View style={[getCardStyle(), { backgroundColor: '#fff' }]}>
+        {children}
+      </View>
+    );
+  };
 
   if (onPress) {
     return (
-      <TouchableOpacity
-        onPress={onPress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        activeOpacity={0.9}
-      >
+      <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
         <CardContent />
       </TouchableOpacity>
     );
@@ -143,22 +89,14 @@ export default function ModernCard({
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
+    borderRadius: 20,
+    padding: 20,
     marginVertical: 8,
-    borderRadius: 24,
+    marginHorizontal: 4,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowRadius: 16,
-    elevation: 12,
-  },
-  gradient: {
-    borderRadius: 24,
-    padding: 24,
-    minHeight: 120,
-  },
-  content: {
-    borderRadius: 24,
-    padding: 24,
-    minHeight: 120,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
 });

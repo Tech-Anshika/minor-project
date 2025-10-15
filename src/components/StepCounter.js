@@ -1,173 +1,112 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AnimatedCharacter from './AnimatedCharacter';
+import Svg, { Circle } from 'react-native-svg';
 
 const { width } = Dimensions.get('window');
 
 export default function StepCounter({ 
-  currentSteps = 0, 
-  goalSteps = 10000, 
-  onPress = () => {} 
+  steps = 0, 
+  goal = 10000, 
+  onPress = null,
+  size = 120,
+  strokeWidth = 8
 }) {
-  const [animatedSteps, setAnimatedSteps] = useState(0);
-  const progressAnim = useRef(new Animated.Value(0)).current;
-  const numberAnim = useRef(new Animated.Value(0)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-
-  const progress = Math.min((currentSteps / goalSteps) * 100, 100);
-  const isGoalReached = currentSteps >= goalSteps;
+  const [currentSteps, setCurrentSteps] = useState(steps);
 
   useEffect(() => {
-    // Animate progress bar
-    Animated.timing(progressAnim, {
-      toValue: progress,
-      duration: 1000,
-      useNativeDriver: false,
-    }).start();
+    setCurrentSteps(steps);
+  }, [steps]);
 
-    // Animate number counting
-    Animated.timing(numberAnim, {
-      toValue: currentSteps,
-      duration: 1500,
-      useNativeDriver: false,
-    }).start();
+  const progress = Math.min((currentSteps / goal) * 100, 100);
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
 
-    // Animate step counter
-    let stepInterval;
-    if (currentSteps > animatedSteps) {
-      stepInterval = setInterval(() => {
-        setAnimatedSteps(prev => {
-          const increment = Math.ceil((currentSteps - prev) / 20);
-          return Math.min(prev + increment, currentSteps);
-        });
-      }, 50);
-    }
-
-    return () => {
-      if (stepInterval) clearInterval(stepInterval);
-    };
-  }, [currentSteps, progress]);
-
-  useEffect(() => {
-    if (isGoalReached) {
-      // Celebration animation
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, {
-            toValue: 1.1,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-          Animated.timing(pulseAnim, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-        ]),
-        { iterations: 3 }
-      ).start();
-    }
-  }, [isGoalReached]);
-
-  const getMotivationalMessage = () => {
-    if (isGoalReached) {
-      return "🎉 Goal Achieved! Amazing work!";
-    } else if (progress >= 75) {
-      return "🔥 Almost there! Keep going!";
-    } else if (progress >= 50) {
-      return "💪 Great progress! You're doing well!";
-    } else if (progress >= 25) {
-      return "🚶‍♀️ Good start! Keep moving!";
-    } else {
-      return "👟 Let's start walking!";
-    }
+  const getProgressColor = () => {
+    if (progress < 30) return '#ff6b6b';
+    if (progress < 60) return '#ffa726';
+    if (progress < 90) return '#66bb6a';
+    return '#4caf50';
   };
 
-  const getCharacterType = () => {
-    if (isGoalReached) return 'celebrating';
-    if (progress >= 75) return 'walking';
-    return 'walking';
+  const getMotivationalText = () => {
+    if (progress < 30) return 'Keep going!';
+    if (progress < 60) return 'You\'re doing great!';
+    if (progress < 90) return 'Almost there!';
+    return 'Amazing work!';
   };
 
-  return (
-    <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.8}>
-      <View style={styles.header}>
-        <View style={styles.titleContainer}>
-          <Ionicons name="walk" size={24} color="#4CAF50" />
-          <Text style={styles.title}>Daily Steps</Text>
-        </View>
-        <View style={styles.goalContainer}>
-          <Text style={styles.goalText}>Goal: {goalSteps.toLocaleString()}</Text>
-        </View>
-      </View>
-
+  const CardContent = () => (
+    <View style={[styles.container, { width: size + 40, height: size + 40 }]}>
       <View style={styles.content}>
-        <AnimatedCharacter
-          type={getCharacterType()}
-          size={80}
-          color={isGoalReached ? '#4CAF50' : '#E91E63'}
-          showText={false}
-        />
-
-        <View style={styles.statsContainer}>
-          <Animated.View
-            style={[
-              styles.stepNumber,
-              { transform: [{ scale: pulseAnim }] }
-            ]}
-          >
-            <Text style={styles.stepCount}>
-              {animatedSteps.toLocaleString()}
-            </Text>
-            <Text style={styles.stepLabel}>steps</Text>
-          </Animated.View>
-
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBar}>
-              <Animated.View
-                style={[
-                  styles.progressFill,
-                  {
-                    width: progressAnim.interpolate({
-                      inputRange: [0, 100],
-                      outputRange: ['0%', '100%'],
-                    }),
-                    backgroundColor: isGoalReached ? '#4CAF50' : '#E91E63',
-                  },
-                ]}
-              />
-            </View>
-            <Text style={styles.progressText}>
-              {Math.round(progress)}% Complete
-            </Text>
-          </View>
-
+        <Svg width={size} height={size} style={styles.svg}>
+          {/* Background Circle */}
+          <Circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="#E0E0E0"
+            strokeWidth={strokeWidth}
+            fill="transparent"
+          />
+          
+          {/* Progress Circle */}
+          <Circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={getProgressColor()}
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          />
+        </Svg>
+        
+        {/* Center Content */}
+        <View style={styles.centerContent}>
+          <Text style={[styles.stepCount, { color: getProgressColor() }]}>
+            {currentSteps.toLocaleString()}
+          </Text>
+          <Text style={styles.stepLabel}>steps</Text>
           <Text style={styles.motivationalText}>
-            {getMotivationalMessage()}
+            {getMotivationalText()}
           </Text>
         </View>
       </View>
-
-      <View style={styles.footer}>
-        <View style={styles.achievementContainer}>
-          {isGoalReached && (
-            <View style={styles.achievementBadge}>
-              <Ionicons name="trophy" size={16} color="#FFD700" />
-              <Text style={styles.achievementText}>Goal Reached!</Text>
-            </View>
-          )}
+      
+      {/* Goal Progress */}
+      <View style={styles.goalContainer}>
+        <Text style={styles.goalText}>
+          {Math.round(progress)}% of daily goal
+        </Text>
+        <View style={styles.goalBar}>
+          <View 
+            style={[
+              styles.goalProgress, 
+              { 
+                width: `${progress}%`,
+                backgroundColor: getProgressColor()
+              }
+            ]} 
+          />
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
+
+  if (onPress) {
+    return (
+      <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+        <CardContent />
+      </TouchableOpacity>
+    );
+  }
+
+  return <CardContent />;
 }
 
 const styles = StyleSheet.create({
@@ -175,109 +114,59 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
-    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginLeft: 8,
-  },
-  goalContainer: {
-    backgroundColor: '#F0F8FF',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  goalText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#2196F3',
+    shadowRadius: 8,
+    elevation: 5,
   },
   content: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'center',
+    position: 'relative',
   },
-  statsContainer: {
-    flex: 1,
-    marginLeft: 16,
+  svg: {
+    position: 'absolute',
   },
-  stepNumber: {
+  centerContent: {
     alignItems: 'center',
-    marginBottom: 12,
+    justifyContent: 'center',
   },
   stepCount: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    marginBottom: 4,
   },
   stepLabel: {
     fontSize: 14,
     color: '#666',
-    marginTop: -4,
-  },
-  progressContainer: {
-    marginBottom: 12,
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 4,
-    overflow: 'hidden',
     marginBottom: 8,
   },
-  progressFill: {
-    height: '100%',
-    borderRadius: 4,
+  motivationalText: {
+    fontSize: 12,
+    color: '#999',
+    textAlign: 'center',
   },
-  progressText: {
+  goalContainer: {
+    marginTop: 16,
+    width: '100%',
+  },
+  goalText: {
     fontSize: 12,
     color: '#666',
     textAlign: 'center',
+    marginBottom: 8,
   },
-  motivationalText: {
-    fontSize: 14,
-    color: '#E91E63',
-    fontWeight: '600',
-    textAlign: 'center',
+  goalBar: {
+    height: 4,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 2,
+    overflow: 'hidden',
   },
-  footer: {
-    alignItems: 'center',
-  },
-  achievementContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  achievementBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF8DC',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#FFD700',
-  },
-  achievementText: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#B8860B',
-    marginLeft: 4,
+  goalProgress: {
+    height: '100%',
+    borderRadius: 2,
   },
 });
