@@ -170,42 +170,105 @@ export default function HomeScreen({ navigation }) {
 
         {/* Stats Section - Single Column */}
         <View style={styles.statsSection}>
-          {/* Steps Card */}
-          <StepCounter 
-            steps={todayStats.steps} 
-            goal={10000} 
-            size={140}
-            style={styles.fullWidthCard}
-          />
-          
-          {/* Water Card */}
-          <WaterTracker 
-            glasses={todayStats.water} 
-            goal={8} 
-            size={140}
-            style={styles.fullWidthCard}
-          />
-          
-          {/* Calories Card */}
-          <ModernCard type="warning" style={styles.fullWidthCard}>
-            <View style={styles.calorieContent}>
-              <View style={styles.calorieHeader}>
-                <Ionicons name="flame" size={28} color="#fa709a" />
-                <Text style={styles.calorieTitle}>Calories Burned</Text>
+          {/* Steps Card with Walking Girl */}
+          <ModernCard type="success" style={styles.fullWidthCard}>
+            <View style={styles.stepsContent}>
+              <View style={styles.stepsHeader}>
+                <Ionicons name="walk" size={28} color="#4facfe" />
+                <Text style={styles.stepsTitle}>Daily Steps</Text>
               </View>
-              <View style={styles.calorieMain}>
-                <Text style={styles.calorieValue}>{todayStats.calories}</Text>
-                <Text style={styles.calorieUnit}>calories</Text>
-                <Text style={styles.calorieGoal}>Goal: 2000 calories</Text>
+              <View style={styles.stepsMain}>
+                <View style={styles.stepsInfo}>
+                  <Text style={styles.stepsValue}>{todayStats.steps.toLocaleString()}</Text>
+                  <Text style={styles.stepsLabel}>steps</Text>
+                  <Text style={styles.stepsMotivation}>Keep walking! You're doing great! 🚶‍♀️</Text>
+                </View>
+                <View style={styles.stepsCharacter}>
+                  <AnimatedCharacter
+                    type="walking"
+                    size={80}
+                    color="#4facfe"
+                    showText={false}
+                  />
+                </View>
               </View>
-              <View style={styles.calorieProgress}>
+              <View style={styles.stepsProgress}>
+                <ModernProgressRing
+                  progress={(todayStats.steps / 10000) * 100}
+                  size={100}
+                  color="#4facfe"
+                  backgroundColor="#E0E0E0"
+                  showPercentage={true}
+                />
+              </View>
+            </View>
+          </ModernCard>
+          
+          {/* Water Card with Drinking Girl */}
+          <ModernCard type="info" style={styles.fullWidthCard}>
+            <View style={styles.waterContent}>
+              <View style={styles.waterHeader}>
+                <Ionicons name="water" size={28} color="#a8edea" />
+                <Text style={styles.waterTitle}>Water Intake</Text>
+              </View>
+              <View style={styles.waterMain}>
+                <View style={styles.waterInfo}>
+                  <Text style={styles.waterValue}>{todayStats.water}/8</Text>
+                  <Text style={styles.waterLabel}>glasses</Text>
+                  <Text style={styles.waterMotivation}>Stay hydrated! 💧</Text>
+                </View>
+                <View style={styles.waterCharacter}>
+                  <AnimatedCharacter
+                    type="water"
+                    size={80}
+                    color="#a8edea"
+                    showText={false}
+                  />
+                </View>
+              </View>
+              <View style={styles.waterControls}>
+                <TouchableOpacity style={styles.waterButton} onPress={() => setTodayStats(prev => ({ ...prev, water: Math.max(0, prev.water - 1) }))}>
+                  <Ionicons name="remove" size={24} color="#ff6b6b" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.waterButton} onPress={() => setTodayStats(prev => ({ ...prev, water: Math.min(8, prev.water + 1) }))}>
+                  <Ionicons name="add" size={24} color="#4caf50" />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.waterProgress}>
+                <ModernProgressRing
+                  progress={(todayStats.water / 8) * 100}
+                  size={80}
+                  color="#a8edea"
+                  backgroundColor="#E0E0E0"
+                  showPercentage={true}
+                />
+              </View>
+            </View>
+          </ModernCard>
+          
+          {/* Calories Card - Maximum Space */}
+          <ModernCard type="warning" style={styles.calorieCardMax}>
+            <View style={styles.calorieContentMax}>
+              <View style={styles.calorieHeaderMax}>
+                <Ionicons name="flame" size={32} color="#fa709a" />
+                <Text style={styles.calorieTitleMax}>Calories Burned Today</Text>
+              </View>
+              <View style={styles.calorieMainMax}>
+                <Text style={styles.calorieValueMax}>{todayStats.calories}</Text>
+                <Text style={styles.calorieUnitMax}>calories</Text>
+                <Text style={styles.calorieGoalMax}>Goal: 2000 calories</Text>
+              </View>
+              <View style={styles.calorieProgressMax}>
                 <ModernProgressRing
                   progress={(todayStats.calories / 2000) * 100}
-                  size={80}
+                  size={120}
                   color="#fa709a"
                   backgroundColor="#E0E0E0"
                   showPercentage={true}
                 />
+              </View>
+              <View style={styles.calorieMotivation}>
+                <Text style={styles.calorieMotivationText}>Keep burning those calories! 🔥</Text>
               </View>
             </View>
           </ModernCard>
@@ -419,46 +482,174 @@ const styles = StyleSheet.create({
   fullWidthCard: {
     marginBottom: 16,
   },
-  calorieContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  
+  // Steps Card Styles
+  stepsContent: {
     padding: 20,
   },
-  calorieHeader: {
+  stepsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
   },
-  calorieTitle: {
+  stepsTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fa709a',
+    color: '#4facfe',
     marginLeft: 12,
   },
-  calorieMain: {
-    flex: 1,
+  stepsMain: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 20,
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
-  calorieValue: {
-    fontSize: 36,
+  stepsInfo: {
+    flex: 1,
+  },
+  stepsValue: {
+    fontSize: 32,
     fontWeight: 'bold',
-    color: '#fa709a',
+    color: '#4facfe',
     marginBottom: 4,
   },
-  calorieUnit: {
+  stepsLabel: {
     fontSize: 16,
     color: '#666',
     fontWeight: '600',
-    marginBottom: 4,
+    marginBottom: 8,
   },
-  calorieGoal: {
+  stepsMotivation: {
     fontSize: 14,
     color: '#999',
     fontWeight: '500',
   },
-  calorieProgress: {
+  stepsCharacter: {
+    marginLeft: 16,
+  },
+  stepsProgress: {
     alignItems: 'center',
+  },
+  
+  // Water Card Styles
+  waterContent: {
+    padding: 20,
+  },
+  waterHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  waterTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#a8edea',
+    marginLeft: 12,
+  },
+  waterMain: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  waterInfo: {
+    flex: 1,
+  },
+  waterValue: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#a8edea',
+    marginBottom: 4,
+  },
+  waterLabel: {
+    fontSize: 16,
+    color: '#666',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  waterMotivation: {
+    fontSize: 14,
+    color: '#999',
+    fontWeight: '500',
+  },
+  waterCharacter: {
+    marginLeft: 16,
+  },
+  waterControls: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 20,
+    marginBottom: 16,
+  },
+  waterButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  waterProgress: {
+    alignItems: 'center',
+  },
+  
+  // Calories Card - Maximum Space
+  calorieCardMax: {
+    marginBottom: 20,
+    minHeight: 200,
+  },
+  calorieContentMax: {
+    padding: 24,
+    alignItems: 'center',
+  },
+  calorieHeaderMax: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  calorieTitleMax: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fa709a',
+    marginLeft: 12,
+  },
+  calorieMainMax: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  calorieValueMax: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#fa709a',
+    marginBottom: 8,
+  },
+  calorieUnitMax: {
+    fontSize: 20,
+    color: '#666',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  calorieGoalMax: {
+    fontSize: 16,
+    color: '#999',
+    fontWeight: '500',
+  },
+  calorieProgressMax: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  calorieMotivation: {
+    alignItems: 'center',
+  },
+  calorieMotivationText: {
+    fontSize: 16,
+    color: '#fa709a',
+    fontWeight: '600',
   },
 
   // Quick Actions
