@@ -269,18 +269,18 @@ export default function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        {/* Quick Actions for Period Logging */}
-        <View style={styles.periodActions}>
-          <TouchableOpacity style={styles.periodButton} onPress={() => navigation.navigate('PeriodLog')}>
-            <Ionicons name="add-circle" size={20} color="#E91E63" />
-            <Text style={styles.periodButtonText}>Log Period Start</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.periodButton} onPress={() => navigation.navigate('PeriodLog')}>
-            <Ionicons name="medical" size={20} color="#E91E63" />
-            <Text style={styles.periodButtonText}>Add Symptoms</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+          {/* Quick Actions for Period Logging */}
+          <View style={styles.periodActions}>
+            <TouchableOpacity style={styles.periodButton} onPress={() => navigation.navigate('PeriodLog')}>
+              <Ionicons name="add-circle" size={20} color="white" />
+              <Text style={styles.periodButtonText}>Log Period Start</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.periodButton} onPress={() => navigation.navigate('PeriodLog')}>
+              <Ionicons name="medical" size={20} color="white" />
+              <Text style={styles.periodButtonText}>Add Symptoms</Text>
+            </TouchableOpacity>
+          </View>
+        </ModernCard>
 
         {/* Modern Stats Cards */}
         <View style={styles.statsContainer}>
@@ -913,7 +913,7 @@ const styles = StyleSheet.create({
   periodButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#E91E63',
+    color: 'white',
     marginLeft: 8,
   },
 });
