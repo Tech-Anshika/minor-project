@@ -69,7 +69,7 @@ export default function ModernProgressRing({
           </Text>
         )}
       </View>
-    </Animated.View>
+    </View>
   );
 }
 
