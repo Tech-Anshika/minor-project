@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  Animated,
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -33,8 +32,6 @@ export default function YogaScreen() {
   
   const timerRef = useRef(null);
   const poseTimerRef = useRef(null);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const phases = ['All', 'Menstrual', 'Follicular', 'Ovulation', 'Luteal'];
 
@@ -251,10 +248,6 @@ export default function YogaScreen() {
 
   // Session management
   const startYogaSession = (pose) => {
-    // Reset animations first
-    fadeAnim.setValue(0);
-    scaleAnim.setValue(1);
-    
     const session = [pose];
     setSessionPoses(session);
     setCurrentPose(pose);
@@ -266,17 +259,9 @@ export default function YogaScreen() {
     setIsPaused(false);
     startTimer();
     startPoseTimer(pose.durationSeconds);
-    
-    // Disable animations temporarily to fix conflicts
-    fadeAnim.setValue(1);
-    scaleAnim.setValue(1);
   };
 
   const startQuickSession = () => {
-    // Reset animations first
-    fadeAnim.setValue(0);
-    scaleAnim.setValue(1);
-    
     const quickSession = yogaPoses.slice(0, 3); // First 3 poses
     setSessionPoses(quickSession);
     setCurrentPose(quickSession[0]);
@@ -288,10 +273,6 @@ export default function YogaScreen() {
     setIsPaused(false);
     startTimer();
     startPoseTimer(quickSession[0].durationSeconds);
-    
-    // Disable animations temporarily to fix conflicts
-    fadeAnim.setValue(1);
-    scaleAnim.setValue(1);
   };
 
   const nextPose = () => {
@@ -341,10 +322,6 @@ export default function YogaScreen() {
     setSessionProgress(0);
     setCurrentPoseIndex(0);
     setSessionPoses([]);
-    
-    // Reset animations
-    fadeAnim.setValue(0);
-    scaleAnim.setValue(1);
 
     Alert.alert(
       'Session Complete! 🎉',
@@ -421,7 +398,7 @@ export default function YogaScreen() {
   if (isSessionActive && currentPose) {
     return (
       <View style={styles.sessionContainer}>
-        <Animated.View style={[styles.sessionContent, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}>
+        <View style={[styles.sessionContent, { opacity: 1, transform: [{ scale: 1 }] }]}>
           {/* Session Header */}
           <View style={styles.sessionHeader}>
             <TouchableOpacity onPress={endSession} style={styles.closeButton}>

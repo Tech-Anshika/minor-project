@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 const { width } = Dimensions.get('window');
@@ -14,14 +14,6 @@ export default function ModernProgressRing({
   centerText = '',
   animated = true
 }) {
-  const progressAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    // Disable animations temporarily to fix conflicts
-    progressAnim.setValue(progress);
-    scaleAnim.setValue(1);
-  }, [progress, animated]);
 
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -29,13 +21,12 @@ export default function ModernProgressRing({
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
-    <Animated.View
+    <View
       style={[
         styles.container,
         {
           width: size,
           height: size,
-          transform: [{ scale: scaleAnim }],
         },
       ]}
     >

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
@@ -12,16 +12,6 @@ export default function AnimatedCharacter({
   text = '',
   style = {}
 }) {
-  const bounceAnim = useRef(new Animated.Value(0)).current;
-  const walkAnim = useRef(new Animated.Value(0)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    // Disable animations temporarily to fix conflicts
-    bounceAnim.setValue(0);
-    walkAnim.setValue(0);
-    pulseAnim.setValue(1);
-  }, [type]);
 
   const getCharacterIcon = () => {
     switch (type) {
@@ -67,16 +57,12 @@ export default function AnimatedCharacter({
 
   return (
     <View style={[styles.container, style]}>
-      <Animated.View
+      <View
         style={[
           styles.characterContainer,
           {
             width: size,
             height: size,
-            transform: [
-              { translateY: bounceAnim },
-              { scale: pulseAnim },
-            ],
           },
         ]}
       >
