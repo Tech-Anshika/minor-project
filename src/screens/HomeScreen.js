@@ -142,8 +142,8 @@ export default function HomeScreen({ navigation }) {
       let isPeriod = false;
       let isOvulation = false;
       
-      if (lastPeriod) {
-        const periodStart = new Date(lastPeriod);
+      if (cycleData.lastPeriod) {
+        const periodStart = new Date(cycleData.lastPeriod);
         const daysSincePeriod = Math.floor((currentDate - periodStart) / (1000 * 60 * 60 * 24));
         
         // Period days (first 5 days of cycle)

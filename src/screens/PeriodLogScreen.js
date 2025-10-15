@@ -84,14 +84,16 @@ export default function PeriodLogScreen() {
   const updateMarkedDates = (history) => {
     const marked = {};
     
-    history.forEach(entry => {
-      const dateStr = entry.date.toDate().toISOString().split('T')[0];
-      marked[dateStr] = {
-        marked: true,
-        dotColor: getFlowColor(entry.flow),
-        activeOpacity: 0.7,
-      };
-    });
+    if (history && history.length > 0) {
+      history.forEach(entry => {
+        const dateStr = entry.date.toDate().toISOString().split('T')[0];
+        marked[dateStr] = {
+          marked: true,
+          dotColor: getFlowColor(entry.flow),
+          activeOpacity: 0.7,
+        };
+      });
+    }
 
     setMarkedDates(marked);
   };
@@ -106,7 +108,7 @@ export default function PeriodLogScreen() {
   };
 
   const generatePredictions = () => {
-    if (periodHistory.length >= 2) {
+    if (periodHistory && periodHistory.length >= 2) {
       // Calculate average cycle length
       const cycles = [];
       for (let i = 0; i < periodHistory.length - 1; i++) {
