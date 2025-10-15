@@ -58,6 +58,7 @@ export default function PeriodLogScreen() {
     { id: 'normal', label: 'Normal', emoji: '😐', color: '#FF9800', column: 1 },
     { id: 'sad', label: 'Sad', emoji: '😢', color: '#2196F3', column: 1 },
     // Column 2
+    { id: 'excited', label: 'Excited', emoji: '🤩', color: '#FF5722', column: 2 },
     { id: 'anxious', label: 'Anxious', emoji: '😰', color: '#F44336', column: 2 },
     { id: 'irritable', label: 'Irritable', emoji: '😠', color: '#9C27B0', column: 2 },
   ];
