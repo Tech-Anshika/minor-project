@@ -2,7 +2,6 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getMessaging } from 'firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Firebase configuration
@@ -30,8 +29,8 @@ const db = getFirestore(app);
 // Initialize Storage
 const storage = getStorage(app);
 
-// Initialize Cloud Messaging
-const messaging = getMessaging(app);
+// Note: Cloud Messaging is handled by Expo Notifications in React Native
+// getMessaging() is only available in web environments
 
-export { auth, db, storage, messaging };
+export { auth, db, storage };
 export default app;

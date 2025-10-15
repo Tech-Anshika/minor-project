@@ -82,3 +82,4 @@ export const gradients = {
   error: ['#F44336', '#FFCDD2'],
   info: ['#2196F3', '#BBDEFB'],
 };
+

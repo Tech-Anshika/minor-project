@@ -1,7 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
-import { getMessaging, getToken } from 'firebase/messaging';
 import { auth, db } from '../config/firebaseConfig';
 import { doc, updateDoc } from 'firebase/firestore';
 
@@ -223,3 +222,4 @@ class NotificationService {
 }
 
 export default new NotificationService();
+

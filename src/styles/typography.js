@@ -167,3 +167,4 @@ export const textStyles = {
     color: '#4CAF50',
   },
 };
+
