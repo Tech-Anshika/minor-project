@@ -15,8 +15,10 @@ import WaterTracker from '../components/WaterTracker';
 import MoodTracker from '../components/MoodTracker';
 import AnimatedCharacter from '../components/AnimatedCharacter';
 import PeriodCalendar from '../components/PeriodCalendar';
-import GradientBackground from '../components/GradientBackground';
-import AnimatedCard from '../components/AnimatedCard';
+import ModernGradientBackground from '../components/ModernGradientBackground';
+import ModernCard from '../components/ModernCard';
+import FloatingActionButton from '../components/FloatingActionButton';
+import ModernProgressRing from '../components/ModernProgressRing';
 
 const { width } = Dimensions.get('window');
 
@@ -170,53 +172,67 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.welcomeContainer}>
-          <View style={styles.greetingText}>
-            <Text style={styles.greeting}>
-              Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, 
-              {user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 🌸
-            </Text>
-            <Text style={styles.subGreeting}>
-              Ready to take care of your health today?
-            </Text>
-          </View>
-          <AnimatedCharacter
-            type="walking"
-            size={60}
-            color="#E91E63"
-            showText={false}
-          />
-        </View>
-      </View>
-
-      {/* Enhanced Cycle Tracker Card with Calendar */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="calendar" size={24} color="#E91E63" />
-          <Text style={styles.cardTitle}>Cycle Tracker & Calendar</Text>
-        </View>
-        
-        <View style={styles.cycleInfo}>
-          <View style={styles.phaseContainer}>
-            <View style={[styles.phaseIndicator, { backgroundColor: getPhaseColor(cycleData.phase) }]}>
-              <Ionicons name={getPhaseIcon(cycleData.phase)} size={20} color="white" />
-            </View>
-            <View style={styles.phaseText}>
-              <Text style={styles.phaseName}>{cycleData.phase} Phase</Text>
-              <Text style={styles.dayText}>Day {cycleData.currentDay} of {cycleData.cycleLength}</Text>
-            </View>
-          </View>
-          
-          {cycleData.nextPeriod && (
-            <View style={styles.nextPeriod}>
-              <Text style={styles.nextPeriodText}>
-                Next period in {Math.ceil((cycleData.nextPeriod - new Date()) / (1000 * 60 * 60 * 24))} days
+    <ModernGradientBackground type="home">
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {/* Modern Header */}
+        <View style={styles.modernHeader}>
+          <View style={styles.headerContent}>
+            <View style={styles.greetingSection}>
+              <Text style={styles.modernGreeting}>
+                Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, 
+                {user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 🌸
+              </Text>
+              <Text style={styles.modernSubGreeting}>
+                Ready to take care of your health today?
               </Text>
             </View>
-          )}
+            <View style={styles.avatarContainer}>
+              <AnimatedCharacter
+                type="walking"
+                size={80}
+                color="white"
+                showText={false}
+              />
+            </View>
+          </View>
         </View>
+
+        {/* Modern Cycle Tracker Card */}
+        <ModernCard type="period" style={styles.modernCard}>
+          <View style={styles.modernCardHeader}>
+            <View style={styles.cardTitleContainer}>
+              <Ionicons name="calendar" size={24} color="white" />
+              <Text style={styles.modernCardTitle}>Cycle Tracker</Text>
+            </View>
+            <ModernProgressRing
+              progress={(cycleData.currentDay / cycleData.cycleLength) * 100}
+              size={80}
+              color="white"
+              backgroundColor="rgba(255,255,255,0.3)"
+              centerText={`Day ${cycleData.currentDay}`}
+            />
+          </View>
+          
+          <View style={styles.modernCycleInfo}>
+            <View style={styles.phaseContainer}>
+              <View style={[styles.modernPhaseIndicator, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
+                <Ionicons name={getPhaseIcon(cycleData.phase)} size={20} color="white" />
+              </View>
+              <View style={styles.phaseText}>
+                <Text style={styles.modernPhaseName}>{cycleData.phase} Phase</Text>
+                <Text style={styles.modernDayText}>Day {cycleData.currentDay} of {cycleData.cycleLength}</Text>
+              </View>
+            </View>
+            
+            {cycleData.nextPeriod && (
+              <View style={styles.nextPeriodContainer}>
+                <Ionicons name="time" size={16} color="rgba(255,255,255,0.8)" />
+                <Text style={styles.nextPeriodText}>
+                  Next period in {Math.ceil((cycleData.nextPeriod - new Date()) / (1000 * 60 * 60 * 24))} days
+                </Text>
+              </View>
+            )}
+          </View>
 
         {/* Mini Calendar Preview */}
         <View style={styles.calendarPreview}>
@@ -266,103 +282,351 @@ export default function HomeScreen({ navigation }) {
         </View>
       </View>
 
-      {/* Step Counter */}
-      <StepCounter 
-        currentSteps={todayStats.steps}
-        goalSteps={10000}
-        onPress={() => console.log('Step counter pressed')}
-      />
+        {/* Modern Stats Cards */}
+        <View style={styles.statsContainer}>
+          <ModernCard type="success" style={styles.statCard}>
+            <View style={styles.statCardContent}>
+              <View style={styles.statIconContainer}>
+                <Ionicons name="walk" size={24} color="#4facfe" />
+              </View>
+              <View style={styles.statInfo}>
+                <Text style={styles.statValue}>{todayStats.steps.toLocaleString()}</Text>
+                <Text style={styles.statLabel}>Steps Today</Text>
+                <ModernProgressRing
+                  progress={(todayStats.steps / 10000) * 100}
+                  size={50}
+                  color="#4facfe"
+                  backgroundColor="#E0E0E0"
+                  showPercentage={false}
+                />
+              </View>
+            </View>
+          </ModernCard>
 
-      {/* Water Tracker */}
-      <WaterTracker 
-        currentGlasses={todayStats.water}
-        goalGlasses={8}
-        onAddGlass={() => setTodayStats(prev => ({ ...prev, water: prev.water + 1 }))}
-      />
-
-      {/* Mood Tracker */}
-      <MoodTracker 
-        currentMood={todayStats.mood}
-        onMoodChange={(mood) => setTodayStats(prev => ({ ...prev, mood }))}
-      />
-
-      {/* Calories Card */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="flame" size={24} color="#FF9800" />
-          <Text style={styles.cardTitle}>Calories Burned</Text>
+          <ModernCard type="info" style={styles.statCard}>
+            <View style={styles.statCardContent}>
+              <View style={styles.statIconContainer}>
+                <Ionicons name="water" size={24} color="#a8edea" />
+              </View>
+              <View style={styles.statInfo}>
+                <Text style={styles.statValue}>{todayStats.water}/8</Text>
+                <Text style={styles.statLabel}>Glasses</Text>
+                <ModernProgressRing
+                  progress={(todayStats.water / 8) * 100}
+                  size={50}
+                  color="#a8edea"
+                  backgroundColor="#E0E0E0"
+                  showPercentage={false}
+                />
+              </View>
+            </View>
+          </ModernCard>
         </View>
-        
-        <View style={styles.caloriesContainer}>
-          <AnimatedCharacter
-            type="celebrating"
-            size={60}
-            color="#FF9800"
-            showText={false}
-          />
-          <View style={styles.caloriesInfo}>
-            <Text style={styles.caloriesValue}>{todayStats.calories}</Text>
-            <Text style={styles.caloriesLabel}>calories today</Text>
-            <Text style={styles.caloriesGoal}>Goal: 2000 calories</Text>
+
+        <View style={styles.statsContainer}>
+          <ModernCard type="warning" style={styles.statCard}>
+            <View style={styles.statCardContent}>
+              <View style={styles.statIconContainer}>
+                <Ionicons name="flame" size={24} color="#fa709a" />
+              </View>
+              <View style={styles.statInfo}>
+                <Text style={styles.statValue}>{todayStats.calories}</Text>
+                <Text style={styles.statLabel}>Calories</Text>
+                <ModernProgressRing
+                  progress={(todayStats.calories / 2000) * 100}
+                  size={50}
+                  color="#fa709a"
+                  backgroundColor="#E0E0E0"
+                  showPercentage={false}
+                />
+              </View>
+            </View>
+          </ModernCard>
+
+          <ModernCard type="secondary" style={styles.statCard}>
+            <View style={styles.statCardContent}>
+              <View style={styles.statIconContainer}>
+                <Ionicons name="heart" size={24} color="#f093fb" />
+              </View>
+              <View style={styles.statInfo}>
+                <Text style={styles.statValue}>{todayStats.mood}</Text>
+                <Text style={styles.statLabel}>Mood</Text>
+                <View style={styles.moodIndicator}>
+                  <Text style={styles.moodEmoji}>😊</Text>
+                </View>
+              </View>
+            </View>
+          </ModernCard>
+        </View>
+
+        {/* Modern Quick Actions */}
+        <ModernCard type="glass" style={styles.modernCard}>
+          <View style={styles.modernCardHeader}>
+            <Ionicons name="flash" size={24} color="#667eea" />
+            <Text style={styles.modernCardTitle}>Quick Actions</Text>
           </View>
-        </View>
-      </View>
-
-      {/* Quick Actions */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="flash" size={24} color="#E91E63" />
-          <Text style={styles.cardTitle}>Quick Actions</Text>
-        </View>
-        
-        <View style={styles.actionsGrid}>
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="add-circle" size={24} color="#E91E63" />
-            <Text style={styles.actionText}>Log Period</Text>
-          </TouchableOpacity>
           
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="fitness" size={24} color="#E91E63" />
-            <Text style={styles.actionText}>Start Yoga</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="restaurant" size={24} color="#E91E63" />
-            <Text style={styles.actionText}>Log Meal</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="chatbubble" size={24} color="#E91E63" />
-            <Text style={styles.actionText}>Ask AI</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Medication Reminders */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="medical" size={24} color="#E91E63" />
-          <Text style={styles.cardTitle}>Medication Reminders</Text>
-        </View>
-        
-        <View style={styles.reminderItem}>
-          <View style={styles.reminderInfo}>
-            <Text style={styles.reminderName}>Metformin</Text>
-            <Text style={styles.reminderTime}>8:00 AM</Text>
+          <View style={styles.modernActionsGrid}>
+            <TouchableOpacity style={styles.modernActionButton}>
+              <View style={[styles.actionIconContainer, { backgroundColor: '#ff9a9e' }]}>
+                <Ionicons name="add-circle" size={20} color="white" />
+              </View>
+              <Text style={styles.modernActionText}>Log Period</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.modernActionButton}>
+              <View style={[styles.actionIconContainer, { backgroundColor: '#a8edea' }]}>
+                <Ionicons name="fitness" size={20} color="white" />
+              </View>
+              <Text style={styles.modernActionText}>Start Yoga</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.modernActionButton}>
+              <View style={[styles.actionIconContainer, { backgroundColor: '#ffecd2' }]}>
+                <Ionicons name="restaurant" size={20} color="white" />
+              </View>
+              <Text style={styles.modernActionText}>Log Meal</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.modernActionButton}>
+              <View style={[styles.actionIconContainer, { backgroundColor: '#d299c2' }]}>
+                <Ionicons name="chatbubble" size={20} color="white" />
+              </View>
+              <Text style={styles.modernActionText}>Ask AI</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.reminderButton}>
-            <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+        </ModernCard>
+
+        {/* Modern Medication Reminders */}
+        <ModernCard type="info" style={styles.modernCard}>
+          <View style={styles.modernCardHeader}>
+            <Ionicons name="medical" size={24} color="white" />
+            <Text style={styles.modernCardTitle}>Medication Reminders</Text>
+          </View>
+          
+          <View style={styles.modernReminderItem}>
+            <View style={styles.reminderIconContainer}>
+              <Ionicons name="medical" size={20} color="#a8edea" />
+            </View>
+            <View style={styles.reminderInfo}>
+              <Text style={styles.modernReminderName}>Metformin</Text>
+              <Text style={styles.modernReminderTime}>8:00 AM</Text>
+            </View>
+            <TouchableOpacity style={styles.modernReminderButton}>
+              <Ionicons name="checkmark-circle" size={24} color="#4facfe" />
+            </TouchableOpacity>
+          </View>
+        </ModernCard>
+
+        {/* Floating Action Button */}
+        <FloatingActionButton
+          onPress={() => navigation.navigate('PeriodLog')}
+          icon="add"
+          color="primary"
+          position="bottom-right"
+        />
+      </ScrollView>
+    </ModernGradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF5F8',
+    backgroundColor: 'transparent',
+  },
+  // Modern Header Styles
+  modernHeader: {
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 20,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  greetingSection: {
+    flex: 1,
+  },
+  modernGreeting: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 8,
+    textShadowColor: 'rgba(0,0,0,0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  modernSubGreeting: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.9)',
+    lineHeight: 22,
+  },
+  avatarContainer: {
+    marginLeft: 16,
+  },
+  // Modern Card Styles
+  modernCard: {
+    marginHorizontal: 20,
+    marginVertical: 8,
+  },
+  modernCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  cardTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  modernCardTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginLeft: 12,
+  },
+  modernCycleInfo: {
+    marginTop: 16,
+  },
+  modernPhaseIndicator: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  modernPhaseName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 4,
+  },
+  modernDayText: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.8)',
+  },
+  nextPeriodContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+  },
+  nextPeriodText: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.9)',
+    marginLeft: 8,
+  },
+  // Stats Container
+  statsContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    marginVertical: 4,
+  },
+  statCard: {
+    flex: 1,
+    marginHorizontal: 4,
+  },
+  statCardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+  },
+  statIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  statInfo: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.8)',
+    marginBottom: 8,
+  },
+  moodIndicator: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  moodEmoji: {
+    fontSize: 16,
+  },
+  // Modern Actions
+  modernActionsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  modernActionButton: {
+    width: (width - 80) / 2,
+    alignItems: 'center',
+    paddingVertical: 16,
+    marginBottom: 12,
+  },
+  actionIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  modernActionText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#667eea',
+    textAlign: 'center',
+  },
+  // Modern Reminder
+  modernReminderItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    padding: 16,
+    borderRadius: 12,
+  },
+  reminderIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  modernReminderName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 4,
+  },
+  modernReminderTime: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.8)',
+  },
+  modernReminderButton: {
+    marginLeft: 'auto',
   },
   header: {
     padding: 20,
