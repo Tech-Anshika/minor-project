@@ -22,74 +22,48 @@ export default function AnimatedCharacter({
     walkAnim.setValue(0);
     pulseAnim.setValue(1);
 
-    // Bouncing animation
+    // Simple bouncing animation for all types
     const bounce = Animated.loop(
       Animated.sequence([
         Animated.timing(bounceAnim, {
-          toValue: -10,
-          duration: 800,
+          toValue: -8,
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.timing(bounceAnim, {
           toValue: 0,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-      ])
-    );
-
-    // Walking animation
-    const walk = Animated.loop(
-      Animated.sequence([
-        Animated.timing(walkAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(walkAnim, {
-          toValue: 0,
           duration: 1000,
           useNativeDriver: true,
         }),
       ])
     );
 
-    // Pulsing animation
+    // Simple pulsing animation for celebrating
     const pulse = Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
-          toValue: 1.1,
-          duration: 600,
+          toValue: 1.05,
+          duration: 800,
           useNativeDriver: true,
         }),
         Animated.timing(pulseAnim, {
           toValue: 1,
-          duration: 600,
+          duration: 800,
           useNativeDriver: true,
         }),
       ])
     );
 
     // Start appropriate animations based on type
-    let activeAnimations = [];
-    
-    if (type === 'walking') {
-      activeAnimations = [bounce, walk];
-      bounce.start();
-      walk.start();
-    } else if (type === 'celebrating') {
-      activeAnimations = [pulse];
+    if (type === 'celebrating') {
       pulse.start();
     } else {
-      activeAnimations = [bounce];
       bounce.start();
     }
 
     return () => {
-      // Stop all animations
-      activeAnimations.forEach(animation => {
-        animation.stop();
-      });
+      bounce.stop();
+      pulse.stop();
     };
   }, [type]);
 
@@ -135,11 +109,6 @@ export default function AnimatedCharacter({
     }
   };
 
-  const walkTransform = walkAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '5deg'],
-  });
-
   return (
     <View style={[styles.container, style]}>
       <Animated.View
@@ -150,7 +119,6 @@ export default function AnimatedCharacter({
             height: size,
             transform: [
               { translateY: bounceAnim },
-              { rotate: walkTransform },
               { scale: pulseAnim },
             ],
           },
@@ -165,76 +133,20 @@ export default function AnimatedCharacter({
         {/* Floating particles for celebration */}
         {type === 'celebrating' && (
           <>
-            <Animated.View
-              style={[
-                styles.particle,
-                styles.particle1,
-                {
-                  transform: [
-                    {
-                      translateX: walkAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, 20],
-                      }),
-                    },
-                    {
-                      translateY: walkAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -20],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
+            <View style={[styles.particle, styles.particle1]}>
               <Text style={styles.particleText}>✨</Text>
-            </Animated.View>
-            <Animated.View
-              style={[
-                styles.particle,
-                styles.particle2,
-                {
-                  transform: [
-                    {
-                      translateX: walkAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -15],
-                      }),
-                    },
-                    {
-                      translateY: walkAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -25],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
+            </View>
+            <View style={[styles.particle, styles.particle2]}>
               <Text style={styles.particleText}>⭐</Text>
-            </Animated.View>
+            </View>
           </>
         )}
       </Animated.View>
       
       {showText && text && (
-        <Animated.View
-          style={[
-            styles.textContainer,
-            {
-              transform: [
-                {
-                  translateY: bounceAnim.interpolate({
-                    inputRange: [-10, 0],
-                    outputRange: [5, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
+        <View style={styles.textContainer}>
           <Text style={styles.characterText}>{text}</Text>
-        </Animated.View>
+        </View>
       )}
     </View>
   );

@@ -19,6 +19,10 @@ export default function ModernProgressRing({
 
   useEffect(() => {
     if (animated) {
+      // Reset values first
+      progressAnim.setValue(0);
+      scaleAnim.setValue(0);
+      
       Animated.parallel([
         Animated.spring(scaleAnim, {
           toValue: 1,
@@ -29,7 +33,7 @@ export default function ModernProgressRing({
         Animated.timing(progressAnim, {
           toValue: progress,
           duration: 1000,
-          useNativeDriver: false,
+          useNativeDriver: true,
         }),
       ]).start();
     } else {
@@ -66,23 +70,18 @@ export default function ModernProgressRing({
         />
         
         {/* Progress Circle */}
-        <Animated.View>
-          <Circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            strokeDasharray={strokeDasharray}
-            strokeDashoffset={progressAnim.interpolate({
-              inputRange: [0, 100],
-              outputRange: [circumference, 0],
-            })}
-            strokeLinecap="round"
-            transform={`rotate(-90 ${size / 2} ${size / 2})`}
-          />
-        </Animated.View>
+        <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={strokeDasharray}
+          strokeDashoffset={strokeDashoffset}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        />
       </Svg>
       
       {/* Center Content */}
