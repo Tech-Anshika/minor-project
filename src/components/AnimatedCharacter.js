@@ -17,54 +17,10 @@ export default function AnimatedCharacter({
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    // Reset animations
+    // Disable animations temporarily to fix conflicts
     bounceAnim.setValue(0);
     walkAnim.setValue(0);
     pulseAnim.setValue(1);
-
-    // Simple bouncing animation for all types
-    const bounce = Animated.loop(
-      Animated.sequence([
-        Animated.timing(bounceAnim, {
-          toValue: -8,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(bounceAnim, {
-          toValue: 0,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    );
-
-    // Simple pulsing animation for celebrating
-    const pulse = Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.05,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-      ])
-    );
-
-    // Start appropriate animations based on type
-    if (type === 'celebrating') {
-      pulse.start();
-    } else {
-      bounce.start();
-    }
-
-    return () => {
-      bounce.stop();
-      pulse.stop();
-    };
   }, [type]);
 
   const getCharacterIcon = () => {

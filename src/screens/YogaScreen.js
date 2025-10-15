@@ -267,20 +267,9 @@ export default function YogaScreen() {
     startTimer();
     startPoseTimer(pose.durationSeconds);
     
-    // Animate entrance
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1.05,
-        tension: 100,
-        friction: 8,
-        useNativeDriver: true,
-      }),
-    ]).start();
+    // Disable animations temporarily to fix conflicts
+    fadeAnim.setValue(1);
+    scaleAnim.setValue(1);
   };
 
   const startQuickSession = () => {
@@ -300,20 +289,9 @@ export default function YogaScreen() {
     startTimer();
     startPoseTimer(quickSession[0].durationSeconds);
     
-    // Animate entrance
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1.05,
-        tension: 100,
-        friction: 8,
-        useNativeDriver: true,
-      }),
-    ]).start();
+    // Disable animations temporarily to fix conflicts
+    fadeAnim.setValue(1);
+    scaleAnim.setValue(1);
   };
 
   const nextPose = () => {

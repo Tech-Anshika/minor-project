@@ -18,28 +18,9 @@ export default function ModernProgressRing({
   const scaleAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (animated) {
-      // Reset values first
-      progressAnim.setValue(0);
-      scaleAnim.setValue(0);
-      
-      Animated.parallel([
-        Animated.spring(scaleAnim, {
-          toValue: 1,
-          tension: 100,
-          friction: 8,
-          useNativeDriver: true,
-        }),
-        Animated.timing(progressAnim, {
-          toValue: progress,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
-      progressAnim.setValue(progress);
-      scaleAnim.setValue(1);
-    }
+    // Disable animations temporarily to fix conflicts
+    progressAnim.setValue(progress);
+    scaleAnim.setValue(1);
   }, [progress, animated]);
 
   const radius = (size - strokeWidth) / 2;
