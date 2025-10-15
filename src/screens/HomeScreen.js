@@ -10,6 +10,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebaseConfig';
+import StepCounter from '../components/StepCounter';
+import WaterTracker from '../components/WaterTracker';
+import MoodTracker from '../components/MoodTracker';
+import AnimatedCharacter from '../components/AnimatedCharacter';
 
 const { width } = Dimensions.get('window');
 
@@ -23,10 +27,10 @@ export default function HomeScreen() {
     phase: 'Menstrual',
   });
   const [todayStats, setTodayStats] = useState({
-    steps: 0,
-    water: 0,
-    calories: 0,
-    mood: '😊',
+    steps: 8542,
+    water: 6,
+    calories: 1850,
+    mood: 'happy',
   });
 
   useEffect(() => {
@@ -112,10 +116,23 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>
-          Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, 
-          {user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 🌸
-        </Text>
+        <View style={styles.welcomeContainer}>
+          <View style={styles.greetingText}>
+            <Text style={styles.greeting}>
+              Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, 
+              {user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 🌸
+            </Text>
+            <Text style={styles.subGreeting}>
+              Ready to take care of your health today?
+            </Text>
+          </View>
+          <AnimatedCharacter
+            type="walking"
+            size={60}
+            color="#E91E63"
+            showText={false}
+          />
+        </View>
       </View>
 
       {/* Cycle Tracker Card */}
@@ -146,35 +163,44 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Today's Overview */}
+      {/* Step Counter */}
+      <StepCounter 
+        currentSteps={todayStats.steps}
+        goalSteps={10000}
+        onPress={() => console.log('Step counter pressed')}
+      />
+
+      {/* Water Tracker */}
+      <WaterTracker 
+        currentGlasses={todayStats.water}
+        goalGlasses={8}
+        onAddGlass={() => setTodayStats(prev => ({ ...prev, water: prev.water + 1 }))}
+      />
+
+      {/* Mood Tracker */}
+      <MoodTracker 
+        currentMood={todayStats.mood}
+        onMoodChange={(mood) => setTodayStats(prev => ({ ...prev, mood }))}
+      />
+
+      {/* Calories Card */}
       <View style={styles.card}>
         <View style={styles.cardHeader}>
-          <Ionicons name="today" size={24} color="#E91E63" />
-          <Text style={styles.cardTitle}>Today's Overview</Text>
+          <Ionicons name="flame" size={24} color="#FF9800" />
+          <Text style={styles.cardTitle}>Calories Burned</Text>
         </View>
         
-        <View style={styles.statsGrid}>
-          <View style={styles.statItem}>
-            <Ionicons name="walk" size={20} color="#4CAF50" />
-            <Text style={styles.statValue}>{todayStats.steps.toLocaleString()}</Text>
-            <Text style={styles.statLabel}>Steps</Text>
-          </View>
-          
-          <View style={styles.statItem}>
-            <Ionicons name="water" size={20} color="#2196F3" />
-            <Text style={styles.statValue}>{todayStats.water}/8</Text>
-            <Text style={styles.statLabel}>Glasses</Text>
-          </View>
-          
-          <View style={styles.statItem}>
-            <Ionicons name="flame" size={20} color="#FF9800" />
-            <Text style={styles.statValue}>{todayStats.calories}</Text>
-            <Text style={styles.statLabel}>Calories</Text>
-          </View>
-          
-          <View style={styles.statItem}>
-            <Text style={styles.moodEmoji}>{todayStats.mood}</Text>
-            <Text style={styles.statLabel}>Mood</Text>
+        <View style={styles.caloriesContainer}>
+          <AnimatedCharacter
+            type="celebrating"
+            size={60}
+            color="#FF9800"
+            showText={false}
+          />
+          <View style={styles.caloriesInfo}>
+            <Text style={styles.caloriesValue}>{todayStats.calories}</Text>
+            <Text style={styles.caloriesLabel}>calories today</Text>
+            <Text style={styles.caloriesGoal}>Goal: 2000 calories</Text>
           </View>
         </View>
       </View>
@@ -239,10 +265,24 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 10,
   },
+  welcomeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  greetingText: {
+    flex: 1,
+  },
   greeting: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
+    marginBottom: 4,
+  },
+  subGreeting: {
+    fontSize: 16,
+    color: '#666',
+    lineHeight: 22,
   },
   card: {
     backgroundColor: 'white',
@@ -373,6 +413,30 @@ const styles = StyleSheet.create({
   },
   reminderButton: {
     padding: 8,
+  },
+  caloriesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  caloriesInfo: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  caloriesValue: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#FF9800',
+    marginBottom: 4,
+  },
+  caloriesLabel: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 4,
+  },
+  caloriesGoal: {
+    fontSize: 14,
+    color: '#999',
   },
 });
 
