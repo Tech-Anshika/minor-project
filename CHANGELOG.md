@@ -32,3 +32,4 @@ All notable changes to PcoSense will be documented in this file.
 - Comprehensive design system
 - Modular architecture for scalability
 
+
