@@ -491,7 +491,7 @@ export default function YogaScreen() {
               <Text style={styles.statLabel}>Type</Text>
             </View>
           </View>
-        </Animated.View>
+        </View>
       </View>
     );
   }
