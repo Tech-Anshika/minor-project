@@ -53,11 +53,13 @@ export default function PeriodLogScreen() {
   ];
 
   const moodOptions = [
-    { id: 'happy', label: 'Happy', emoji: '😊', color: '#4CAF50' },
-    { id: 'normal', label: 'Normal', emoji: '😐', color: '#FF9800' },
-    { id: 'sad', label: 'Sad', emoji: '😢', color: '#2196F3' },
-    { id: 'anxious', label: 'Anxious', emoji: '😰', color: '#F44336' },
-    { id: 'irritable', label: 'Irritable', emoji: '😠', color: '#9C27B0' },
+    // Column 1
+    { id: 'happy', label: 'Happy', emoji: '😊', color: '#4CAF50', column: 1 },
+    { id: 'normal', label: 'Normal', emoji: '😐', color: '#FF9800', column: 1 },
+    { id: 'sad', label: 'Sad', emoji: '😢', color: '#2196F3', column: 1 },
+    // Column 2
+    { id: 'anxious', label: 'Anxious', emoji: '😰', color: '#F44336', column: 2 },
+    { id: 'irritable', label: 'Irritable', emoji: '😠', color: '#9C27B0', column: 2 },
   ];
 
   useEffect(() => {
@@ -394,35 +396,70 @@ export default function PeriodLogScreen() {
               </Text>
             </View>
           </View>
-          <View style={styles.moodOptions}>
-            {moodOptions.map((mood) => (
-              <TouchableOpacity
-                key={mood.id}
-                style={[
-                  styles.moodOption,
-                  periodData.mood === mood.id && styles.selectedMoodOption,
-                ]}
-                onPress={() => setPeriodData(prev => ({ ...prev, mood: mood.id }))}
-              >
-                <View style={[
-                  styles.moodEmojiContainer,
-                  { backgroundColor: periodData.mood === mood.id ? '#be185d' : '#fef2f2' }
-                ]}>
-                  <Text style={styles.moodEmoji}>{mood.emoji}</Text>
-                </View>
-                <Text style={[
-                  styles.moodLabel,
-                  periodData.mood === mood.id && styles.selectedMoodLabel
-                ]}>
-                  {mood.label}
-                </Text>
-                {periodData.mood === mood.id && (
-                  <View style={styles.moodCheckmark}>
-                    <Ionicons name="checkmark-circle" size={16} color="#be185d" />
+          <View style={styles.moodContainer}>
+            {/* Column 1 */}
+            <View style={styles.moodColumn}>
+              {moodOptions.filter(mood => mood.column === 1).map((mood) => (
+                <TouchableOpacity
+                  key={mood.id}
+                  style={[
+                    styles.moodOption,
+                    periodData.mood === mood.id && styles.selectedMoodOption,
+                  ]}
+                  onPress={() => setPeriodData(prev => ({ ...prev, mood: mood.id }))}
+                >
+                  <View style={[
+                    styles.moodEmojiContainer,
+                    { backgroundColor: periodData.mood === mood.id ? '#be185d' : '#fef2f2' }
+                  ]}>
+                    <Text style={styles.moodEmoji}>{mood.emoji}</Text>
                   </View>
-                )}
-              </TouchableOpacity>
-            ))}
+                  <Text style={[
+                    styles.moodLabel,
+                    periodData.mood === mood.id && styles.selectedMoodLabel
+                  ]}>
+                    {mood.label}
+                  </Text>
+                  {periodData.mood === mood.id && (
+                    <View style={styles.moodCheckmark}>
+                      <Ionicons name="checkmark-circle" size={16} color="#be185d" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+            
+            {/* Column 2 */}
+            <View style={styles.moodColumn}>
+              {moodOptions.filter(mood => mood.column === 2).map((mood) => (
+                <TouchableOpacity
+                  key={mood.id}
+                  style={[
+                    styles.moodOption,
+                    periodData.mood === mood.id && styles.selectedMoodOption,
+                  ]}
+                  onPress={() => setPeriodData(prev => ({ ...prev, mood: mood.id }))}
+                >
+                  <View style={[
+                    styles.moodEmojiContainer,
+                    { backgroundColor: periodData.mood === mood.id ? '#be185d' : '#fef2f2' }
+                  ]}>
+                    <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+                  </View>
+                  <Text style={[
+                    styles.moodLabel,
+                    periodData.mood === mood.id && styles.selectedMoodLabel
+                  ]}>
+                    {mood.label}
+                  </Text>
+                  {periodData.mood === mood.id && (
+                    <View style={styles.moodCheckmark}>
+                      <Ionicons name="checkmark-circle" size={16} color="#be185d" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         </ModernCard>
 
@@ -819,20 +856,25 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#be185d',
   },
-  moodOptions: {
+  moodContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
+    gap: 12,
+  },
+  moodColumn: {
+    flex: 1,
     gap: 8,
   },
   moodOption: {
-    width: (width - 100) / 3,
     alignItems: 'center',
     padding: 12,
     borderRadius: 12,
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#E2E8F0',
+    minHeight: 80,
+    justifyContent: 'center',
+    position: 'relative',
   },
   selectedMoodOption: {
     backgroundColor: '#FEF2F2',
