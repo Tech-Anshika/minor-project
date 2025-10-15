@@ -174,13 +174,13 @@ export default function HomeScreen({ navigation }) {
             <StepCounter 
               steps={todayStats.steps} 
               goal={10000} 
-              size={100}
+              size={120}
               style={styles.statCard}
             />
             <WaterTracker 
               glasses={todayStats.water} 
               goal={8} 
-              size={100}
+              size={120}
               style={styles.statCard}
             />
           </View>
@@ -188,15 +188,18 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.statsRow}>
             <ModernCard type="warning" style={styles.calorieCard}>
               <View style={styles.calorieContent}>
-                <View style={styles.calorieIcon}>
-                  <Ionicons name="flame" size={32} color="#fa709a" />
+                <View style={styles.calorieHeader}>
+                  <Ionicons name="flame" size={24} color="#fa709a" />
+                  <Text style={styles.calorieTitle}>Calories</Text>
                 </View>
-                <View style={styles.calorieInfo}>
+                <View style={styles.calorieMain}>
                   <Text style={styles.calorieValue}>{todayStats.calories}</Text>
-                  <Text style={styles.calorieLabel}>Calories</Text>
+                  <Text style={styles.calorieUnit}>calories</Text>
+                </View>
+                <View style={styles.calorieProgress}>
                   <ModernProgressRing
                     progress={(todayStats.calories / 2000) * 100}
-                    size={50}
+                    size={60}
                     color="#fa709a"
                     backgroundColor="#E0E0E0"
                     showPercentage={false}
@@ -207,7 +210,7 @@ export default function HomeScreen({ navigation }) {
 
             <MoodTracker 
               mood={todayStats.mood} 
-              size={100}
+              size={120}
               style={styles.statCard}
             />
           </View>
@@ -230,14 +233,14 @@ export default function HomeScreen({ navigation }) {
 
             <TouchableOpacity style={styles.quickActionButton} onPress={() => navigation.navigate('Yoga')}>
               <View style={[styles.quickActionIcon, { backgroundColor: '#a8edea' }]}>
-                <Ionicons name="fitness" size={24} color="white" />
+                <Ionicons name="heart" size={24} color="white" />
               </View>
-              <Text style={styles.quickActionText}>Start Yoga</Text>
+              <Text style={styles.quickActionText}>Log Mood</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.quickActionButton} onPress={() => navigation.navigate('Food')}>
               <View style={[styles.quickActionIcon, { backgroundColor: '#ffecd2' }]}>
-                <Ionicons name="restaurant" size={24} color="white" />
+                <Ionicons name="close" size={24} color="white" />
               </View>
               <Text style={styles.quickActionText}>Log Meal</Text>
             </TouchableOpacity>
@@ -246,7 +249,7 @@ export default function HomeScreen({ navigation }) {
               <View style={[styles.quickActionIcon, { backgroundColor: '#d299c2' }]}>
                 <Ionicons name="chatbubble" size={24} color="white" />
               </View>
-              <Text style={styles.quickActionText}>Ask AI</Text>
+              <Text style={styles.quickActionText}>Talk to AI</Text>
             </TouchableOpacity>
           </View>
         </ModernCard>
@@ -421,36 +424,41 @@ const styles = StyleSheet.create({
   },
   calorieCard: {
     flex: 1,
+    minHeight: 160,
   },
   calorieContent: {
+    flex: 1,
+    padding: 16,
+    justifyContent: 'space-between',
+  },
+  calorieHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    marginBottom: 8,
   },
-  calorieIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'rgba(250, 112, 154, 0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
+  calorieTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fa709a',
+    marginLeft: 8,
   },
-  calorieInfo: {
-    flex: 1,
+  calorieMain: {
     alignItems: 'center',
+    marginBottom: 12,
   },
   calorieValue: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#fa709a',
     marginBottom: 4,
   },
-  calorieLabel: {
+  calorieUnit: {
     fontSize: 14,
     color: '#666',
-    marginBottom: 8,
     fontWeight: '600',
+  },
+  calorieProgress: {
+    alignItems: 'center',
   },
 
   // Quick Actions
@@ -473,12 +481,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    paddingHorizontal: 8,
   },
   quickActionButton: {
-    width: (width - 80) / 2,
+    width: (width - 120) / 2,
     alignItems: 'center',
-    paddingVertical: 16,
-    marginBottom: 12,
+    paddingVertical: 20,
+    marginBottom: 16,
   },
   quickActionIcon: {
     width: 60,
