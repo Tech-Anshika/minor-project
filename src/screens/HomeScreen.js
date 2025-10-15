@@ -14,6 +14,9 @@ import StepCounter from '../components/StepCounter';
 import WaterTracker from '../components/WaterTracker';
 import MoodTracker from '../components/MoodTracker';
 import AnimatedCharacter from '../components/AnimatedCharacter';
+import PeriodCalendar from '../components/PeriodCalendar';
+import GradientBackground from '../components/GradientBackground';
+import AnimatedCard from '../components/AnimatedCard';
 
 const { width } = Dimensions.get('window');
 
@@ -114,152 +117,146 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.welcomeContainer}>
-          <View style={styles.greetingText}>
-            <Text style={styles.greeting}>
-              Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, 
-              {user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 🌸
-            </Text>
-            <Text style={styles.subGreeting}>
-              Ready to take care of your health today?
-            </Text>
-          </View>
-          <AnimatedCharacter
-            type="walking"
-            size={60}
-            color="#E91E63"
-            showText={false}
-          />
-        </View>
-      </View>
-
-      {/* Cycle Tracker Card */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="calendar" size={24} color="#E91E63" />
-          <Text style={styles.cardTitle}>Cycle Tracker</Text>
-        </View>
-        
-        <View style={styles.cycleInfo}>
-          <View style={styles.phaseContainer}>
-            <View style={[styles.phaseIndicator, { backgroundColor: getPhaseColor(cycleData.phase) }]}>
-              <Ionicons name={getPhaseIcon(cycleData.phase)} size={20} color="white" />
-            </View>
-            <View style={styles.phaseText}>
-              <Text style={styles.phaseName}>{cycleData.phase} Phase</Text>
-              <Text style={styles.dayText}>Day {cycleData.currentDay} of {cycleData.cycleLength}</Text>
-            </View>
-          </View>
-          
-          {cycleData.nextPeriod && (
-            <View style={styles.nextPeriod}>
-              <Text style={styles.nextPeriodText}>
-                Next period in {Math.ceil((cycleData.nextPeriod - new Date()) / (1000 * 60 * 60 * 24))} days
+    <GradientBackground type="home">
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.welcomeContainer}>
+            <View style={styles.greetingText}>
+              <Text style={styles.greeting}>
+                Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, 
+                {user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 🌸
+              </Text>
+              <Text style={styles.subGreeting}>
+                Ready to take care of your health today?
               </Text>
             </View>
-          )}
+            <AnimatedCharacter
+              type="walking"
+              size={60}
+              color="#E91E63"
+              showText={false}
+            />
+          </View>
         </View>
-      </View>
 
-      {/* Step Counter */}
-      <StepCounter 
-        currentSteps={todayStats.steps}
-        goalSteps={10000}
-        onPress={() => console.log('Step counter pressed')}
-      />
+        {/* Beautiful Period Calendar */}
+        <PeriodCalendar
+          cycleData={cycleData}
+          onDateSelect={(day) => console.log('Selected date:', day)}
+          onPeriodLog={() => console.log('Log period')}
+          onSymptomLog={() => console.log('Log symptoms')}
+        />
 
-      {/* Water Tracker */}
-      <WaterTracker 
-        currentGlasses={todayStats.water}
-        goalGlasses={8}
-        onAddGlass={() => setTodayStats(prev => ({ ...prev, water: prev.water + 1 }))}
-      />
-
-      {/* Mood Tracker */}
-      <MoodTracker 
-        currentMood={todayStats.mood}
-        onMoodChange={(mood) => setTodayStats(prev => ({ ...prev, mood }))}
-      />
-
-      {/* Calories Card */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="flame" size={24} color="#FF9800" />
-          <Text style={styles.cardTitle}>Calories Burned</Text>
-        </View>
-        
-        <View style={styles.caloriesContainer}>
-          <AnimatedCharacter
-            type="celebrating"
-            size={60}
-            color="#FF9800"
-            showText={false}
+        {/* Step Counter */}
+        <AnimatedCard type="success" delay={200}>
+          <StepCounter 
+            currentSteps={todayStats.steps}
+            goalSteps={10000}
+            onPress={() => console.log('Step counter pressed')}
           />
-          <View style={styles.caloriesInfo}>
-            <Text style={styles.caloriesValue}>{todayStats.calories}</Text>
-            <Text style={styles.caloriesLabel}>calories today</Text>
-            <Text style={styles.caloriesGoal}>Goal: 2000 calories</Text>
-          </View>
-        </View>
-      </View>
+        </AnimatedCard>
 
-      {/* Quick Actions */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="flash" size={24} color="#E91E63" />
-          <Text style={styles.cardTitle}>Quick Actions</Text>
-        </View>
-        
-        <View style={styles.actionsGrid}>
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="add-circle" size={24} color="#E91E63" />
-            <Text style={styles.actionText}>Log Period</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="fitness" size={24} color="#E91E63" />
-            <Text style={styles.actionText}>Start Yoga</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="restaurant" size={24} color="#E91E63" />
-            <Text style={styles.actionText}>Log Meal</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="chatbubble" size={24} color="#E91E63" />
-            <Text style={styles.actionText}>Ask AI</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        {/* Water Tracker */}
+        <AnimatedCard type="info" delay={400}>
+          <WaterTracker 
+            currentGlasses={todayStats.water}
+            goalGlasses={8}
+            onAddGlass={() => setTodayStats(prev => ({ ...prev, water: prev.water + 1 }))}
+          />
+        </AnimatedCard>
 
-      {/* Medication Reminders */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="medical" size={24} color="#E91E63" />
-          <Text style={styles.cardTitle}>Medication Reminders</Text>
-        </View>
-        
-        <View style={styles.reminderItem}>
-          <View style={styles.reminderInfo}>
-            <Text style={styles.reminderName}>Metformin</Text>
-            <Text style={styles.reminderTime}>8:00 AM</Text>
+        {/* Mood Tracker */}
+        <AnimatedCard type="secondary" delay={600}>
+          <MoodTracker 
+            currentMood={todayStats.mood}
+            onMoodChange={(mood) => setTodayStats(prev => ({ ...prev, mood }))}
+          />
+        </AnimatedCard>
+
+        {/* Calories Card */}
+        <AnimatedCard type="warning" delay={800}>
+          <View style={styles.caloriesCard}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="flame" size={24} color="#FF9800" />
+              <Text style={styles.cardTitle}>Calories Burned</Text>
+            </View>
+            
+            <View style={styles.caloriesContainer}>
+              <AnimatedCharacter
+                type="celebrating"
+                size={60}
+                color="#FF9800"
+                showText={false}
+              />
+              <View style={styles.caloriesInfo}>
+                <Text style={styles.caloriesValue}>{todayStats.calories}</Text>
+                <Text style={styles.caloriesLabel}>calories today</Text>
+                <Text style={styles.caloriesGoal}>Goal: 2000 calories</Text>
+              </View>
+            </View>
           </View>
-          <TouchableOpacity style={styles.reminderButton}>
-            <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+        </AnimatedCard>
+
+        {/* Quick Actions */}
+        <AnimatedCard type="primary" delay={1000}>
+          <View style={styles.quickActionsCard}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="flash" size={24} color="white" />
+              <Text style={[styles.cardTitle, { color: 'white' }]}>Quick Actions</Text>
+            </View>
+            
+            <View style={styles.actionsGrid}>
+              <TouchableOpacity style={styles.actionButton}>
+                <Ionicons name="add-circle" size={24} color="white" />
+                <Text style={[styles.actionText, { color: 'white' }]}>Log Period</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.actionButton}>
+                <Ionicons name="fitness" size={24} color="white" />
+                <Text style={[styles.actionText, { color: 'white' }]}>Start Yoga</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.actionButton}>
+                <Ionicons name="restaurant" size={24} color="white" />
+                <Text style={[styles.actionText, { color: 'white' }]}>Log Meal</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.actionButton}>
+                <Ionicons name="chatbubble" size={24} color="white" />
+                <Text style={[styles.actionText, { color: 'white' }]}>Ask AI</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </AnimatedCard>
+
+        {/* Medication Reminders */}
+        <AnimatedCard type="error" delay={1200}>
+          <View style={styles.medicationCard}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="medical" size={24} color="white" />
+              <Text style={[styles.cardTitle, { color: 'white' }]}>Medication Reminders</Text>
+            </View>
+            
+            <View style={styles.reminderItem}>
+              <View style={styles.reminderInfo}>
+                <Text style={[styles.reminderName, { color: 'white' }]}>Metformin</Text>
+                <Text style={[styles.reminderTime, { color: 'rgba(255,255,255,0.8)' }]}>8:00 AM</Text>
+              </View>
+              <TouchableOpacity style={styles.reminderButton}>
+                <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </AnimatedCard>
+      </ScrollView>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF5F8',
+    backgroundColor: 'transparent',
   },
   header: {
     padding: 20,
@@ -437,6 +434,15 @@ const styles = StyleSheet.create({
   caloriesGoal: {
     fontSize: 14,
     color: '#999',
+  },
+  caloriesCard: {
+    backgroundColor: 'transparent',
+  },
+  quickActionsCard: {
+    backgroundColor: 'transparent',
+  },
+  medicationCard: {
+    backgroundColor: 'transparent',
   },
 });
 
