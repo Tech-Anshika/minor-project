@@ -20,7 +20,7 @@ import AnimatedCard from '../components/AnimatedCard';
 
 const { width } = Dimensions.get('window');
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [user, setUser] = useState(null);
   const [cycleData, setCycleData] = useState({
     currentDay: 1,
@@ -116,147 +116,253 @@ export default function HomeScreen() {
     }
   };
 
+  // Generate calendar days for the current month with period tracking
+  const generateCalendarDays = () => {
+    const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    const lastDay = new Date(currentYear, currentMonth + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const firstDayOfWeek = firstDay.getDay();
+    
+    const days = [];
+    
+    // Add empty cells for days before the first day of the month
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      days.push({ day: '', isEmpty: true });
+    }
+    
+    // Add days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const currentDate = new Date(currentYear, currentMonth, day);
+      const isToday = day === today.getDate();
+      
+      // Calculate if this day is a period day based on cycle data
+      let isPeriod = false;
+      let isOvulation = false;
+      
+      if (lastPeriod) {
+        const periodStart = new Date(lastPeriod);
+        const daysSincePeriod = Math.floor((currentDate - periodStart) / (1000 * 60 * 60 * 24));
+        
+        // Period days (first 5 days of cycle)
+        if (daysSincePeriod >= 0 && daysSincePeriod < 5) {
+          isPeriod = true;
+        }
+        
+        // Ovulation day (around day 14)
+        if (daysSincePeriod === 14) {
+          isOvulation = true;
+        }
+      }
+      
+      days.push({
+        day: day.toString(),
+        isToday,
+        isPeriod,
+        isOvulation,
+        date: currentDate
+      });
+    }
+    
+    return days;
+  };
+
   return (
-    <GradientBackground type="home">
-      <ScrollView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.welcomeContainer}>
-            <View style={styles.greetingText}>
-              <Text style={styles.greeting}>
-                Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, 
-                {user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 🌸
-              </Text>
-              <Text style={styles.subGreeting}>
-                Ready to take care of your health today?
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.welcomeContainer}>
+          <View style={styles.greetingText}>
+            <Text style={styles.greeting}>
+              Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, 
+              {user?.name ? ` ${user.name.split(' ')[0]}` : ''}! 🌸
+            </Text>
+            <Text style={styles.subGreeting}>
+              Ready to take care of your health today?
+            </Text>
+          </View>
+          <AnimatedCharacter
+            type="walking"
+            size={60}
+            color="#E91E63"
+            showText={false}
+          />
+        </View>
+      </View>
+
+      {/* Enhanced Cycle Tracker Card with Calendar */}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="calendar" size={24} color="#E91E63" />
+          <Text style={styles.cardTitle}>Cycle Tracker & Calendar</Text>
+        </View>
+        
+        <View style={styles.cycleInfo}>
+          <View style={styles.phaseContainer}>
+            <View style={[styles.phaseIndicator, { backgroundColor: getPhaseColor(cycleData.phase) }]}>
+              <Ionicons name={getPhaseIcon(cycleData.phase)} size={20} color="white" />
+            </View>
+            <View style={styles.phaseText}>
+              <Text style={styles.phaseName}>{cycleData.phase} Phase</Text>
+              <Text style={styles.dayText}>Day {cycleData.currentDay} of {cycleData.cycleLength}</Text>
+            </View>
+          </View>
+          
+          {cycleData.nextPeriod && (
+            <View style={styles.nextPeriod}>
+              <Text style={styles.nextPeriodText}>
+                Next period in {Math.ceil((cycleData.nextPeriod - new Date()) / (1000 * 60 * 60 * 24))} days
               </Text>
             </View>
-            <AnimatedCharacter
-              type="walking"
-              size={60}
-              color="#E91E63"
-              showText={false}
-            />
+          )}
+        </View>
+
+        {/* Mini Calendar Preview */}
+        <View style={styles.calendarPreview}>
+          <Text style={styles.calendarTitle}>This Month's Cycle</Text>
+          <View style={styles.calendarGrid}>
+            {generateCalendarDays().map((day, index) => (
+              <View key={index} style={styles.calendarDay}>
+                <Text style={[
+                  styles.dayNumber,
+                  day.isToday && styles.todayDay,
+                  day.isPeriod && styles.periodDay,
+                  day.isOvulation && styles.ovulationDay
+                ]}>
+                  {day.day}
+                </Text>
+                {day.isPeriod && <View style={styles.periodDot} />}
+                {day.isOvulation && <View style={styles.ovulationDot} />}
+              </View>
+            ))}
+          </View>
+          <View style={styles.calendarLegend}>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#E91E63' }]} />
+              <Text style={styles.legendText}>Period</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#4CAF50' }]} />
+              <Text style={styles.legendText}>Ovulation</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#FF9800' }]} />
+              <Text style={styles.legendText}>Predicted</Text>
+            </View>
           </View>
         </View>
 
-        {/* Beautiful Period Calendar */}
-        <PeriodCalendar
-          cycleData={cycleData}
-          onDateSelect={(day) => console.log('Selected date:', day)}
-          onPeriodLog={() => console.log('Log period')}
-          onSymptomLog={() => console.log('Log symptoms')}
-        />
+        {/* Quick Actions for Period Logging */}
+        <View style={styles.periodActions}>
+          <TouchableOpacity style={styles.periodButton} onPress={() => navigation.navigate('PeriodLog')}>
+            <Ionicons name="add-circle" size={20} color="#E91E63" />
+            <Text style={styles.periodButtonText}>Log Period Start</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.periodButton} onPress={() => navigation.navigate('PeriodLog')}>
+            <Ionicons name="medical" size={20} color="#E91E63" />
+            <Text style={styles.periodButtonText}>Add Symptoms</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
-        {/* Step Counter */}
-        <AnimatedCard type="success" delay={200}>
-          <StepCounter 
-            currentSteps={todayStats.steps}
-            goalSteps={10000}
-            onPress={() => console.log('Step counter pressed')}
+      {/* Step Counter */}
+      <StepCounter 
+        currentSteps={todayStats.steps}
+        goalSteps={10000}
+        onPress={() => console.log('Step counter pressed')}
+      />
+
+      {/* Water Tracker */}
+      <WaterTracker 
+        currentGlasses={todayStats.water}
+        goalGlasses={8}
+        onAddGlass={() => setTodayStats(prev => ({ ...prev, water: prev.water + 1 }))}
+      />
+
+      {/* Mood Tracker */}
+      <MoodTracker 
+        currentMood={todayStats.mood}
+        onMoodChange={(mood) => setTodayStats(prev => ({ ...prev, mood }))}
+      />
+
+      {/* Calories Card */}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="flame" size={24} color="#FF9800" />
+          <Text style={styles.cardTitle}>Calories Burned</Text>
+        </View>
+        
+        <View style={styles.caloriesContainer}>
+          <AnimatedCharacter
+            type="celebrating"
+            size={60}
+            color="#FF9800"
+            showText={false}
           />
-        </AnimatedCard>
-
-        {/* Water Tracker */}
-        <AnimatedCard type="info" delay={400}>
-          <WaterTracker 
-            currentGlasses={todayStats.water}
-            goalGlasses={8}
-            onAddGlass={() => setTodayStats(prev => ({ ...prev, water: prev.water + 1 }))}
-          />
-        </AnimatedCard>
-
-        {/* Mood Tracker */}
-        <AnimatedCard type="secondary" delay={600}>
-          <MoodTracker 
-            currentMood={todayStats.mood}
-            onMoodChange={(mood) => setTodayStats(prev => ({ ...prev, mood }))}
-          />
-        </AnimatedCard>
-
-        {/* Calories Card */}
-        <AnimatedCard type="warning" delay={800}>
-          <View style={styles.caloriesCard}>
-            <View style={styles.cardHeader}>
-              <Ionicons name="flame" size={24} color="#FF9800" />
-              <Text style={styles.cardTitle}>Calories Burned</Text>
-            </View>
-            
-            <View style={styles.caloriesContainer}>
-              <AnimatedCharacter
-                type="celebrating"
-                size={60}
-                color="#FF9800"
-                showText={false}
-              />
-              <View style={styles.caloriesInfo}>
-                <Text style={styles.caloriesValue}>{todayStats.calories}</Text>
-                <Text style={styles.caloriesLabel}>calories today</Text>
-                <Text style={styles.caloriesGoal}>Goal: 2000 calories</Text>
-              </View>
-            </View>
+          <View style={styles.caloriesInfo}>
+            <Text style={styles.caloriesValue}>{todayStats.calories}</Text>
+            <Text style={styles.caloriesLabel}>calories today</Text>
+            <Text style={styles.caloriesGoal}>Goal: 2000 calories</Text>
           </View>
-        </AnimatedCard>
+        </View>
+      </View>
 
-        {/* Quick Actions */}
-        <AnimatedCard type="primary" delay={1000}>
-          <View style={styles.quickActionsCard}>
-            <View style={styles.cardHeader}>
-              <Ionicons name="flash" size={24} color="white" />
-              <Text style={[styles.cardTitle, { color: 'white' }]}>Quick Actions</Text>
-            </View>
-            
-            <View style={styles.actionsGrid}>
-              <TouchableOpacity style={styles.actionButton}>
-                <Ionicons name="add-circle" size={24} color="white" />
-                <Text style={[styles.actionText, { color: 'white' }]}>Log Period</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.actionButton}>
-                <Ionicons name="fitness" size={24} color="white" />
-                <Text style={[styles.actionText, { color: 'white' }]}>Start Yoga</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.actionButton}>
-                <Ionicons name="restaurant" size={24} color="white" />
-                <Text style={[styles.actionText, { color: 'white' }]}>Log Meal</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.actionButton}>
-                <Ionicons name="chatbubble" size={24} color="white" />
-                <Text style={[styles.actionText, { color: 'white' }]}>Ask AI</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </AnimatedCard>
+      {/* Quick Actions */}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="flash" size={24} color="#E91E63" />
+          <Text style={styles.cardTitle}>Quick Actions</Text>
+        </View>
+        
+        <View style={styles.actionsGrid}>
+          <TouchableOpacity style={styles.actionButton}>
+            <Ionicons name="add-circle" size={24} color="#E91E63" />
+            <Text style={styles.actionText}>Log Period</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionButton}>
+            <Ionicons name="fitness" size={24} color="#E91E63" />
+            <Text style={styles.actionText}>Start Yoga</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionButton}>
+            <Ionicons name="restaurant" size={24} color="#E91E63" />
+            <Text style={styles.actionText}>Log Meal</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionButton}>
+            <Ionicons name="chatbubble" size={24} color="#E91E63" />
+            <Text style={styles.actionText}>Ask AI</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
-        {/* Medication Reminders */}
-        <AnimatedCard type="error" delay={1200}>
-          <View style={styles.medicationCard}>
-            <View style={styles.cardHeader}>
-              <Ionicons name="medical" size={24} color="white" />
-              <Text style={[styles.cardTitle, { color: 'white' }]}>Medication Reminders</Text>
-            </View>
-            
-            <View style={styles.reminderItem}>
-              <View style={styles.reminderInfo}>
-                <Text style={[styles.reminderName, { color: 'white' }]}>Metformin</Text>
-                <Text style={[styles.reminderTime, { color: 'rgba(255,255,255,0.8)' }]}>8:00 AM</Text>
-              </View>
-              <TouchableOpacity style={styles.reminderButton}>
-                <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
-              </TouchableOpacity>
-            </View>
+      {/* Medication Reminders */}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="medical" size={24} color="#E91E63" />
+          <Text style={styles.cardTitle}>Medication Reminders</Text>
+        </View>
+        
+        <View style={styles.reminderItem}>
+          <View style={styles.reminderInfo}>
+            <Text style={styles.reminderName}>Metformin</Text>
+            <Text style={styles.reminderTime}>8:00 AM</Text>
           </View>
-        </AnimatedCard>
-      </ScrollView>
-    </GradientBackground>
+          <TouchableOpacity style={styles.reminderButton}>
+            <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: '#FFF5F8',
   },
   header: {
     padding: 20,
@@ -435,14 +541,116 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#999',
   },
-  caloriesCard: {
-    backgroundColor: 'transparent',
+  // Calendar Preview Styles
+  calendarPreview: {
+    marginTop: 16,
+    padding: 16,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 12,
   },
-  quickActionsCard: {
-    backgroundColor: 'transparent',
+  calendarTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 12,
+    textAlign: 'center',
   },
-  medicationCard: {
-    backgroundColor: 'transparent',
+  calendarGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  calendarDay: {
+    width: (width - 100) / 7,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+    position: 'relative',
+  },
+  dayNumber: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#666',
+  },
+  todayDay: {
+    color: '#E91E63',
+    fontWeight: 'bold',
+    backgroundColor: '#FFF5F8',
+    borderRadius: 16,
+    width: 24,
+    height: 24,
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  periodDay: {
+    color: '#E91E63',
+    fontWeight: 'bold',
+  },
+  ovulationDay: {
+    color: '#4CAF50',
+    fontWeight: 'bold',
+  },
+  periodDot: {
+    position: 'absolute',
+    bottom: 2,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#E91E63',
+  },
+  ovulationDot: {
+    position: 'absolute',
+    bottom: 2,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#4CAF50',
+  },
+  calendarLegend: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 16,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  legendDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginRight: 4,
+  },
+  legendText: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '500',
+  },
+  // Period Actions Styles
+  periodActions: {
+    flexDirection: 'row',
+    marginTop: 16,
+    gap: 12,
+  },
+  periodButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFF5F8',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#F8BBD9',
+  },
+  periodButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#E91E63',
+    marginLeft: 8,
   },
 });
 

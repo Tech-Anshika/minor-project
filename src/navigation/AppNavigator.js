@@ -13,6 +13,7 @@ import ProgressScreen from '../screens/ProgressScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import PeriodLogScreen from '../screens/PeriodLogScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -47,6 +48,8 @@ function MainTabs() {
             iconName = focused ? 'trending-up' : 'trending-up-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'PeriodLog') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -64,6 +67,7 @@ function MainTabs() {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="PeriodLog" component={PeriodLogScreen} />
       <Tab.Screen name="Chatbot" component={ChatbotScreen} />
       <Tab.Screen name="Yoga" component={YogaScreen} />
       <Tab.Screen name="Food" component={FoodScreen} />
