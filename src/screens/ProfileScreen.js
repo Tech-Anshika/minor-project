@@ -10,7 +10,8 @@ import {
   Switch,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { doc, getDoc, updateDoc, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebaseConfig';
 
 export default function ProfileScreen() {
