@@ -15,6 +15,7 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import PeriodLogScreen from '../screens/PeriodLogScreen';
 import MoreScreen from '../screens/MoreScreen';
+import HealthMainScreen from '../screens/HealthMainScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -33,6 +34,11 @@ function HealthStack() {
         },
       }}
     >
+      <Stack.Screen 
+        name="HealthMain" 
+        component={HealthMainScreen}
+        options={{ title: 'Health & Wellness' }}
+      />
       <Stack.Screen 
         name="PeriodLog" 
         component={PeriodLogScreen}
@@ -97,9 +103,10 @@ function MainTabs() {
         tabBarStyle: {
           backgroundColor: '#FFF5F8',
           borderTopColor: '#F8BBD9',
-          height: 60,
-          paddingBottom: 8,
+          height: 70,
+          paddingBottom: 12,
           paddingTop: 8,
+          paddingHorizontal: 8,
         },
         headerStyle: {
           backgroundColor: '#FFF5F8',
@@ -164,11 +171,59 @@ function MoreStack() {
   );
 }
 
+// Root Stack Navigator - Contains all screens
+function RootStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#FFF5F8',
+        },
+        headerTintColor: '#E91E63',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
+      <Stack.Screen 
+        name="MainTabs" 
+        component={MainTabs}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="PeriodLog" 
+        component={PeriodLogScreen}
+        options={{ title: 'Period Log' }}
+      />
+      <Stack.Screen 
+        name="Yoga" 
+        component={YogaScreen}
+        options={{ title: 'Yoga & Exercise' }}
+      />
+      <Stack.Screen 
+        name="Food" 
+        component={FoodScreen}
+        options={{ title: 'Food & Diet' }}
+      />
+      <Stack.Screen 
+        name="Progress" 
+        component={ProgressScreen}
+        options={{ title: 'Progress Tracking' }}
+      />
+      <Stack.Screen 
+        name="Chatbot" 
+        component={ChatbotScreen}
+        options={{ title: 'AI Assistant' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 // Main App Navigator
 export default function AppNavigator({ isAuthenticated }) {
   return (
     <NavigationContainer>
-      {isAuthenticated ? <MainTabs /> : <AuthStack />}
+      {isAuthenticated ? <RootStack /> : <AuthStack />}
     </NavigationContainer>
   );
 }

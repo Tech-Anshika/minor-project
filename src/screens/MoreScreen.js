@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ModernGradientBackground from '../components/ModernGradientBackground';
@@ -89,8 +90,9 @@ export default function MoreScreen({ navigation }) {
   };
 
   return (
-    <ModernGradientBackground type="more">
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={styles.safeArea}>
+      <ModernGradientBackground type="more">
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>More Features</Text>
@@ -167,17 +169,22 @@ export default function MoreScreen({ navigation }) {
         </View>
       </ScrollView>
     </ModernGradientBackground>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
   container: {
     flex: 1,
   },
   header: {
     paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
+    paddingTop: 50,
+    paddingBottom: 15,
     alignItems: 'center',
   },
   headerTitle: {

@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
@@ -96,8 +97,9 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <ModernGradientBackground type="home">
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={styles.safeArea}>
+      <ModernGradientBackground type="home">
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View style={styles.headerSection}>
           <View style={styles.headerTop}>
@@ -382,10 +384,15 @@ export default function HomeScreen({ navigation }) {
         />
       </ScrollView>
     </ModernGradientBackground>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
   container: {
     flex: 1,
     backgroundColor: 'transparent',
@@ -394,14 +401,14 @@ const styles = StyleSheet.create({
   // Header Section
   headerSection: {
     paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
+    paddingTop: 50,
+    paddingBottom: 15,
   },
   headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   headerActions: {
     flexDirection: 'row',
@@ -420,7 +427,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   appTitle: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 4,
@@ -464,10 +471,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   greetingContainer: {
-    marginBottom: 16,
+    marginBottom: 12,
   },
   greeting: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 4,
@@ -476,9 +483,9 @@ const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   subGreeting: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'rgba(255,255,255,0.9)',
-    lineHeight: 22,
+    lineHeight: 20,
   },
   characterContainer: {
     alignItems: 'center',
