@@ -4,21 +4,24 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Firebase configuration - Replace with your actual Firebase project config
-// For demo purposes, using a valid format (but you need to replace with real values)
+// Firebase configuration - Using real values from google-services.json
 const firebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY || "AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN || "pcosense-demo.firebaseapp.com",
-  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID || "pcosense-demo",
-  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET || "pcosense-demo.appspot.com",
-  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "123456789012",
-  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID || "1:123456789012:web:abcdef1234567890abcdef"
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY || "AIzaSyCovZlKWUBmfS6IXc0M7XgT-1H5Azbiv1k",
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN || "pcosense-app.firebaseapp.com",
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID || "pcosense-app",
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET || "pcosense-app.firebasestorage.app",
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "776761222879",
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID || "1:776761222879:android:5fb7ca0c86bf2fcfb56b6a"
 };
 
 // Validate configuration
 if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes('xxxxxxxx')) {
   console.warn('⚠️ Firebase configuration is using placeholder values. Please replace with your actual Firebase project configuration.');
   console.warn('📖 See FIREBASE_SETUP.md for detailed setup instructions.');
+} else {
+  console.log('✅ Firebase configuration loaded successfully');
+  console.log(`📱 Project: ${firebaseConfig.projectId}`);
+  console.log(`🔑 API Key: ${firebaseConfig.apiKey.substring(0, 10)}...`);
 }
 
 // Initialize Firebase

@@ -8,14 +8,14 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Demo Firebase configuration - Replace with your actual values
+// Demo Firebase configuration - Using real values from google-services.json
 const firebaseConfig = {
-  apiKey: "AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", // Replace with your API key
-  authDomain: "your-project.firebaseapp.com", // Replace with your auth domain
-  projectId: "your-project-id", // Replace with your project ID
-  storageBucket: "your-project.appspot.com", // Replace with your storage bucket
-  messagingSenderId: "123456789012", // Replace with your sender ID
-  appId: "1:123456789012:web:abcdef1234567890abcdef" // Replace with your app ID
+  apiKey: "AIzaSyCovZlKWUBmfS6IXc0M7XgT-1H5Azbiv1k", // Real API key from google-services.json
+  authDomain: "pcosense-app.firebaseapp.com", // Real auth domain
+  projectId: "pcosense-app", // Real project ID
+  storageBucket: "pcosense-app.firebasestorage.app", // Real storage bucket
+  messagingSenderId: "776761222879", // Real sender ID
+  appId: "1:776761222879:android:5fb7ca0c86bf2fcfb56b6a" // Real app ID
 };
 
 // Initialize Firebase
