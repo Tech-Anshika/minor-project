@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native';
 import ModernGradientBackground from '../components/ModernGradientBackground';
 import ModernCard from '../components/ModernCard';
 import ModernProgressRing from '../components/ModernProgressRing';
