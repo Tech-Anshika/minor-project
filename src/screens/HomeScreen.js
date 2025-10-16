@@ -42,15 +42,23 @@ export default function HomeScreen({ navigation }) {
   const [stepCounterAvailable, setStepCounterAvailable] = useState(false);
   const [isLoadingSteps, setIsLoadingSteps] = useState(true);
   const [stepUpdateInterval, setStepUpdateInterval] = useState(null);
+  const [resetCheckInterval, setResetCheckInterval] = useState(null);
 
   useEffect(() => {
     loadUserData();
     initializeStepCounter();
     
+    // Start daily reset check (every minute)
+    const resetInterval = setInterval(checkDailyReset, 60000);
+    setResetCheckInterval(resetInterval);
+    
     // Cleanup function
     return () => {
       if (stepUpdateInterval) {
         clearInterval(stepUpdateInterval);
+      }
+      if (resetCheckInterval) {
+        clearInterval(resetCheckInterval);
       }
     };
   }, []);
@@ -100,18 +108,21 @@ export default function HomeScreen({ navigation }) {
       if (savedData) {
         const data = JSON.parse(savedData);
         if (data.date === today) {
+          // Same day - return saved steps
+          console.log('Loading saved steps for today:', data.steps);
           return { steps: data.steps || 0 };
+        } else {
+          // New day - reset steps to 0
+          console.log('New day detected, resetting steps to 0');
+          await saveStepData(0);
+          return { steps: 0 };
         }
       }
       
-      // Initialize with time-based steps
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      const timeInDay = hours + (minutes / 60);
-      const baseSteps = Math.floor(timeInDay * 200);
-      
-      return { steps: Math.max(0, Math.min(baseSteps, 8000)) };
+      // No saved data - start fresh for today
+      console.log('No saved data, starting fresh for today');
+      await saveStepData(0);
+      return { steps: 0 };
     } catch (error) {
       console.error('Error loading step data:', error);
       return { steps: 0 };
@@ -177,6 +188,38 @@ export default function HomeScreen({ navigation }) {
     setStepUpdateInterval(interval);
   };
 
+  // Check for daily reset (runs every minute)
+  const checkDailyReset = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    
+    // Check if it's past midnight (00:00) and we haven't reset today
+    if (currentHour === 0 && currentMinute < 5) { // Within first 5 minutes of midnight
+      const today = new Date().toDateString();
+      const lastReset = AsyncStorage.getItem('lastDailyReset');
+      
+      lastReset.then(lastResetDate => {
+        if (lastResetDate !== today) {
+          console.log('Daily reset triggered at midnight');
+          resetDailySteps();
+          AsyncStorage.setItem('lastDailyReset', today);
+        }
+      });
+    }
+  };
+
+  // Reset daily steps and calories
+  const resetDailySteps = async () => {
+    console.log('Resetting daily steps and calories...');
+    setTodayStats(prev => ({
+      ...prev,
+      steps: 0,
+      calories: 0
+    }));
+    await saveStepData(0);
+  };
+
   // Test function to add steps manually
   const addTestSteps = () => {
     setTodayStats(prev => {
@@ -189,6 +232,12 @@ export default function HomeScreen({ navigation }) {
         calories: newCalories
       };
     });
+  };
+
+  // Manual reset function for testing
+  const manualReset = async () => {
+    await resetDailySteps();
+    console.log('Manual reset completed');
   };
 
   const loadUserData = async () => {
@@ -362,13 +411,24 @@ export default function HomeScreen({ navigation }) {
                   <Text style={styles.stepsMotivation}>
                     {getMotivationalMessage(todayStats.steps)}
                   </Text>
-                  {/* Test button for debugging */}
-                  <TouchableOpacity 
-                    style={styles.testButton} 
-                    onPress={addTestSteps}
-                  >
-                    <Text style={styles.testButtonText}>+100 Steps (Test)</Text>
-                  </TouchableOpacity>
+                  <Text style={styles.dailyResetText}>
+                    Daily reset at 12:00 AM • {new Date().toLocaleDateString()}
+                  </Text>
+                  {/* Test buttons for debugging */}
+                  <View style={styles.testButtonsContainer}>
+                    <TouchableOpacity 
+                      style={styles.testButton} 
+                      onPress={addTestSteps}
+                    >
+                      <Text style={styles.testButtonText}>+100 Steps</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={[styles.testButton, styles.resetButton]} 
+                      onPress={manualReset}
+                    >
+                      <Text style={styles.testButtonText}>Reset Daily</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <View style={styles.stepsCharacter}>
                   <View style={styles.characterContainer}>
@@ -1014,19 +1074,34 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  // Test Button
+  // Test Buttons
+  testButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 12,
+    marginTop: 8,
+  },
   testButton: {
     backgroundColor: '#E91E63',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    marginTop: 8,
     alignSelf: 'center',
+  },
+  resetButton: {
+    backgroundColor: '#FF5722',
   },
   testButtonText: {
     color: 'white',
     fontSize: 12,
     fontWeight: '600',
+  },
+  dailyResetText: {
+    fontSize: 11,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 4,
+    fontStyle: 'italic',
   },
 
 });
