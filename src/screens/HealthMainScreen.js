@@ -19,7 +19,7 @@ export default function HealthMainScreen({ navigation }) {
     {
       id: 'period',
       title: 'Period Log',
-      subtitle: 'Track your menstrual cycle',
+      subtitle: 'Track your menstrual cycle and symptoms',
       icon: 'calendar-outline',
       color: '#E91E63',
       screen: 'PeriodLog',
@@ -27,7 +27,7 @@ export default function HealthMainScreen({ navigation }) {
     {
       id: 'yoga',
       title: 'Yoga & Exercise',
-      subtitle: 'Workout routines and fitness',
+      subtitle: 'PCOD-friendly workout routines',
       icon: 'fitness-outline',
       color: '#4CAF50',
       screen: 'Yoga',
@@ -35,23 +35,15 @@ export default function HealthMainScreen({ navigation }) {
     {
       id: 'food',
       title: 'Food & Diet',
-      subtitle: 'Nutrition and meal planning',
+      subtitle: 'PCOD-friendly nutrition guide',
       icon: 'restaurant-outline',
       color: '#FF9800',
       screen: 'Food',
     },
     {
-      id: 'progress',
-      title: 'Progress Tracking',
-      subtitle: 'Statistics and achievements',
-      icon: 'trending-up-outline',
-      color: '#2196F3',
-      screen: 'Progress',
-    },
-    {
       id: 'chatbot',
-      title: 'AI Assistant',
-      subtitle: 'Get health advice and support',
+      title: 'AI Health Assistant',
+      subtitle: 'Personalized health advice',
       icon: 'chatbubble-outline',
       color: '#9C27B0',
       screen: 'Chatbot',
@@ -111,6 +103,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingBottom: 20,
   },
   header: {
     paddingHorizontal: 20,

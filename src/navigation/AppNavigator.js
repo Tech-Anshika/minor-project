@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Import screens
 import HomeScreen from '../screens/HomeScreen';
@@ -80,6 +81,8 @@ function AuthStack() {
 
 // Main Tab Navigator - Only 4 essential items
 function MainTabs() {
+  const insets = useSafeAreaInsets();
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -103,10 +106,11 @@ function MainTabs() {
         tabBarStyle: {
           backgroundColor: '#FFF5F8',
           borderTopColor: '#F8BBD9',
-          height: 70,
-          paddingBottom: 12,
-          paddingTop: 8,
+          height: 85 + insets.bottom,
+          paddingBottom: 20 + insets.bottom,
+          paddingTop: 10,
           paddingHorizontal: 8,
+          marginBottom: 0,
         },
         headerStyle: {
           backgroundColor: '#FFF5F8',
@@ -222,8 +226,10 @@ function RootStack() {
 // Main App Navigator
 export default function AppNavigator({ isAuthenticated }) {
   return (
-    <NavigationContainer>
-      {isAuthenticated ? <RootStack /> : <AuthStack />}
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        {isAuthenticated ? <RootStack /> : <AuthStack />}
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }

@@ -15,50 +15,42 @@ import ModernCard from '../components/ModernCard';
 const { width } = Dimensions.get('window');
 
 export default function MoreScreen({ navigation }) {
-  const healthFeatures = [
-    {
-      id: 'period',
-      title: 'Period Log',
-      subtitle: 'Track your menstrual cycle',
-      icon: 'calendar-outline',
-      color: '#E91E63',
-      screen: 'PeriodLog',
-    },
-    {
-      id: 'yoga',
-      title: 'Yoga & Exercise',
-      subtitle: 'Workout routines and fitness',
-      icon: 'fitness-outline',
-      color: '#4CAF50',
-      screen: 'Yoga',
-    },
-    {
-      id: 'food',
-      title: 'Food & Diet',
-      subtitle: 'Nutrition and meal planning',
-      icon: 'restaurant-outline',
-      color: '#FF9800',
-      screen: 'Food',
-    },
+  const additionalFeatures = [
     {
       id: 'progress',
       title: 'Progress Tracking',
-      subtitle: 'Statistics and achievements',
+      subtitle: 'View your health statistics and achievements',
       icon: 'trending-up-outline',
       color: '#2196F3',
       screen: 'Progress',
     },
     {
-      id: 'chatbot',
-      title: 'AI Assistant',
-      subtitle: 'Get health advice and support',
-      icon: 'chatbubble-outline',
-      color: '#9C27B0',
-      screen: 'Chatbot',
+      id: 'reminders',
+      title: 'Health Reminders',
+      subtitle: 'Set medication and appointment reminders',
+      icon: 'alarm-outline',
+      color: '#FF5722',
+      screen: 'Profile',
+    },
+    {
+      id: 'reports',
+      title: 'Health Reports',
+      subtitle: 'Generate and share health reports',
+      icon: 'document-text-outline',
+      color: '#607D8B',
+      screen: 'Profile',
+    },
+    {
+      id: 'backup',
+      title: 'Data Backup',
+      subtitle: 'Backup and sync your health data',
+      icon: 'cloud-outline',
+      color: '#795548',
+      screen: 'Profile',
     },
   ];
 
-  const additionalFeatures = [
+  const appSettings = [
     {
       id: 'settings',
       title: 'Settings',
@@ -96,14 +88,14 @@ export default function MoreScreen({ navigation }) {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>More Features</Text>
-          <Text style={styles.headerSubtitle}>Access all your health tools</Text>
+          <Text style={styles.headerSubtitle}>Additional tools and app settings</Text>
         </View>
 
-        {/* Health Features Section */}
+        {/* Additional Health Tools Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Health & Wellness</Text>
+          <Text style={styles.sectionTitle}>Additional Health Tools</Text>
           <View style={styles.featuresGrid}>
-            {healthFeatures.map((feature) => (
+            {additionalFeatures.map((feature) => (
               <TouchableOpacity
                 key={feature.id}
                 style={styles.featureCard}
@@ -129,11 +121,11 @@ export default function MoreScreen({ navigation }) {
           </View>
         </View>
 
-        {/* Additional Features Section */}
+        {/* App Settings Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>App Settings</Text>
           <View style={styles.featuresGrid}>
-            {additionalFeatures.map((feature) => (
+            {appSettings.map((feature) => (
               <TouchableOpacity
                 key={feature.id}
                 style={styles.featureCard}
@@ -180,6 +172,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingBottom: 20,
   },
   header: {
     paddingHorizontal: 20,

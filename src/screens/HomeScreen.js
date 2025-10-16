@@ -396,6 +396,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
+    paddingBottom: 20,
   },
   
   // Header Section
