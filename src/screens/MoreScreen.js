@@ -1,0 +1,263 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import ModernGradientBackground from '../components/ModernGradientBackground';
+import ModernCard from '../components/ModernCard';
+
+const { width } = Dimensions.get('window');
+
+export default function MoreScreen({ navigation }) {
+  const healthFeatures = [
+    {
+      id: 'period',
+      title: 'Period Log',
+      subtitle: 'Track your menstrual cycle',
+      icon: 'calendar-outline',
+      color: '#E91E63',
+      screen: 'PeriodLog',
+    },
+    {
+      id: 'yoga',
+      title: 'Yoga & Exercise',
+      subtitle: 'Workout routines and fitness',
+      icon: 'fitness-outline',
+      color: '#4CAF50',
+      screen: 'Yoga',
+    },
+    {
+      id: 'food',
+      title: 'Food & Diet',
+      subtitle: 'Nutrition and meal planning',
+      icon: 'restaurant-outline',
+      color: '#FF9800',
+      screen: 'Food',
+    },
+    {
+      id: 'progress',
+      title: 'Progress Tracking',
+      subtitle: 'Statistics and achievements',
+      icon: 'trending-up-outline',
+      color: '#2196F3',
+      screen: 'Progress',
+    },
+    {
+      id: 'chatbot',
+      title: 'AI Assistant',
+      subtitle: 'Get health advice and support',
+      icon: 'chatbubble-outline',
+      color: '#9C27B0',
+      screen: 'Chatbot',
+    },
+  ];
+
+  const additionalFeatures = [
+    {
+      id: 'settings',
+      title: 'Settings',
+      subtitle: 'App preferences and configuration',
+      icon: 'settings-outline',
+      color: '#607D8B',
+      screen: 'Profile',
+    },
+    {
+      id: 'notifications',
+      title: 'Notifications',
+      subtitle: 'Manage your alerts and reminders',
+      icon: 'notifications-outline',
+      color: '#FF5722',
+      screen: 'Profile',
+    },
+    {
+      id: 'help',
+      title: 'Help & Support',
+      subtitle: 'Get help and contact support',
+      icon: 'help-circle-outline',
+      color: '#795548',
+      screen: 'Profile',
+    },
+  ];
+
+  const handleFeaturePress = (screen) => {
+    navigation.navigate(screen);
+  };
+
+  return (
+    <ModernGradientBackground type="more">
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>More Features</Text>
+          <Text style={styles.headerSubtitle}>Access all your health tools</Text>
+        </View>
+
+        {/* Health Features Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Health & Wellness</Text>
+          <View style={styles.featuresGrid}>
+            {healthFeatures.map((feature) => (
+              <TouchableOpacity
+                key={feature.id}
+                style={styles.featureCard}
+                onPress={() => handleFeaturePress(feature.screen)}
+                activeOpacity={0.7}
+              >
+                <ModernCard type="feature" style={styles.cardContent}>
+                  <View style={styles.featureIcon}>
+                    <View style={[styles.iconContainer, { backgroundColor: feature.color }]}>
+                      <Ionicons name={feature.icon} size={24} color="white" />
+                    </View>
+                  </View>
+                  <View style={styles.featureInfo}>
+                    <Text style={styles.featureTitle}>{feature.title}</Text>
+                    <Text style={styles.featureSubtitle}>{feature.subtitle}</Text>
+                  </View>
+                  <View style={styles.featureArrow}>
+                    <Ionicons name="chevron-forward" size={20} color="#E91E63" />
+                  </View>
+                </ModernCard>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        {/* Additional Features Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>App Settings</Text>
+          <View style={styles.featuresGrid}>
+            {additionalFeatures.map((feature) => (
+              <TouchableOpacity
+                key={feature.id}
+                style={styles.featureCard}
+                onPress={() => handleFeaturePress(feature.screen)}
+                activeOpacity={0.7}
+              >
+                <ModernCard type="feature" style={styles.cardContent}>
+                  <View style={styles.featureIcon}>
+                    <View style={[styles.iconContainer, { backgroundColor: feature.color }]}>
+                      <Ionicons name={feature.icon} size={24} color="white" />
+                    </View>
+                  </View>
+                  <View style={styles.featureInfo}>
+                    <Text style={styles.featureTitle}>{feature.title}</Text>
+                    <Text style={styles.featureSubtitle}>{feature.subtitle}</Text>
+                  </View>
+                  <View style={styles.featureArrow}>
+                    <Ionicons name="chevron-forward" size={20} color="#E91E63" />
+                  </View>
+                </ModernCard>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        {/* App Info Section */}
+        <View style={styles.appInfo}>
+          <Text style={styles.appName}>🌸 PcoSense</Text>
+          <Text style={styles.appVersion}>Version 1.0.0</Text>
+          <Text style={styles.appDescription}>
+            Your personal health companion for PCOD/PCOS management
+          </Text>
+        </View>
+      </ScrollView>
+    </ModernGradientBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 20,
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#E91E63',
+    marginBottom: 8,
+  },
+  headerSubtitle: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+  },
+  section: {
+    paddingHorizontal: 20,
+    marginBottom: 30,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 15,
+  },
+  featuresGrid: {
+    gap: 12,
+  },
+  featureCard: {
+    marginBottom: 8,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+  },
+  featureIcon: {
+    marginRight: 16,
+  },
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  featureInfo: {
+    flex: 1,
+  },
+  featureTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 4,
+  },
+  featureSubtitle: {
+    fontSize: 14,
+    color: '#666',
+  },
+  featureArrow: {
+    marginLeft: 8,
+  },
+  appInfo: {
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+    alignItems: 'center',
+  },
+  appName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#E91E63',
+    marginBottom: 8,
+  },
+  appVersion: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 8,
+  },
+  appDescription: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+});

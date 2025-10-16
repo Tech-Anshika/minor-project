@@ -14,6 +14,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import PeriodLogScreen from '../screens/PeriodLogScreen';
+import MoreScreen from '../screens/MoreScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -156,7 +157,7 @@ function MoreStack() {
     >
       <Stack.Screen 
         name="MoreMain" 
-        component={ProfileScreen}
+        component={MoreScreen}
         options={{ title: 'More' }}
       />
     </Stack.Navigator>

@@ -37,6 +37,8 @@ export default function ModernGradientBackground({
         return ['#fa709a', '#fee140', '#ffecd2'];
       case 'error':
         return ['#ff6b6b', '#ee5a24', '#ff9ff3'];
+      case 'more':
+        return ['#f8f9fa', '#e9ecef', '#dee2e6'];
       default:
         return ['#667eea', '#764ba2', '#f093fb'];
     }

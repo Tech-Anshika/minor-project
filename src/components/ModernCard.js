@@ -30,6 +30,8 @@ export default function ModernCard({
         return ['rgba(255,255,255,0.1)', 'rgba(255,255,255,0.05)'];
       case 'secondary':
         return ['#f093fb', '#f5576c'];
+      case 'feature':
+        return ['#ffffff', '#f8f9fa'];
       default:
         return ['#667eea', '#764ba2'];
     }
