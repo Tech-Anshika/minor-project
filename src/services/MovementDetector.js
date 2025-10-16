@@ -1,4 +1,4 @@
-import { Accelerometer } from 'expo-sensors';
+// import { Accelerometer } from 'expo-sensors';
 import { Platform } from 'react-native';
 
 class MovementDetector {
@@ -25,19 +25,11 @@ class MovementDetector {
     try {
       console.log('Initializing movement detector...');
       
-      // Check if accelerometer is available
-      this.isAvailable = await Accelerometer.isAvailableAsync();
-      
-      if (!this.isAvailable) {
-        console.warn('Accelerometer not available on this device');
-        return false;
-      }
-
-      // Set update interval (60 FPS for smooth detection)
-      Accelerometer.setUpdateInterval(1000 / 60);
-      
-      console.log('Movement detector initialized successfully');
-      return true;
+      // For now, disable accelerometer-based detection due to package issues
+      // This will force the app to use manual step counting
+      this.isAvailable = false;
+      console.log('Movement detector disabled - using manual step counting');
+      return false;
     } catch (error) {
       console.error('Error initializing movement detector:', error);
       return false;
@@ -49,15 +41,8 @@ class MovementDetector {
       return;
     }
 
-    console.log('Starting movement detection...');
-    this.isListening = true;
-
-    // Start calibration phase
-    this.startCalibration();
-
-    this.subscription = Accelerometer.addListener(({ x, y, z }) => {
-      this.processAccelerationData(x, y, z);
-    });
+    console.log('Movement detection not available - using manual mode');
+    this.isListening = false;
   }
 
   startCalibration() {
