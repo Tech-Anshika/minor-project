@@ -277,6 +277,20 @@ export default function HomeScreen({ navigation }) {
     console.log('Manual reset completed');
   };
 
+  // Debug function to check movement detector status
+  const debugMovement = () => {
+    if (movementDetectorAvailable) {
+      const debugInfo = MovementDetector.getDebugInfo();
+      console.log('Movement Detector Debug Info:', debugInfo);
+      Alert.alert(
+        'Movement Debug Info',
+        `Calibrated: ${debugInfo.isCalibrated}\nMoving: ${debugInfo.isMoving}\nSteps: ${debugInfo.stepCount}\nCalibration Samples: ${debugInfo.calibrationSamples}`
+      );
+    } else {
+      Alert.alert('Debug Info', 'Movement detector not available');
+    }
+  };
+
   const loadUserData = async () => {
     if (auth.currentUser) {
       const userRef = doc(db, 'users', auth.currentUser.uid);
@@ -467,6 +481,12 @@ export default function HomeScreen({ navigation }) {
                       onPress={manualReset}
                     >
                       <Text style={styles.testButtonText}>Reset Daily</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={[styles.testButton, styles.debugButton]} 
+                      onPress={debugMovement}
+                    >
+                      <Text style={styles.testButtonText}>Debug</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -1130,6 +1150,9 @@ const styles = StyleSheet.create({
   },
   resetButton: {
     backgroundColor: '#FF5722',
+  },
+  debugButton: {
+    backgroundColor: '#9C27B0',
   },
   testButtonText: {
     color: 'white',
