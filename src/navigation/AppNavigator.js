@@ -17,6 +17,7 @@ import RegisterScreen from '../screens/RegisterScreen';
 import PeriodLogScreen from '../screens/PeriodLogScreen';
 import MoreScreen from '../screens/MoreScreen';
 import HealthMainScreen from '../screens/HealthMainScreen';
+import MedicineScreen from '../screens/MedicineScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -218,6 +219,11 @@ function RootStack() {
         name="Chatbot" 
         component={ChatbotScreen}
         options={{ title: 'AI Assistant' }}
+      />
+      <Stack.Screen 
+        name="Medicine" 
+        component={MedicineScreen}
+        options={{ title: 'Medicine Tracker' }}
       />
     </Stack.Navigator>
   );

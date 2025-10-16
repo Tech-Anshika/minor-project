@@ -39,6 +39,8 @@ export default function ModernGradientBackground({
         return ['#ff6b6b', '#ee5a24', '#ff9ff3'];
       case 'more':
         return ['#f8f9fa', '#e9ecef', '#dee2e6'];
+      case 'medicine':
+        return ['#e8f5e8', '#f0f8ff', '#fff0f5'];
       default:
         return ['#667eea', '#764ba2', '#f093fb'];
     }

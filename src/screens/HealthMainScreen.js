@@ -48,6 +48,14 @@ export default function HealthMainScreen({ navigation }) {
       color: '#9C27B0',
       screen: 'Chatbot',
     },
+    {
+      id: 'medicine',
+      title: 'Medicine Tracker',
+      subtitle: 'Manage your medications and schedules',
+      icon: 'medical-outline',
+      color: '#2196F3',
+      screen: 'Medicine',
+    },
   ];
 
   const handleFeaturePress = (screen) => {
