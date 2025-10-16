@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation }) {
   const [resetCheckInterval, setResetCheckInterval] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
   const [movementDetectorAvailable, setMovementDetectorAvailable] = useState(false);
-  const [stepCounterEnabled, setStepCounterEnabled] = useState(true);
+  const [stepCounterEnabled, setStepCounterEnabled] = useState(false); // Start disabled
 
   useEffect(() => {
     loadUserData();
@@ -72,69 +72,29 @@ export default function HomeScreen({ navigation }) {
   const initializeStepCounter = async () => {
     try {
       setIsLoadingSteps(true);
-      console.log('Initializing movement-based step counter...');
+      console.log('Initializing manual step counter...');
       
-      // Initialize movement detector
+      // Initialize movement detector but don't start it
       const detectorAvailable = await MovementDetector.initialize();
       setMovementDetectorAvailable(detectorAvailable);
       
-      if (detectorAvailable) {
-        // Load saved data first
-        const savedData = await loadStepData();
-        const initialSteps = savedData.steps || 0;
-        const initialCalories = MovementDetector.calculateCalories(initialSteps, false);
-        
-        console.log('Initial steps:', initialSteps, 'Initial calories:', initialCalories);
-        
-        setTodayStats(prev => ({
-          ...prev,
-          steps: initialSteps,
-          calories: initialCalories
-        }));
+      // Load saved data
+      const savedData = await loadStepData();
+      const initialSteps = savedData.steps || 0;
+      const initialCalories = Math.round(initialSteps * 0.04); // Simple calculation
+      
+      console.log('Initial steps:', initialSteps, 'Initial calories:', initialCalories);
+      
+      setTodayStats(prev => ({
+        ...prev,
+        steps: initialSteps,
+        calories: initialCalories
+      }));
 
-        // Set up movement detector listener
-        MovementDetector.addListener(({ stepCount, isMoving, isAvailable }) => {
-          console.log('Movement update:', { stepCount, isMoving, isAvailable });
-          
-          if (isAvailable) {
-            const calories = MovementDetector.calculateCalories(stepCount, isMoving);
-            
-            setTodayStats(prev => ({
-              ...prev,
-              steps: stepCount,
-              calories: calories
-            }));
-            
-            setIsMoving(isMoving);
-            
-            // Save data when steps change
-            saveStepData(stepCount);
-          }
-        });
-
-        // Stop any existing simulation
-        if (stepUpdateInterval) {
-          clearInterval(stepUpdateInterval);
-          setStepUpdateInterval(null);
-        }
-        
-        // Start movement detection
-        MovementDetector.startListening();
-        
-        setStepCounterAvailable(true);
-      } else {
-        // Fallback to simulation if movement detector not available
-        console.log('Movement detector not available, using simulation');
-        startStepSimulation();
-        setStepCounterAvailable(true);
-      }
+      setStepCounterAvailable(true);
       
     } catch (error) {
       console.error('Error initializing step counter:', error);
-      // Only fallback to simulation if movement detector is not available
-      if (!movementDetectorAvailable) {
-        startStepSimulation();
-      }
       setStepCounterAvailable(true);
     } finally {
       setIsLoadingSteps(false);
@@ -276,7 +236,21 @@ export default function HomeScreen({ navigation }) {
   const addTestSteps = () => {
     setTodayStats(prev => {
       const newSteps = prev.steps + 100;
-      const newCalories = calculateCalories(newSteps);
+      const newCalories = Math.round(newSteps * 0.04);
+      saveStepData(newSteps);
+      return {
+        ...prev,
+        steps: newSteps,
+        calories: newCalories
+      };
+    });
+  };
+
+  // Manual step increment (for when step counter is disabled)
+  const addManualStep = () => {
+    setTodayStats(prev => {
+      const newSteps = prev.steps + 1;
+      const newCalories = Math.round(newSteps * 0.04);
       saveStepData(newSteps);
       return {
         ...prev,
@@ -316,10 +290,31 @@ export default function HomeScreen({ navigation }) {
         clearInterval(stepUpdateInterval);
         setStepUpdateInterval(null);
       }
+      setIsMoving(false);
     } else {
-      // Enable step counter
+      // Enable step counter - start movement detection
       if (movementDetectorAvailable) {
         MovementDetector.startListening();
+        
+        // Set up movement detector listener
+        MovementDetector.addListener(({ stepCount, isMoving, isAvailable }) => {
+          console.log('Movement update:', { stepCount, isMoving, isAvailable });
+          
+          if (isAvailable) {
+            const calories = MovementDetector.calculateCalories(stepCount, isMoving);
+            
+            setTodayStats(prev => ({
+              ...prev,
+              steps: stepCount,
+              calories: calories
+            }));
+            
+            setIsMoving(isMoving);
+            
+            // Save data when steps change
+            saveStepData(stepCount);
+          }
+        });
       } else {
         startStepSimulation();
       }
@@ -500,8 +495,8 @@ export default function HomeScreen({ navigation }) {
                   <Text style={styles.dailyResetText}>
                     Daily reset at 12:00 AM • {new Date().toLocaleDateString()}
                   </Text>
-                  <Text style={[styles.movementStatus, { color: stepCounterEnabled ? (isMoving ? '#4CAF50' : '#FF9800') : '#F44336' }]}>
-                    {!stepCounterEnabled ? '🚫 Step Counter Disabled' : (isMoving ? '🚶‍♀️ Moving - Steps counting!' : '⏸️ Still - No steps added')}
+                  <Text style={[styles.movementStatus, { color: stepCounterEnabled ? (isMoving ? '#4CAF50' : '#FF9800') : '#FF9800' }]}>
+                    {!stepCounterEnabled ? '👆 Manual Mode - Tap +1 Step to add steps' : (isMoving ? '🚶‍♀️ Moving - Steps counting!' : '⏸️ Still - No steps added')}
                   </Text>
                   {/* Test buttons for debugging */}
                   <View style={styles.testButtonsContainer}>
@@ -531,6 +526,14 @@ export default function HomeScreen({ navigation }) {
                         {stepCounterEnabled ? 'Disable' : 'Enable'}
                       </Text>
                     </TouchableOpacity>
+                    {!stepCounterEnabled && (
+                      <TouchableOpacity 
+                        style={[styles.testButton, styles.manualStepButton]} 
+                        onPress={addManualStep}
+                      >
+                        <Text style={styles.testButtonText}>+1 Step</Text>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </View>
                 <View style={styles.stepsCharacter}>
@@ -1202,6 +1205,9 @@ const styles = StyleSheet.create({
   },
   enableButton: {
     backgroundColor: '#4CAF50',
+  },
+  manualStepButton: {
+    backgroundColor: '#FF9800',
   },
   testButtonText: {
     color: 'white',
