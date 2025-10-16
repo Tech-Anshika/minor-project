@@ -602,6 +602,7 @@ const AddScheduleModal = ({ visible, onClose, onSave, medicines, selectedMedicin
     isActive: true,
     notes: '',
   });
+  const [showMedicinePicker, setShowMedicinePicker] = useState(false);
 
   useEffect(() => {
     if (selectedMedicine) {
@@ -660,6 +661,17 @@ const AddScheduleModal = ({ visible, onClose, onSave, medicines, selectedMedicin
     }));
   };
 
+  const handleMedicineSelect = (medicine) => {
+    setFormData(prev => ({
+      ...prev,
+      medicineId: medicine.id,
+      medicineName: medicine.name,
+      dosage: medicine.dosage,
+      unit: medicine.unit,
+    }));
+    setShowMedicinePicker(false);
+  };
+
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet">
       <View style={styles.modalContainer}>
@@ -673,12 +685,15 @@ const AddScheduleModal = ({ visible, onClose, onSave, medicines, selectedMedicin
         <ScrollView style={styles.modalContent}>
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Medicine *</Text>
-            <View style={styles.pickerContainer}>
+            <TouchableOpacity 
+              style={styles.pickerContainer}
+              onPress={() => setShowMedicinePicker(true)}
+            >
               <Text style={styles.pickerText}>
                 {formData.medicineName || 'Select medicine'}
               </Text>
               <Ionicons name="chevron-down" size={20} color="#666" />
-            </View>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.inputRow}>
@@ -777,6 +792,53 @@ const AddScheduleModal = ({ visible, onClose, onSave, medicines, selectedMedicin
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Medicine Picker Modal */}
+      <Modal visible={showMedicinePicker} animationType="slide" transparent={true}>
+        <View style={styles.medicinePickerOverlay}>
+          <View style={styles.medicinePickerContainer}>
+            <View style={styles.medicinePickerHeader}>
+              <Text style={styles.medicinePickerTitle}>Select Medicine</Text>
+              <TouchableOpacity onPress={() => setShowMedicinePicker(false)}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+            
+            {medicines.length === 0 ? (
+              <View style={styles.emptyMedicinesContainer}>
+                <Ionicons name="medical-outline" size={48} color="#ccc" />
+                <Text style={styles.emptyMedicinesText}>No medicines added yet</Text>
+                <Text style={styles.emptyMedicinesSubtext}>Add a medicine first to create a schedule</Text>
+              </View>
+            ) : (
+              <FlatList
+                data={medicines}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.medicineItem}
+                    onPress={() => handleMedicineSelect(item)}
+                  >
+                    <View style={styles.medicineItemIcon}>
+                      <Ionicons name="medical" size={24} color={item.color} />
+                    </View>
+                    <View style={styles.medicineItemInfo}>
+                      <Text style={styles.medicineItemName}>{item.name}</Text>
+                      <Text style={styles.medicineItemDetails}>
+                        {item.dosage} {item.unit}
+                      </Text>
+                    </View>
+                    {formData.medicineId === item.id && (
+                      <Ionicons name="checkmark-circle" size={24} color="#4ade80" />
+                    )}
+                  </TouchableOpacity>
+                )}
+                style={styles.medicineList}
+              />
+            )}
+          </View>
+        </View>
+      </Modal>
     </Modal>
   );
 };
@@ -1281,5 +1343,79 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'white',
+  },
+
+  // Medicine Picker Styles
+  medicinePickerOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  medicinePickerContainer: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '70%',
+  },
+  medicinePickerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
+  },
+  medicinePickerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  emptyMedicinesContainer: {
+    alignItems: 'center',
+    padding: 40,
+  },
+  emptyMedicinesText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#666',
+    marginTop: 12,
+    marginBottom: 4,
+  },
+  emptyMedicinesSubtext: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
+  },
+  medicineList: {
+    maxHeight: 300,
+  },
+  medicineItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  medicineItemIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#F1F5F9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  medicineItemInfo: {
+    flex: 1,
+  },
+  medicineItemName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 2,
+  },
+  medicineItemDetails: {
+    fontSize: 14,
+    color: '#666',
   },
 });
