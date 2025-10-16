@@ -19,6 +19,7 @@ import ModernGradientBackground from '../components/ModernGradientBackground';
 import ModernCard from '../components/ModernCard';
 import FloatingActionButton from '../components/FloatingActionButton';
 import ModernProgressRing from '../components/ModernProgressRing';
+import MedicineWidget from '../components/MedicineWidget';
 
 const { width, height } = Dimensions.get('window');
 
@@ -354,26 +355,8 @@ export default function HomeScreen({ navigation }) {
           </View>
         </ModernCard>
 
-        {/* Medication Reminders */}
-        <ModernCard type="info" style={styles.medicationCard}>
-          <View style={styles.medicationHeader}>
-            <Ionicons name="medical" size={24} color="white" />
-            <Text style={styles.medicationTitle}>Medication Reminders</Text>
-          </View>
-
-          <View style={styles.medicationItem}>
-            <View style={styles.medicationIcon}>
-              <Ionicons name="medical" size={20} color="#a8edea" />
-            </View>
-            <View style={styles.medicationInfo}>
-              <Text style={styles.medicationName}>Metformin</Text>
-              <Text style={styles.medicationTime}>8:00 AM</Text>
-            </View>
-            <TouchableOpacity style={styles.medicationButton}>
-              <Ionicons name="checkmark-circle" size={24} color="#4facfe" />
-            </TouchableOpacity>
-          </View>
-        </ModernCard>
+        {/* Medicine Tracker Widget */}
+        <MedicineWidget navigation={navigation} />
 
         {/* Floating Action Button */}
         <FloatingActionButton
@@ -861,52 +844,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  // Medication
-  medicationCard: {
-    marginHorizontal: 20,
-    marginBottom: 100, // Space for floating button
-  },
-  medicationHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  medicationTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginLeft: 12,
-  },
-  medicationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    padding: 16,
-    borderRadius: 12,
-  },
-  medicationIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  medicationInfo: {
-    flex: 1,
-  },
-  medicationName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 4,
-  },
-  medicationTime: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
-  },
-  medicationButton: {
-    marginLeft: 'auto',
-  },
 });
