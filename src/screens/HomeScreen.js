@@ -20,6 +20,7 @@ import ModernCard from '../components/ModernCard';
 import FloatingActionButton from '../components/FloatingActionButton';
 import ModernProgressRing from '../components/ModernProgressRing';
 import MedicineWidget from '../components/MedicineWidget';
+import StepCounterService from '../services/StepCounterService';
 
 const { width, height } = Dimensions.get('window');
 
@@ -33,15 +34,72 @@ export default function HomeScreen({ navigation }) {
     phase: 'Menstrual',
   });
   const [todayStats, setTodayStats] = useState({
-    steps: 8542,
+    steps: 0,
     water: 6,
-    calories: 1850,
+    calories: 0,
     mood: 'happy',
   });
+  const [stepCounterAvailable, setStepCounterAvailable] = useState(false);
+  const [isLoadingSteps, setIsLoadingSteps] = useState(true);
 
   useEffect(() => {
     loadUserData();
+    initializeStepCounter();
+    
+    // Cleanup function
+    return () => {
+      StepCounterService.stopStepMonitoring();
+    };
   }, []);
+
+  const initializeStepCounter = async () => {
+    try {
+      setIsLoadingSteps(true);
+      const isAvailable = await StepCounterService.initialize();
+      setStepCounterAvailable(isAvailable);
+      
+      if (isAvailable) {
+        // Get initial step count
+        const initialSteps = StepCounterService.getCurrentSteps();
+        const initialCalories = StepCounterService.getTodayCalories();
+        
+        setTodayStats(prev => ({
+          ...prev,
+          steps: initialSteps,
+          calories: initialCalories
+        }));
+
+        // Listen for step updates
+        StepCounterService.addListener(({ steps, isAvailable: available }) => {
+          if (available) {
+            const calories = StepCounterService.getTodayCalories();
+            setTodayStats(prev => ({
+              ...prev,
+              steps: steps,
+              calories: calories
+            }));
+          }
+        });
+      } else {
+        // Fallback to mock data if step counter not available
+        setTodayStats(prev => ({
+          ...prev,
+          steps: 8542,
+          calories: 1850
+        }));
+      }
+    } catch (error) {
+      console.error('Error initializing step counter:', error);
+      // Fallback to mock data
+      setTodayStats(prev => ({
+        ...prev,
+        steps: 8542,
+        calories: 1850
+      }));
+    } finally {
+      setIsLoadingSteps(false);
+    }
+  };
 
   const loadUserData = async () => {
     if (auth.currentUser) {
@@ -205,9 +263,18 @@ export default function HomeScreen({ navigation }) {
               </View>
               <View style={styles.stepsMain}>
                 <View style={styles.stepsInfo}>
-                  <Text style={styles.stepsValue}>{todayStats.steps.toLocaleString()}</Text>
+                  {isLoadingSteps ? (
+                    <Text style={styles.stepsValue}>Loading...</Text>
+                  ) : (
+                    <Text style={styles.stepsValue}>{todayStats.steps.toLocaleString()}</Text>
+                  )}
                   <Text style={styles.stepsLabel}>steps</Text>
-                  <Text style={styles.stepsMotivation}>Keep walking! You're doing great! 🚶‍♀️</Text>
+                  <Text style={styles.stepsMotivation}>
+                    {stepCounterAvailable 
+                      ? StepCounterService.getMotivationalMessage(10000)
+                      : "Keep walking! You're doing great! 🚶‍♀️"
+                    }
+                  </Text>
                 </View>
                 <View style={styles.stepsCharacter}>
                   <View style={styles.characterContainer}>
@@ -288,9 +355,18 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.calorieTitleMax}>Calories Burned Today</Text>
               </View>
               <View style={styles.calorieMainMax}>
-                <Text style={styles.calorieValueMax}>{todayStats.calories}</Text>
+                {isLoadingSteps ? (
+                  <Text style={styles.calorieValueMax}>Loading...</Text>
+                ) : (
+                  <Text style={styles.calorieValueMax}>{todayStats.calories}</Text>
+                )}
                 <Text style={styles.calorieUnitMax}>calories</Text>
-                <Text style={styles.calorieGoalMax}>Goal: 2000 calories</Text>
+                <Text style={styles.calorieGoalMax}>
+                  {stepCounterAvailable 
+                    ? "Based on your steps today" 
+                    : "Goal: 2000 calories"
+                  }
+                </Text>
               </View>
               <View style={styles.calorieProgressMax}>
                 <ModernProgressRing
