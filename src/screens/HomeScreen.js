@@ -21,6 +21,7 @@ import FloatingActionButton from '../components/FloatingActionButton';
 import ModernProgressRing from '../components/ModernProgressRing';
 import MedicineWidget from '../components/MedicineWidget';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MovementDetector from '../services/MovementDetector';
 
 const { width, height } = Dimensions.get('window');
 
@@ -43,6 +44,8 @@ export default function HomeScreen({ navigation }) {
   const [isLoadingSteps, setIsLoadingSteps] = useState(true);
   const [stepUpdateInterval, setStepUpdateInterval] = useState(null);
   const [resetCheckInterval, setResetCheckInterval] = useState(null);
+  const [isMoving, setIsMoving] = useState(false);
+  const [movementDetectorAvailable, setMovementDetectorAvailable] = useState(false);
 
   useEffect(() => {
     loadUserData();
@@ -60,40 +63,69 @@ export default function HomeScreen({ navigation }) {
       if (resetCheckInterval) {
         clearInterval(resetCheckInterval);
       }
+      // Stop movement detection
+      MovementDetector.stopListening();
     };
   }, []);
 
   const initializeStepCounter = async () => {
     try {
       setIsLoadingSteps(true);
-      console.log('Initializing step counter in HomeScreen...');
+      console.log('Initializing movement-based step counter...');
       
-      // Load saved data first
-      const savedData = await loadStepData();
-      const initialSteps = savedData.steps || 0;
-      const initialCalories = calculateCalories(initialSteps);
+      // Initialize movement detector
+      const detectorAvailable = await MovementDetector.initialize();
+      setMovementDetectorAvailable(detectorAvailable);
       
-      console.log('Initial steps:', initialSteps, 'Initial calories:', initialCalories);
-      
-      setTodayStats(prev => ({
-        ...prev,
-        steps: initialSteps,
-        calories: initialCalories
-      }));
+      if (detectorAvailable) {
+        // Load saved data first
+        const savedData = await loadStepData();
+        const initialSteps = savedData.steps || 0;
+        const initialCalories = MovementDetector.calculateCalories(initialSteps, false);
+        
+        console.log('Initial steps:', initialSteps, 'Initial calories:', initialCalories);
+        
+        setTodayStats(prev => ({
+          ...prev,
+          steps: initialSteps,
+          calories: initialCalories
+        }));
 
-      setStepCounterAvailable(true);
-      
-      // Start step simulation
-      startStepSimulation();
+        // Set up movement detector listener
+        MovementDetector.addListener(({ stepCount, isMoving, isAvailable }) => {
+          console.log('Movement update:', { stepCount, isMoving, isAvailable });
+          
+          if (isAvailable) {
+            const calories = MovementDetector.calculateCalories(stepCount, isMoving);
+            
+            setTodayStats(prev => ({
+              ...prev,
+              steps: stepCount,
+              calories: calories
+            }));
+            
+            setIsMoving(isMoving);
+            
+            // Save data when steps change
+            saveStepData(stepCount);
+          }
+        });
+
+        // Start movement detection
+        MovementDetector.startListening();
+        
+        setStepCounterAvailable(true);
+      } else {
+        // Fallback to simulation if movement detector not available
+        console.log('Movement detector not available, using simulation');
+        startStepSimulation();
+        setStepCounterAvailable(true);
+      }
       
     } catch (error) {
       console.error('Error initializing step counter:', error);
-      // Fallback to mock data
-      setTodayStats(prev => ({
-        ...prev,
-        steps: 8542,
-        calories: 1850
-      }));
+      // Fallback to simulation
+      startStepSimulation();
       setStepCounterAvailable(true);
     } finally {
       setIsLoadingSteps(false);
@@ -165,14 +197,14 @@ export default function HomeScreen({ navigation }) {
   };
 
   const startStepSimulation = () => {
-    console.log('Starting step simulation...');
+    console.log('Starting fallback step simulation...');
     
     const interval = setInterval(() => {
       setTodayStats(prev => {
         const newSteps = prev.steps + Math.floor(Math.random() * 7) + 2;
         const newCalories = calculateCalories(newSteps);
         
-        console.log('Steps updated:', newSteps, 'Calories:', newCalories);
+        console.log('Simulated steps updated:', newSteps, 'Calories:', newCalories);
         
         // Save data
         saveStepData(newSteps);
@@ -218,6 +250,11 @@ export default function HomeScreen({ navigation }) {
       calories: 0
     }));
     await saveStepData(0);
+    
+    // Reset movement detector step count
+    if (movementDetectorAvailable) {
+      MovementDetector.resetStepCount();
+    }
   };
 
   // Test function to add steps manually
@@ -413,6 +450,9 @@ export default function HomeScreen({ navigation }) {
                   </Text>
                   <Text style={styles.dailyResetText}>
                     Daily reset at 12:00 AM • {new Date().toLocaleDateString()}
+                  </Text>
+                  <Text style={[styles.movementStatus, { color: isMoving ? '#4CAF50' : '#FF9800' }]}>
+                    {isMoving ? '🚶‍♀️ Moving - Steps counting!' : '⏸️ Still - No steps added'}
                   </Text>
                   {/* Test buttons for debugging */}
                   <View style={styles.testButtonsContainer}>
@@ -1102,6 +1142,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 4,
     fontStyle: 'italic',
+  },
+  movementStatus: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 4,
+    fontWeight: '600',
   },
 
 });
