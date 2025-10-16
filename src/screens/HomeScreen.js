@@ -55,39 +55,36 @@ export default function HomeScreen({ navigation }) {
   const initializeStepCounter = async () => {
     try {
       setIsLoadingSteps(true);
+      console.log('Initializing step counter in HomeScreen...');
+      
       const isAvailable = await StepCounterService.initialize();
       setStepCounterAvailable(isAvailable);
       
-      if (isAvailable) {
-        // Get initial step count
-        const initialSteps = StepCounterService.getCurrentSteps();
-        const initialCalories = StepCounterService.getTodayCalories();
-        
-        setTodayStats(prev => ({
-          ...prev,
-          steps: initialSteps,
-          calories: initialCalories
-        }));
+      console.log('Step counter available:', isAvailable);
+      
+      // Get initial step count
+      const initialSteps = StepCounterService.getCurrentSteps();
+      const initialCalories = StepCounterService.getTodayCalories();
+      
+      console.log('Initial steps:', initialSteps, 'Initial calories:', initialCalories);
+      
+      setTodayStats(prev => ({
+        ...prev,
+        steps: initialSteps,
+        calories: initialCalories
+      }));
 
-        // Listen for step updates
-        StepCounterService.addListener(({ steps, isAvailable: available }) => {
-          if (available) {
-            const calories = StepCounterService.getTodayCalories();
-            setTodayStats(prev => ({
-              ...prev,
-              steps: steps,
-              calories: calories
-            }));
-          }
-        });
-      } else {
-        // Fallback to mock data if step counter not available
+      // Listen for step updates
+      StepCounterService.addListener(({ steps, isAvailable: available }) => {
+        console.log('Step update received:', { steps, available });
+        const calories = StepCounterService.getTodayCalories();
         setTodayStats(prev => ({
           ...prev,
-          steps: 8542,
-          calories: 1850
+          steps: steps,
+          calories: calories
         }));
-      }
+      });
+      
     } catch (error) {
       console.error('Error initializing step counter:', error);
       // Fallback to mock data
@@ -99,6 +96,11 @@ export default function HomeScreen({ navigation }) {
     } finally {
       setIsLoadingSteps(false);
     }
+  };
+
+  // Test function to add steps manually
+  const addTestSteps = () => {
+    StepCounterService.addSteps(100);
   };
 
   const loadUserData = async () => {
@@ -275,6 +277,13 @@ export default function HomeScreen({ navigation }) {
                       : "Keep walking! You're doing great! 🚶‍♀️"
                     }
                   </Text>
+                  {/* Test button for debugging */}
+                  <TouchableOpacity 
+                    style={styles.testButton} 
+                    onPress={addTestSteps}
+                  >
+                    <Text style={styles.testButtonText}>+100 Steps (Test)</Text>
+                  </TouchableOpacity>
                 </View>
                 <View style={styles.stepsCharacter}>
                   <View style={styles.characterContainer}>
@@ -918,6 +927,21 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#4338ca',
     textAlign: 'center',
+  },
+
+  // Test Button
+  testButton: {
+    backgroundColor: '#E91E63',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginTop: 8,
+    alignSelf: 'center',
+  },
+  testButtonText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '600',
   },
 
 });
