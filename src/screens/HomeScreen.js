@@ -107,10 +107,18 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.badgeText}>Health Companion</Text>
               </View>
             </View>
-            <View style={styles.statusContainer}>
-              <View style={styles.statusIndicator}>
-                <View style={styles.statusDot} />
-                <Text style={styles.statusText}>Active</Text>
+            <View style={styles.headerActions}>
+              <TouchableOpacity 
+                style={styles.menuButton}
+                onPress={() => navigation.navigate('Menu')}
+              >
+                <Ionicons name="menu" size={24} color="#E91E63" />
+              </TouchableOpacity>
+              <View style={styles.statusContainer}>
+                <View style={styles.statusIndicator}>
+                  <View style={styles.statusDot} />
+                  <Text style={styles.statusText}>Active</Text>
+                </View>
               </View>
             </View>
           </View>
@@ -394,6 +402,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
   },
   appTitleContainer: {
     flex: 1,
