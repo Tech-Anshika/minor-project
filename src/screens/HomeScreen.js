@@ -42,11 +42,9 @@ export default function HomeScreen({ navigation }) {
   });
   const [stepCounterAvailable, setStepCounterAvailable] = useState(false);
   const [isLoadingSteps, setIsLoadingSteps] = useState(true);
-  const [stepUpdateInterval, setStepUpdateInterval] = useState(null);
   const [resetCheckInterval, setResetCheckInterval] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
   const [phoneStepCounterAvailable, setPhoneStepCounterAvailable] = useState(false);
-  const [stepCounterEnabled, setStepCounterEnabled] = useState(true); // Start enabled
 
   useEffect(() => {
     loadUserData();
@@ -58,9 +56,6 @@ export default function HomeScreen({ navigation }) {
     
     // Cleanup function
     return () => {
-      if (stepUpdateInterval) {
-        clearInterval(stepUpdateInterval);
-      }
       if (resetCheckInterval) {
         clearInterval(resetCheckInterval);
       }
@@ -93,8 +88,8 @@ export default function HomeScreen({ navigation }) {
         }));
 
         // Set up phone step counter listener
-        PhoneStepCounter.addListener(({ stepCount, calories, isMoving, isAvailable }) => {
-          console.log('Phone step update:', { stepCount, calories, isMoving, isAvailable });
+        PhoneStepCounter.addListener(({ stepCount, batchSteps, calories, isMoving, isAvailable }) => {
+          console.log('Phone step update:', { stepCount, batchSteps, calories, isMoving, isAvailable });
           
           if (isAvailable) {
             setTodayStats(prev => ({
@@ -105,8 +100,10 @@ export default function HomeScreen({ navigation }) {
             
             setIsMoving(isMoving);
             
-            // Save data when steps change
-            saveStepData(stepCount);
+            // Save data when steps change (only when batch is processed)
+            if (stepCount > 0) {
+              saveStepData(stepCount);
+            }
           }
         });
 
@@ -262,92 +259,6 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  // Test function to add steps manually
-  const addTestSteps = () => {
-    setTodayStats(prev => {
-      const newSteps = prev.steps + 100;
-      const newCalories = Math.round(newSteps * 0.04);
-      saveStepData(newSteps);
-      return {
-        ...prev,
-        steps: newSteps,
-        calories: newCalories
-      };
-    });
-  };
-
-  // Manual step increment (for when step counter is disabled)
-  const addManualStep = () => {
-    setTodayStats(prev => {
-      const newSteps = prev.steps + 1;
-      const newCalories = Math.round(newSteps * 0.04);
-      saveStepData(newSteps);
-      return {
-        ...prev,
-        steps: newSteps,
-        calories: newCalories
-      };
-    });
-  };
-
-  // Manual reset function for testing
-  const manualReset = async () => {
-    await resetDailySteps();
-    console.log('Manual reset completed');
-  };
-
-  // Debug function to check phone step counter status
-  const debugMovement = () => {
-    if (phoneStepCounterAvailable) {
-      const debugInfo = PhoneStepCounter.getDebugInfo();
-      console.log('Phone Step Counter Debug Info:', debugInfo);
-      Alert.alert(
-        'Phone Step Counter Debug Info',
-        `Available: ${debugInfo.isAvailable}\nListening: ${debugInfo.isListening}\nMoving: ${debugInfo.isMoving}\nSteps: ${debugInfo.stepCount}\nCalories: ${debugInfo.caloriesBurned}`
-      );
-    } else {
-      Alert.alert('Debug Info', 'Phone step counter not available');
-    }
-  };
-
-  // Toggle step counter on/off
-  const toggleStepCounter = () => {
-    setStepCounterEnabled(!stepCounterEnabled);
-    if (stepCounterEnabled) {
-      // Disable step counter
-      PhoneStepCounter.stopListening();
-      if (stepUpdateInterval) {
-        clearInterval(stepUpdateInterval);
-        setStepUpdateInterval(null);
-      }
-      setIsMoving(false);
-    } else {
-      // Enable step counter - start phone step detection
-      if (phoneStepCounterAvailable) {
-        PhoneStepCounter.startListening();
-        
-        // Set up phone step counter listener
-        PhoneStepCounter.addListener(({ stepCount, calories, isMoving, isAvailable }) => {
-          console.log('Phone step update:', { stepCount, calories, isMoving, isAvailable });
-          
-          if (isAvailable) {
-            setTodayStats(prev => ({
-              ...prev,
-              steps: stepCount,
-              calories: calories
-            }));
-            
-            setIsMoving(isMoving);
-            
-            // Save data when steps change
-            saveStepData(stepCount);
-          }
-        });
-      } else {
-        startStepSimulation();
-      }
-    }
-  };
 
   const loadUserData = async () => {
     if (auth.currentUser) {
@@ -523,38 +434,9 @@ export default function HomeScreen({ navigation }) {
                   <Text style={styles.dailyResetText}>
                     Daily reset at 12:00 AM • {new Date().toLocaleDateString()}
                   </Text>
-                  <Text style={[styles.movementStatus, { color: stepCounterEnabled ? (isMoving ? '#4CAF50' : '#FF9800') : '#F44336' }]}>
-                    {!stepCounterEnabled ? '🚫 Step Counter Disabled' : (isMoving ? '🚶‍♀️ Moving - Phone sensors detecting steps!' : '⏸️ Still - Phone sensors monitoring')}
+                  <Text style={[styles.movementStatus, { color: isMoving ? '#4CAF50' : '#FF9800' }]}>
+                    {isMoving ? '🚶‍♀️ Moving - Steps counted in 5-min batches!' : '⏸️ Still - Phone sensors monitoring'}
                   </Text>
-                  {/* Test buttons for debugging */}
-                  <View style={styles.testButtonsContainer}>
-                    <TouchableOpacity 
-                      style={styles.testButton} 
-                      onPress={addTestSteps}
-                    >
-                      <Text style={styles.testButtonText}>+100 Steps</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                      style={[styles.testButton, styles.resetButton]} 
-                      onPress={manualReset}
-                    >
-                      <Text style={styles.testButtonText}>Reset Daily</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                      style={[styles.testButton, styles.debugButton]} 
-                      onPress={debugMovement}
-                    >
-                      <Text style={styles.testButtonText}>Debug</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                      style={[styles.testButton, stepCounterEnabled ? styles.disableButton : styles.enableButton]} 
-                      onPress={toggleStepCounter}
-                    >
-                      <Text style={styles.testButtonText}>
-                        {stepCounterEnabled ? 'Disable' : 'Enable'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
                 </View>
                 <View style={styles.stepsCharacter}>
                   <View style={styles.characterContainer}>
@@ -1200,40 +1082,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  // Test Buttons
-  testButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
-    marginTop: 8,
-  },
-  testButton: {
-    backgroundColor: '#E91E63',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    alignSelf: 'center',
-  },
-  resetButton: {
-    backgroundColor: '#FF5722',
-  },
-  debugButton: {
-    backgroundColor: '#9C27B0',
-  },
-  disableButton: {
-    backgroundColor: '#F44336',
-  },
-  enableButton: {
-    backgroundColor: '#4CAF50',
-  },
-  manualStepButton: {
-    backgroundColor: '#FF9800',
-  },
-  testButtonText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '600',
-  },
   dailyResetText: {
     fontSize: 11,
     color: '#666',

@@ -17,6 +17,9 @@ class PhoneStepCounter {
     this.movementTimeout = null;
     this.accelerationHistory = [];
     this.stepPattern = [];
+    this.batchSteps = 0; // Steps counted in current batch
+    this.batchInterval = null; // 5-minute batch interval
+    this.lastBatchTime = Date.now();
   }
 
   async initialize() {
@@ -47,8 +50,11 @@ class PhoneStepCounter {
       return;
     }
 
-    console.log('Starting phone step detection...');
+    console.log('Starting phone step detection with 5-minute batches...');
     this.isListening = true;
+
+    // Start 5-minute batch interval
+    this.startBatchInterval();
 
     this.subscription = Accelerometer.addListener(({ x, y, z }) => {
       this.processAccelerationData(x, y, z);
@@ -60,8 +66,46 @@ class PhoneStepCounter {
       this.subscription.remove();
       this.subscription = null;
     }
+    
+    // Stop batch interval
+    if (this.batchInterval) {
+      clearInterval(this.batchInterval);
+      this.batchInterval = null;
+    }
+    
     this.isListening = false;
     console.log('Phone step detection stopped');
+  }
+
+  startBatchInterval() {
+    // Clear any existing interval
+    if (this.batchInterval) {
+      clearInterval(this.batchInterval);
+    }
+
+    // Set up 5-minute (300,000ms) batch interval
+    this.batchInterval = setInterval(() => {
+      this.processBatch();
+    }, 5 * 60 * 1000); // 5 minutes
+
+    console.log('Started 5-minute batch counting');
+  }
+
+  processBatch() {
+    // Add batch steps to total step count
+    if (this.batchSteps > 0) {
+      this.stepCount += this.batchSteps;
+      this.caloriesBurned = Math.round(this.stepCount * 0.04);
+      
+      console.log(`Batch processed: +${this.batchSteps} steps (Total: ${this.stepCount})`);
+      
+      // Reset batch steps
+      this.batchSteps = 0;
+      this.lastBatchTime = Date.now();
+      
+      // Notify listeners about updated step count
+      this.notifyListeners();
+    }
   }
 
   processAccelerationData(x, y, z) {
@@ -133,15 +177,12 @@ class PhoneStepCounter {
     if (acceleration > this.stepThreshold) {
       // Additional validation: check if this looks like a real step pattern
       if (this.isValidStepPattern()) {
-        this.stepCount++;
+        this.batchSteps++; // Add to batch instead of total
         this.lastStepTime = currentTime;
         
-        // Calculate calories burned (approximately 0.04 calories per step)
-        this.caloriesBurned = Math.round(this.stepCount * 0.04);
+        console.log(`Step detected! Batch steps: ${this.batchSteps} (Total: ${this.stepCount})`);
         
-        console.log('Step detected! Total steps:', this.stepCount, 'Calories:', this.caloriesBurned);
-        
-        // Notify listeners about new step
+        // Notify listeners about batch progress (but don't update total yet)
         this.notifyListeners();
       }
     }
@@ -172,6 +213,7 @@ class PhoneStepCounter {
     this.listeners.forEach(callback => {
       callback({
         stepCount: this.stepCount,
+        batchSteps: this.batchSteps,
         calories: this.caloriesBurned,
         isMoving: this.isMoving,
         isAvailable: this.isAvailable
@@ -197,6 +239,7 @@ class PhoneStepCounter {
 
   resetStepCount() {
     this.stepCount = 0;
+    this.batchSteps = 0;
     this.caloriesBurned = 0;
     this.notifyListeners();
   }
@@ -221,9 +264,11 @@ class PhoneStepCounter {
       isListening: this.isListening,
       isMoving: this.isMoving,
       stepCount: this.stepCount,
+      batchSteps: this.batchSteps,
       caloriesBurned: this.caloriesBurned,
       accelerationHistory: this.accelerationHistory.slice(-5),
-      stepPattern: this.stepPattern.slice(-3)
+      stepPattern: this.stepPattern.slice(-3),
+      lastBatchTime: this.lastBatchTime
     };
   }
 }
