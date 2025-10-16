@@ -21,7 +21,7 @@ import FloatingActionButton from '../components/FloatingActionButton';
 import ModernProgressRing from '../components/ModernProgressRing';
 import MedicineWidget from '../components/MedicineWidget';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MovementDetector from '../services/MovementDetector';
+import PhoneStepCounter from '../services/PhoneStepCounter';
 
 const { width, height } = Dimensions.get('window');
 
@@ -45,8 +45,8 @@ export default function HomeScreen({ navigation }) {
   const [stepUpdateInterval, setStepUpdateInterval] = useState(null);
   const [resetCheckInterval, setResetCheckInterval] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
-  const [movementDetectorAvailable, setMovementDetectorAvailable] = useState(false);
-  const [stepCounterEnabled, setStepCounterEnabled] = useState(false); // Start disabled
+  const [phoneStepCounterAvailable, setPhoneStepCounterAvailable] = useState(false);
+  const [stepCounterEnabled, setStepCounterEnabled] = useState(true); // Start enabled
 
   useEffect(() => {
     loadUserData();
@@ -64,37 +64,67 @@ export default function HomeScreen({ navigation }) {
       if (resetCheckInterval) {
         clearInterval(resetCheckInterval);
       }
-      // Stop movement detection
-      MovementDetector.stopListening();
+      // Stop phone step detection
+      PhoneStepCounter.stopListening();
     };
   }, []);
 
   const initializeStepCounter = async () => {
     try {
       setIsLoadingSteps(true);
-      console.log('Initializing manual step counter...');
+      console.log('Initializing phone step counter...');
       
-      // Initialize movement detector but don't start it
-      const detectorAvailable = await MovementDetector.initialize();
-      setMovementDetectorAvailable(detectorAvailable);
+      // Initialize phone step counter
+      const detectorAvailable = await PhoneStepCounter.initialize();
+      setPhoneStepCounterAvailable(detectorAvailable);
       
-      // Load saved data
-      const savedData = await loadStepData();
-      const initialSteps = savedData.steps || 0;
-      const initialCalories = Math.round(initialSteps * 0.04); // Simple calculation
-      
-      console.log('Initial steps:', initialSteps, 'Initial calories:', initialCalories);
-      
-      setTodayStats(prev => ({
-        ...prev,
-        steps: initialSteps,
-        calories: initialCalories
-      }));
+      if (detectorAvailable) {
+        // Load saved data first
+        const savedData = await loadStepData();
+        const initialSteps = savedData.steps || 0;
+        const initialCalories = PhoneStepCounter.calculateCalories(initialSteps, false);
+        
+        console.log('Initial steps:', initialSteps, 'Initial calories:', initialCalories);
+        
+        setTodayStats(prev => ({
+          ...prev,
+          steps: initialSteps,
+          calories: initialCalories
+        }));
 
-      setStepCounterAvailable(true);
+        // Set up phone step counter listener
+        PhoneStepCounter.addListener(({ stepCount, calories, isMoving, isAvailable }) => {
+          console.log('Phone step update:', { stepCount, calories, isMoving, isAvailable });
+          
+          if (isAvailable) {
+            setTodayStats(prev => ({
+              ...prev,
+              steps: stepCount,
+              calories: calories
+            }));
+            
+            setIsMoving(isMoving);
+            
+            // Save data when steps change
+            saveStepData(stepCount);
+          }
+        });
+
+        // Start phone step detection
+        PhoneStepCounter.startListening();
+        
+        setStepCounterAvailable(true);
+      } else {
+        // Fallback to simulation if phone step counter not available
+        console.log('Phone step counter not available, using simulation');
+        startStepSimulation();
+        setStepCounterAvailable(true);
+      }
       
     } catch (error) {
       console.error('Error initializing step counter:', error);
+      // Fallback to simulation
+      startStepSimulation();
       setStepCounterAvailable(true);
     } finally {
       setIsLoadingSteps(false);
@@ -226,9 +256,9 @@ export default function HomeScreen({ navigation }) {
     }));
     await saveStepData(0);
     
-    // Reset movement detector step count
-    if (movementDetectorAvailable) {
-      MovementDetector.resetStepCount();
+    // Reset phone step counter step count
+    if (phoneStepCounterAvailable) {
+      PhoneStepCounter.resetStepCount();
     }
   };
 
@@ -266,17 +296,17 @@ export default function HomeScreen({ navigation }) {
     console.log('Manual reset completed');
   };
 
-  // Debug function to check movement detector status
+  // Debug function to check phone step counter status
   const debugMovement = () => {
-    if (movementDetectorAvailable) {
-      const debugInfo = MovementDetector.getDebugInfo();
-      console.log('Movement Detector Debug Info:', debugInfo);
+    if (phoneStepCounterAvailable) {
+      const debugInfo = PhoneStepCounter.getDebugInfo();
+      console.log('Phone Step Counter Debug Info:', debugInfo);
       Alert.alert(
-        'Movement Debug Info',
-        `Calibrated: ${debugInfo.isCalibrated}\nMoving: ${debugInfo.isMoving}\nSteps: ${debugInfo.stepCount}\nCalibration Samples: ${debugInfo.calibrationSamples}`
+        'Phone Step Counter Debug Info',
+        `Available: ${debugInfo.isAvailable}\nListening: ${debugInfo.isListening}\nMoving: ${debugInfo.isMoving}\nSteps: ${debugInfo.stepCount}\nCalories: ${debugInfo.caloriesBurned}`
       );
     } else {
-      Alert.alert('Debug Info', 'Movement detector not available');
+      Alert.alert('Debug Info', 'Phone step counter not available');
     }
   };
 
@@ -285,24 +315,22 @@ export default function HomeScreen({ navigation }) {
     setStepCounterEnabled(!stepCounterEnabled);
     if (stepCounterEnabled) {
       // Disable step counter
-      MovementDetector.stopListening();
+      PhoneStepCounter.stopListening();
       if (stepUpdateInterval) {
         clearInterval(stepUpdateInterval);
         setStepUpdateInterval(null);
       }
       setIsMoving(false);
     } else {
-      // Enable step counter - start movement detection
-      if (movementDetectorAvailable) {
-        MovementDetector.startListening();
+      // Enable step counter - start phone step detection
+      if (phoneStepCounterAvailable) {
+        PhoneStepCounter.startListening();
         
-        // Set up movement detector listener
-        MovementDetector.addListener(({ stepCount, isMoving, isAvailable }) => {
-          console.log('Movement update:', { stepCount, isMoving, isAvailable });
+        // Set up phone step counter listener
+        PhoneStepCounter.addListener(({ stepCount, calories, isMoving, isAvailable }) => {
+          console.log('Phone step update:', { stepCount, calories, isMoving, isAvailable });
           
           if (isAvailable) {
-            const calories = MovementDetector.calculateCalories(stepCount, isMoving);
-            
             setTodayStats(prev => ({
               ...prev,
               steps: stepCount,
@@ -495,8 +523,8 @@ export default function HomeScreen({ navigation }) {
                   <Text style={styles.dailyResetText}>
                     Daily reset at 12:00 AM • {new Date().toLocaleDateString()}
                   </Text>
-                  <Text style={[styles.movementStatus, { color: stepCounterEnabled ? (isMoving ? '#4CAF50' : '#FF9800') : '#FF9800' }]}>
-                    {!stepCounterEnabled ? '👆 Manual Mode - Tap +1 Step to add steps' : (isMoving ? '🚶‍♀️ Moving - Steps counting!' : '⏸️ Still - No steps added')}
+                  <Text style={[styles.movementStatus, { color: stepCounterEnabled ? (isMoving ? '#4CAF50' : '#FF9800') : '#F44336' }]}>
+                    {!stepCounterEnabled ? '🚫 Step Counter Disabled' : (isMoving ? '🚶‍♀️ Moving - Phone sensors detecting steps!' : '⏸️ Still - Phone sensors monitoring')}
                   </Text>
                   {/* Test buttons for debugging */}
                   <View style={styles.testButtonsContainer}>
@@ -526,14 +554,6 @@ export default function HomeScreen({ navigation }) {
                         {stepCounterEnabled ? 'Disable' : 'Enable'}
                       </Text>
                     </TouchableOpacity>
-                    {!stepCounterEnabled && (
-                      <TouchableOpacity 
-                        style={[styles.testButton, styles.manualStepButton]} 
-                        onPress={addManualStep}
-                      >
-                        <Text style={styles.testButtonText}>+1 Step</Text>
-                      </TouchableOpacity>
-                    )}
                   </View>
                 </View>
                 <View style={styles.stepsCharacter}>
