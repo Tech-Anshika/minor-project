@@ -7,7 +7,7 @@ class MovementDetector {
     this.isListening = false;
     this.subscription = null;
     this.lastAcceleration = { x: 0, y: 0, z: 0 };
-    this.stepThreshold = 2.5; // Higher threshold for step detection
+    this.stepThreshold = 4.0; // Much higher threshold for step detection
     this.lastStepTime = 0;
     this.minStepInterval = 500; // Minimum time between steps (ms)
     this.stepCount = 0;
@@ -118,8 +118,14 @@ class MovementDetector {
     const deltaAcceleration = deltaX + deltaY + deltaZ;
 
     // Much stricter movement detection
-    const movementThreshold = 0.3; // Increased threshold
-    const stepDetectionThreshold = 1.8; // Higher threshold for step detection
+    const movementThreshold = 0.8; // Much higher threshold
+    const stepDetectionThreshold = 3.0; // Much higher threshold for step detection
+    
+    // Track movement history
+    this.movementHistory.push(deltaAcceleration);
+    if (this.movementHistory.length > 20) {
+      this.movementHistory.shift(); // Keep only last 20 readings
+    }
     
     // Only detect movement if there's significant change
     if (deltaAcceleration > movementThreshold) {
@@ -170,18 +176,21 @@ class MovementDetector {
       this.stepPattern.shift(); // Keep only last 10 readings
     }
 
-    // More sophisticated step detection
-    // A step should have a significant acceleration spike
+    // Much more strict step detection
+    // A step should have a very significant acceleration spike
     if (acceleration > this.stepThreshold) {
       // Additional validation: check if this looks like a real step pattern
       if (this.isValidStepPattern()) {
-        this.stepCount++;
-        this.lastStepTime = currentTime;
-        
-        console.log('Step detected! Total steps:', this.stepCount, 'Acceleration:', acceleration.toFixed(2));
-        
-        // Notify listeners about new step
-        this.notifyListeners();
+        // Extra validation: ensure we have enough movement history
+        if (this.movementHistory.length > 5) {
+          this.stepCount++;
+          this.lastStepTime = currentTime;
+          
+          console.log('Step detected! Total steps:', this.stepCount, 'Acceleration:', acceleration.toFixed(2));
+          
+          // Notify listeners about new step
+          this.notifyListeners();
+        }
       }
     }
   }

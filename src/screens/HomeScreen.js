@@ -46,6 +46,7 @@ export default function HomeScreen({ navigation }) {
   const [resetCheckInterval, setResetCheckInterval] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
   const [movementDetectorAvailable, setMovementDetectorAvailable] = useState(false);
+  const [stepCounterEnabled, setStepCounterEnabled] = useState(true);
 
   useEffect(() => {
     loadUserData();
@@ -111,6 +112,12 @@ export default function HomeScreen({ navigation }) {
           }
         });
 
+        // Stop any existing simulation
+        if (stepUpdateInterval) {
+          clearInterval(stepUpdateInterval);
+          setStepUpdateInterval(null);
+        }
+        
         // Start movement detection
         MovementDetector.startListening();
         
@@ -124,8 +131,10 @@ export default function HomeScreen({ navigation }) {
       
     } catch (error) {
       console.error('Error initializing step counter:', error);
-      // Fallback to simulation
-      startStepSimulation();
+      // Only fallback to simulation if movement detector is not available
+      if (!movementDetectorAvailable) {
+        startStepSimulation();
+      }
       setStepCounterAvailable(true);
     } finally {
       setIsLoadingSteps(false);
@@ -197,6 +206,12 @@ export default function HomeScreen({ navigation }) {
   };
 
   const startStepSimulation = () => {
+    // Don't start simulation if movement detector is available and working
+    if (movementDetectorAvailable) {
+      console.log('Movement detector available, skipping simulation');
+      return;
+    }
+    
     console.log('Starting fallback step simulation...');
     
     const interval = setInterval(() => {
@@ -288,6 +303,26 @@ export default function HomeScreen({ navigation }) {
       );
     } else {
       Alert.alert('Debug Info', 'Movement detector not available');
+    }
+  };
+
+  // Toggle step counter on/off
+  const toggleStepCounter = () => {
+    setStepCounterEnabled(!stepCounterEnabled);
+    if (stepCounterEnabled) {
+      // Disable step counter
+      MovementDetector.stopListening();
+      if (stepUpdateInterval) {
+        clearInterval(stepUpdateInterval);
+        setStepUpdateInterval(null);
+      }
+    } else {
+      // Enable step counter
+      if (movementDetectorAvailable) {
+        MovementDetector.startListening();
+      } else {
+        startStepSimulation();
+      }
     }
   };
 
@@ -465,8 +500,8 @@ export default function HomeScreen({ navigation }) {
                   <Text style={styles.dailyResetText}>
                     Daily reset at 12:00 AM • {new Date().toLocaleDateString()}
                   </Text>
-                  <Text style={[styles.movementStatus, { color: isMoving ? '#4CAF50' : '#FF9800' }]}>
-                    {isMoving ? '🚶‍♀️ Moving - Steps counting!' : '⏸️ Still - No steps added'}
+                  <Text style={[styles.movementStatus, { color: stepCounterEnabled ? (isMoving ? '#4CAF50' : '#FF9800') : '#F44336' }]}>
+                    {!stepCounterEnabled ? '🚫 Step Counter Disabled' : (isMoving ? '🚶‍♀️ Moving - Steps counting!' : '⏸️ Still - No steps added')}
                   </Text>
                   {/* Test buttons for debugging */}
                   <View style={styles.testButtonsContainer}>
@@ -487,6 +522,14 @@ export default function HomeScreen({ navigation }) {
                       onPress={debugMovement}
                     >
                       <Text style={styles.testButtonText}>Debug</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={[styles.testButton, stepCounterEnabled ? styles.disableButton : styles.enableButton]} 
+                      onPress={toggleStepCounter}
+                    >
+                      <Text style={styles.testButtonText}>
+                        {stepCounterEnabled ? 'Disable' : 'Enable'}
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -1153,6 +1196,12 @@ const styles = StyleSheet.create({
   },
   debugButton: {
     backgroundColor: '#9C27B0',
+  },
+  disableButton: {
+    backgroundColor: '#F44336',
+  },
+  enableButton: {
+    backgroundColor: '#4CAF50',
   },
   testButtonText: {
     color: 'white',
