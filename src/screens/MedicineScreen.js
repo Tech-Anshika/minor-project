@@ -12,7 +12,7 @@ import {
   FlatList,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import ModernGradientBackground from '../components/ModernGradientBackground';
 import ModernCard from '../components/ModernCard';
 import MedicineManager from '../services/MedicineManager';
