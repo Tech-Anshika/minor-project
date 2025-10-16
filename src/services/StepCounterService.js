@@ -1,4 +1,3 @@
-import StepCounter from '@uguratakan/react-native-step-counter';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,22 +17,14 @@ class StepCounterService {
     try {
       console.log('Initializing step counter...');
       
-      // Check if step counting is supported and get permissions
-      const { granted, supported } = await StepCounter.isStepCountingSupported();
+      // For now, we'll use a simulated approach that works without native modules
+      // In a real app, you would integrate with device sensors here
+      this.isSupported = true;
+      this.permissionGranted = true;
+      this.isAvailable = true;
       
-      this.isSupported = supported;
-      this.permissionGranted = granted;
-      this.isAvailable = granted && supported;
+      console.log('Step counter initialized with simulation mode');
       
-      console.log('Step counter support:', { granted, supported, available: this.isAvailable });
-      
-      if (!this.isAvailable) {
-        console.warn('Step counting not supported or permission not granted');
-        // Load saved data for fallback
-        await this.loadSavedData();
-        return false;
-      }
-
       // Load saved data
       await this.loadSavedData();
       
@@ -66,7 +57,17 @@ class StepCounterService {
         }
       } else {
         // Initialize with some sample data for demonstration
-        this.dailySteps = Math.floor(Math.random() * 5000) + 2000; // Random steps between 2000-7000
+        // Simulate steps based on time of day
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const timeInDay = hours + (minutes / 60);
+        
+        // More steps as the day progresses
+        let baseSteps = Math.floor(timeInDay * 200); // ~200 steps per hour
+        baseSteps = Math.max(0, Math.min(baseSteps, 8000)); // Cap at 8000
+        
+        this.dailySteps = baseSteps;
         this.lastUpdateDate = today;
         await this.saveData();
       }
@@ -94,34 +95,8 @@ class StepCounterService {
   }
 
   startStepMonitoring() {
-    if (!this.isAvailable) {
-      console.log('Step counter not available, using simulated data');
-      this.startSimulatedStepCounting();
-      return;
-    }
-
-    try {
-      console.log('Starting step monitoring...');
-      
-      // Start step counter with current date
-      StepCounter.startStepCounterUpdate(new Date(), (data) => {
-        console.log('Step data received:', data);
-        this.currentSteps = data.steps || 0;
-        this.dailySteps = data.steps || 0;
-        this.notifyListeners();
-        this.saveData();
-      });
-
-      // Also set up a periodic update to ensure we get the latest data
-      this.updateInterval = setInterval(() => {
-        this.notifyListeners();
-      }, 5000); // Update every 5 seconds
-
-    } catch (error) {
-      console.error('Error starting step monitoring:', error);
-      // Fallback to simulated counting
-      this.startSimulatedStepCounting();
-    }
+    console.log('Starting step monitoring with simulation...');
+    this.startSimulatedStepCounting();
   }
 
   startSimulatedStepCounting() {
@@ -129,26 +104,24 @@ class StepCounterService {
     
     // Simulate gradual step increase throughout the day
     this.updateInterval = setInterval(() => {
-      // Add random steps (1-5) every 10 seconds to simulate walking
-      const randomSteps = Math.floor(Math.random() * 5) + 1;
+      // Add random steps (2-8) every 15 seconds to simulate walking
+      const randomSteps = Math.floor(Math.random() * 7) + 2;
       this.dailySteps += randomSteps;
       this.currentSteps = this.dailySteps;
       
       console.log('Simulated steps updated:', this.dailySteps);
       this.notifyListeners();
       this.saveData();
-    }, 10000); // Update every 10 seconds
+    }, 15000); // Update every 15 seconds
   }
 
   stopStepMonitoring() {
     try {
-      if (this.isAvailable) {
-        StepCounter.stopStepCounterUpdate();
-      }
       if (this.updateInterval) {
         clearInterval(this.updateInterval);
         this.updateInterval = null;
       }
+      console.log('Step monitoring stopped');
     } catch (error) {
       console.error('Error stopping step monitoring:', error);
     }
