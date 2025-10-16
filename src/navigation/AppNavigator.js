@@ -2,9 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 // Import screens
 import HomeScreen from '../screens/HomeScreen';
@@ -19,59 +17,47 @@ import PeriodLogScreen from '../screens/PeriodLogScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
-// Custom Drawer Content
-function CustomDrawerContent({ navigation }) {
+// Health Stack - Contains all health-related features
+function HealthStack() {
   return (
-    <View style={styles.drawerContainer}>
-      <View style={styles.drawerHeader}>
-        <Text style={styles.drawerTitle}>🌸 PcoSense</Text>
-        <Text style={styles.drawerSubtitle}>Health & Wellness</Text>
-      </View>
-      
-      <View style={styles.drawerMenu}>
-        <TouchableOpacity 
-          style={styles.drawerItem}
-          onPress={() => navigation.navigate('PeriodLog')}
-        >
-          <Ionicons name="calendar-outline" size={24} color="#E91E63" />
-          <Text style={styles.drawerItemText}>Period Log</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.drawerItem}
-          onPress={() => navigation.navigate('Yoga')}
-        >
-          <Ionicons name="fitness-outline" size={24} color="#E91E63" />
-          <Text style={styles.drawerItemText}>Yoga & Exercise</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.drawerItem}
-          onPress={() => navigation.navigate('Food')}
-        >
-          <Ionicons name="restaurant-outline" size={24} color="#E91E63" />
-          <Text style={styles.drawerItemText}>Food & Diet</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.drawerItem}
-          onPress={() => navigation.navigate('Progress')}
-        >
-          <Ionicons name="trending-up-outline" size={24} color="#E91E63" />
-          <Text style={styles.drawerItemText}>Progress Tracking</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.drawerItem}
-          onPress={() => navigation.navigate('Chatbot')}
-        >
-          <Ionicons name="chatbubble-outline" size={24} color="#E91E63" />
-          <Text style={styles.drawerItemText}>AI Assistant</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#FFF5F8',
+        },
+        headerTintColor: '#E91E63',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
+      <Stack.Screen 
+        name="PeriodLog" 
+        component={PeriodLogScreen}
+        options={{ title: 'Period Log' }}
+      />
+      <Stack.Screen 
+        name="Yoga" 
+        component={YogaScreen}
+        options={{ title: 'Yoga & Exercise' }}
+      />
+      <Stack.Screen 
+        name="Food" 
+        component={FoodScreen}
+        options={{ title: 'Food & Diet' }}
+      />
+      <Stack.Screen 
+        name="Progress" 
+        component={ProgressScreen}
+        options={{ title: 'Progress Tracking' }}
+      />
+      <Stack.Screen 
+        name="Chatbot" 
+        component={ChatbotScreen}
+        options={{ title: 'AI Assistant' }}
+      />
+    </Stack.Navigator>
   );
 }
 
@@ -95,12 +81,12 @@ function MainTabs() {
 
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Menu') {
-            iconName = focused ? 'menu' : 'menu-outline';
+          } else if (route.name === 'Health') {
+            iconName = focused ? 'heart' : 'heart-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Settings') {
-            iconName = focused ? 'settings' : 'settings-outline';
+          } else if (route.name === 'More') {
+            iconName = focused ? 'ellipsis-horizontal' : 'ellipsis-horizontal-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -130,10 +116,10 @@ function MainTabs() {
         options={{ title: 'Home' }}
       />
       <Tab.Screen 
-        name="Menu" 
-        component={MenuStack}
+        name="Health" 
+        component={HealthStack}
         options={{ 
-          title: 'Menu',
+          title: 'Health',
           headerShown: false,
         }}
       />
@@ -143,10 +129,10 @@ function MainTabs() {
         options={{ title: 'Profile' }}
       />
       <Tab.Screen 
-        name="Settings" 
-        component={SettingsStack}
+        name="More" 
+        component={MoreStack}
         options={{ 
-          title: 'Settings',
+          title: 'More',
           headerShown: false,
         }}
       />
@@ -154,69 +140,8 @@ function MainTabs() {
   );
 }
 
-// Menu Stack - Contains all health-related features
-function MenuStack() {
-  return (
-    <Drawer.Navigator
-      drawerContent={CustomDrawerContent}
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#FFF5F8',
-        },
-        headerTintColor: '#E91E63',
-        drawerStyle: {
-          backgroundColor: '#FFF5F8',
-        },
-        drawerActiveTintColor: '#E91E63',
-        drawerInactiveTintColor: '#666',
-      }}
-    >
-      <Drawer.Screen 
-        name="PeriodLog" 
-        component={PeriodLogScreen}
-        options={{ 
-          title: 'Period Log',
-          drawerIcon: ({ color }) => <Ionicons name="calendar-outline" size={24} color={color} />
-        }}
-      />
-      <Drawer.Screen 
-        name="Yoga" 
-        component={YogaScreen}
-        options={{ 
-          title: 'Yoga & Exercise',
-          drawerIcon: ({ color }) => <Ionicons name="fitness-outline" size={24} color={color} />
-        }}
-      />
-      <Drawer.Screen 
-        name="Food" 
-        component={FoodScreen}
-        options={{ 
-          title: 'Food & Diet',
-          drawerIcon: ({ color }) => <Ionicons name="restaurant-outline" size={24} color={color} />
-        }}
-      />
-      <Drawer.Screen 
-        name="Progress" 
-        component={ProgressScreen}
-        options={{ 
-          title: 'Progress Tracking',
-          drawerIcon: ({ color }) => <Ionicons name="trending-up-outline" size={24} color={color} />
-        }}
-      />
-      <Drawer.Screen 
-        name="Chatbot" 
-        component={ChatbotScreen}
-        options={{ 
-          title: 'AI Assistant',
-          drawerIcon: ({ color }) => <Ionicons name="chatbubble-outline" size={24} color={color} />
-        }}
-      />
-    </Drawer.Navigator>
-  );
-}
-
-// Settings Stack - Contains app settings and preferences
-function SettingsStack() {
+// More Stack - Contains additional features and settings
+function MoreStack() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -224,12 +149,15 @@ function SettingsStack() {
           backgroundColor: '#FFF5F8',
         },
         headerTintColor: '#E91E63',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
       }}
     >
       <Stack.Screen 
-        name="SettingsMain" 
+        name="MoreMain" 
         component={ProfileScreen}
-        options={{ title: 'Settings' }}
+        options={{ title: 'More' }}
       />
     </Stack.Navigator>
   );
@@ -243,45 +171,3 @@ export default function AppNavigator({ isAuthenticated }) {
     </NavigationContainer>
   );
 }
-
-// Styles
-const styles = StyleSheet.create({
-  drawerContainer: {
-    flex: 1,
-    backgroundColor: '#FFF5F8',
-  },
-  drawerHeader: {
-    padding: 20,
-    paddingTop: 50,
-    backgroundColor: '#E91E63',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-  },
-  drawerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 5,
-  },
-  drawerSubtitle: {
-    fontSize: 14,
-    color: '#F8BBD9',
-  },
-  drawerMenu: {
-    padding: 20,
-  },
-  drawerItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    marginBottom: 5,
-  },
-  drawerItemText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#333',
-    marginLeft: 15,
-  },
-});

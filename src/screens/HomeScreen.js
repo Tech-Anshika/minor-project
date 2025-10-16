@@ -110,9 +110,9 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.headerActions}>
               <TouchableOpacity 
                 style={styles.menuButton}
-                onPress={() => navigation.navigate('Menu')}
+                onPress={() => navigation.navigate('Health')}
               >
-                <Ionicons name="menu" size={24} color="#E91E63" />
+                <Ionicons name="heart" size={24} color="#E91E63" />
               </TouchableOpacity>
               <View style={styles.statusContainer}>
                 <View style={styles.statusIndicator}>
