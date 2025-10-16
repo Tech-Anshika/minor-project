@@ -20,15 +20,27 @@ export default function MedicineWidget({ navigation, style = {} }) {
 
   useEffect(() => {
     const unsubscribeMedicines = MedicineManager.listenToMedicines(setMedicines);
-    const unsubscribeSchedules = MedicineManager.listenToSchedules(setSchedules);
-    const unsubscribeTakenRecords = MedicineManager.listenToTakenRecords(setTakenRecords);
-
+    const unsubscribeSchedules = MedicineManager.listenToMedicineSchedules(setSchedules);
+    
+    // For taken records, we'll use a different approach since there's no direct listener
+    const loadTakenRecords = async () => {
+      try {
+        const today = new Date();
+        const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+        const records = await MedicineManager.getMedicineTakenRecords(startOfDay, endOfDay);
+        setTakenRecords(records);
+      } catch (error) {
+        console.error('Error loading taken records:', error);
+      }
+    };
+    
+    loadTakenRecords();
     setIsLoading(false);
 
     return () => {
       unsubscribeMedicines();
       unsubscribeSchedules();
-      unsubscribeTakenRecords();
     };
   }, []);
 
@@ -38,14 +50,8 @@ export default function MedicineWidget({ navigation, style = {} }) {
       const todayString = today.toDateString();
       const todayDay = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
 
-      const todaySchedules = schedules.filter(schedule => {
-        const scheduleDate = schedule.date.toDate();
-        const scheduleDateString = scheduleDate.toDateString();
-        
-        // Check if it's today's date or if it's a recurring schedule for today's day of week
-        return scheduleDateString === todayString || 
-               (schedule.isRecurring && schedule.daysOfWeek && schedule.daysOfWeek.includes(todayDay));
-      });
+      // Filter schedules for today using the MedicineManager's logic
+      const todaySchedules = MedicineManager.getTodaysSchedule(schedules);
 
       const todayMeds = todaySchedules.map(schedule => {
         const medicine = medicines.find(med => med.id === schedule.medicineId);
@@ -53,14 +59,14 @@ export default function MedicineWidget({ navigation, style = {} }) {
 
         const takenToday = takenRecords.find(record => 
           record.scheduleId === schedule.id && 
-          record.date.toDate().toDateString() === todayString
+          record.date.toDateString() === todayString
         );
 
         return {
           ...schedule,
           medicine,
           takenToday: !!takenToday,
-          takenAt: takenToday?.takenAt?.toDate() || null,
+          takenAt: takenToday?.takenAt || null,
         };
       }).filter(Boolean);
 
@@ -70,13 +76,31 @@ export default function MedicineWidget({ navigation, style = {} }) {
 
   const handleMarkTaken = async (scheduleId) => {
     try {
-      await MedicineManager.markAsTaken(scheduleId);
+      await MedicineManager.markMedicineTaken(scheduleId);
+      // Reload taken records after marking as taken
+      const today = new Date();
+      const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+      const records = await MedicineManager.getMedicineTakenRecords(startOfDay, endOfDay);
+      setTakenRecords(records);
     } catch (error) {
       console.error('Error marking medicine as taken:', error);
     }
   };
 
   const getTimeString = (time) => {
+    // Time is stored as string in format "HH:MM"
+    if (typeof time === 'string') {
+      const [hours, minutes] = time.split(':').map(Number);
+      const date = new Date();
+      date.setHours(hours, minutes, 0, 0);
+      return date.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+    }
+    // Fallback for Timestamp objects
     const date = time.toDate();
     return date.toLocaleTimeString('en-US', { 
       hour: 'numeric', 
@@ -87,9 +111,25 @@ export default function MedicineWidget({ navigation, style = {} }) {
 
   const getNextMedicineTime = () => {
     const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+    
     const upcomingMedicines = todayMedicines
-      .filter(med => !med.takenToday)
-      .sort((a, b) => a.time.toDate() - b.time.toDate());
+      .filter(med => {
+        if (med.takenToday) return false;
+        
+        // Parse time string to minutes since midnight
+        const [hours, minutes] = med.time.split(':').map(Number);
+        const medicineTime = hours * 60 + minutes;
+        
+        return medicineTime > currentTime;
+      })
+      .sort((a, b) => {
+        const [aHours, aMinutes] = a.time.split(':').map(Number);
+        const [bHours, bMinutes] = b.time.split(':').map(Number);
+        const aTime = aHours * 60 + aMinutes;
+        const bTime = bHours * 60 + bMinutes;
+        return aTime - bTime;
+      });
     
     return upcomingMedicines.length > 0 ? upcomingMedicines[0] : null;
   };
