@@ -925,23 +925,23 @@ const styles = StyleSheet.create({
   // Tab Navigation
   tabContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     marginBottom: 20,
     backgroundColor: 'rgba(255,255,255,0.15)',
     marginHorizontal: 20,
     borderRadius: 12,
-    padding: 6,
-    gap: 4,
+    padding: 8,
+    gap: 6,
   },
   tab: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     borderRadius: 8,
-    minHeight: 48,
+    minHeight: 52,
   },
   activeTab: {
     backgroundColor: 'white',
@@ -955,7 +955,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     color: '#9CA3AF',
-    marginLeft: 6,
+    marginLeft: 8,
   },
   activeTabText: {
     color: '#E91E63',
@@ -1002,11 +1002,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 16,
+    minHeight: 40,
   },
   cardTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+    marginRight: 12,
   },
   cardTitle: {
     fontSize: 20,
@@ -1026,6 +1028,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
+    alignSelf: 'center',
   },
 
   // Statistics
@@ -1061,11 +1064,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#E2E8F0',
+    minHeight: 80,
   },
   scheduleInfo: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+    marginRight: 12,
   },
   medicineIcon: {
     width: 50,
@@ -1105,6 +1110,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
+    alignSelf: 'center',
   },
   takenButtonActive: {
     backgroundColor: '#4CAF50',
@@ -1127,6 +1133,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#E2E8F0',
+    minHeight: 80,
   },
   medicineDetails: {
     flex: 1,
@@ -1140,6 +1147,7 @@ const styles = StyleSheet.create({
   medicineActions: {
     flexDirection: 'row',
     gap: 8,
+    alignItems: 'center',
   },
   actionButton: {
     width: 32,
