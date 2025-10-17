@@ -51,8 +51,9 @@ export default function YogaScreen() {
         'Lower your forehead to the mat',
         'Breathe deeply and relax your whole body'
       ],
-      image: 'https://via.placeholder.com/600x400/E91E63/FFFFFF?text=Child%27s+Pose',
-      videoUrl: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
+      image: 'https://picsum.photos/seed/childspose/600/400',
+      videoUrl: 'vnd.youtube://2MTd6TYnWXk',
+      videoUrlWeb: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -71,8 +72,9 @@ export default function YogaScreen() {
         'Continue flowing between poses with breath',
         'Move slowly and breathe deeply for 5-10 rounds'
       ],
-      image: 'https://via.placeholder.com/600x400/E91E63/FFFFFF?text=Cat-Cow+Stretch',
-      videoUrl: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
+      image: 'https://picsum.photos/seed/catcow/600/400',
+      videoUrl: 'vnd.youtube://kqnua4rHVVA',
+      videoUrlWeb: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
     },
@@ -91,8 +93,9 @@ export default function YogaScreen() {
         'Extend arms parallel to floor at shoulder height',
         'Gaze over front fingertips and hold'
       ],
-      image: 'https://via.placeholder.com/600x400/9C27B0/FFFFFF?text=Warrior+II',
-      videoUrl: 'https://www.youtube.com/watch?v=EHl6TdjSIiQ',
+      image: 'https://picsum.photos/seed/warrior2/600/400',
+      videoUrl: 'vnd.youtube://EHl6TdjSIiQ',
+      videoUrlWeb: 'https://www.youtube.com/watch?v=EHl6TdjSIiQ',
       difficulty: 'Intermediate',
       category: 'Standing'
     },
@@ -111,8 +114,9 @@ export default function YogaScreen() {
         'Bring hands to prayer position at chest',
         'Focus on a fixed point and breathe steadily'
       ],
-      image: 'https://via.placeholder.com/600x400/9C27B0/FFFFFF?text=Tree+Pose',
-      videoUrl: 'https://www.youtube.com/watch?v=vITtwSNkQoQ',
+      image: 'https://picsum.photos/seed/treepose/600/400',
+      videoUrl: 'vnd.youtube://vITtwSNkQoQ',
+      videoUrlWeb: 'https://www.youtube.com/watch?v=vITtwSNkQoQ',
       difficulty: 'Beginner',
       category: 'Balance'
     },
@@ -131,8 +135,9 @@ export default function YogaScreen() {
         'Inhale and lift chest up, straightening arms slightly',
         'Keep elbows close to body and shoulders relaxed'
       ],
-      image: 'https://via.placeholder.com/600x400/FF9800/FFFFFF?text=Cobra+Pose',
-      videoUrl: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
+      image: 'https://picsum.photos/seed/cobrapose/600/400',
+      videoUrl: 'vnd.youtube://JUP_YdYKfWY',
+      videoUrlWeb: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -151,8 +156,9 @@ export default function YogaScreen() {
         'Lift hips up towards ceiling',
         'Interlace fingers under body and hold'
       ],
-      image: 'https://via.placeholder.com/600x400/FF9800/FFFFFF?text=Bridge+Pose',
-      videoUrl: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
+      image: 'https://picsum.photos/seed/bridgepose/600/400',
+      videoUrl: 'vnd.youtube://j4jDKc6Sq2s',
+      videoUrlWeb: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -171,8 +177,9 @@ export default function YogaScreen() {
         'Place arms by sides, palms up',
         'Close eyes, breathe deeply and relax'
       ],
-      image: 'https://via.placeholder.com/600x400/4CAF50/FFFFFF?text=Legs+Up+Wall',
-      videoUrl: 'https://www.youtube.com/watch?v=wRyhJwJ2OOY',
+      image: 'https://picsum.photos/seed/legsupwall/600/400',
+      videoUrl: 'vnd.youtube://wRyhJwJ2OOY',
+      videoUrlWeb: 'https://www.youtube.com/watch?v=wRyhJwJ2OOY',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -191,8 +198,9 @@ export default function YogaScreen() {
         'Reach for feet, ankles, or shins',
         'Keep spine long and breathe deeply'
       ],
-      image: 'https://via.placeholder.com/600x400/4CAF50/FFFFFF?text=Forward+Bend',
-      videoUrl: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
+      image: 'https://picsum.photos/seed/forwardbend/600/400',
+      videoUrl: 'vnd.youtube://g_tea8ZNk5A',
+      videoUrlWeb: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
       difficulty: 'Beginner',
       category: 'Forward Fold'
     },
@@ -345,22 +353,28 @@ export default function YogaScreen() {
   };
 
   // Open video tutorial
-  const openVideoTutorial = async (videoUrl) => {
+  const openVideoTutorial = async (pose) => {
     try {
-      // Direct link approach - just open the URL
-      await Linking.openURL(videoUrl);
+      // Try opening in YouTube app first
+      const canOpen = await Linking.canOpenURL(pose.videoUrl);
+      if (canOpen) {
+        await Linking.openURL(pose.videoUrl);
+      } else {
+        // Fallback to web browser
+        await Linking.openURL(pose.videoUrlWeb);
+      }
     } catch (error) {
-      console.error('Error opening video:', error);
-      Alert.alert(
-        'Cannot Open Video',
-        'Please make sure you have YouTube app installed or try opening in your browser.',
-        [
-          {
-            text: 'OK',
-            onPress: () => console.log('Video open cancelled')
-          }
-        ]
-      );
+      // If all fails, try web URL
+      try {
+        await Linking.openURL(pose.videoUrlWeb);
+      } catch (webError) {
+        console.error('Error opening video:', webError);
+        Alert.alert(
+          'Cannot Open Video',
+          'Please make sure you have YouTube app installed or a web browser available.',
+          [{ text: 'OK' }]
+        );
+      }
     }
   };
 
@@ -386,7 +400,7 @@ export default function YogaScreen() {
               <Text style={styles.sessionTitle}>Yoga Session</Text>
               <Text style={styles.sessionTime}>{formatTime(sessionTime)}</Text>
             </View>
-            <TouchableOpacity onPress={() => openVideoTutorial(currentPose.videoUrl)} style={styles.videoIconButton}>
+            <TouchableOpacity onPress={() => openVideoTutorial(currentPose)} style={styles.videoIconButton}>
               <Ionicons name="logo-youtube" size={28} color="#FF0000" />
             </TouchableOpacity>
           </View>
@@ -615,7 +629,7 @@ export default function YogaScreen() {
               <View style={styles.buttonContainer}>
                 <TouchableOpacity 
                   style={[styles.actionButton, styles.videoButton]}
-                  onPress={() => openVideoTutorial(pose.videoUrl)}
+                  onPress={() => openVideoTutorial(pose)}
                 >
                   <Ionicons name="logo-youtube" size={22} color="#FF0000" />
                   <Text style={styles.videoButtonText}>Watch Tutorial</Text>
