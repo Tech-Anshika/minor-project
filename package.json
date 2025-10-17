@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "expo-av": "^16.0.7"
+  }
+}
