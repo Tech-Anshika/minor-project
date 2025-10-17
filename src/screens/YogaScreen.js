@@ -347,14 +347,26 @@ export default function YogaScreen() {
   // Open video tutorial
   const openVideoTutorial = async (videoUrl) => {
     try {
-      const canOpen = await Linking.canOpenURL(videoUrl);
-      if (canOpen) {
-        await Linking.openURL(videoUrl);
+      // Extract video ID from YouTube URL
+      let videoId = '';
+      if (videoUrl.includes('youtube.com/watch?v=')) {
+        videoId = videoUrl.split('watch?v=')[1].split('&')[0];
+      } else if (videoUrl.includes('youtu.be/')) {
+        videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+      }
+      
+      // Try to open in YouTube app first, then fallback to browser
+      const youtubeAppUrl = `vnd.youtube://${videoId}`;
+      const youtubeBrowserUrl = `https://www.youtube.com/watch?v=${videoId}`;
+      
+      const canOpenApp = await Linking.canOpenURL(youtubeAppUrl);
+      if (canOpenApp) {
+        await Linking.openURL(youtubeAppUrl);
       } else {
-        Alert.alert('Error', 'Cannot open video tutorial');
+        await Linking.openURL(youtubeBrowserUrl);
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to open video tutorial');
+      Alert.alert('Error', 'Failed to open video tutorial. Please make sure you have YouTube app installed or a web browser.');
     }
   };
 
@@ -370,57 +382,77 @@ export default function YogaScreen() {
   if (isSessionActive && currentPose) {
     return (
       <View style={styles.sessionContainer}>
-        <View style={[styles.sessionContent, { opacity: 1, transform: [{ scale: 1 }] }]}>
+        <ScrollView style={styles.sessionScrollView} showsVerticalScrollIndicator={false}>
           {/* Session Header */}
           <View style={styles.sessionHeader}>
             <TouchableOpacity onPress={endSession} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color="#E91E63" />
+              <Ionicons name="close" size={28} color="#E91E63" />
             </TouchableOpacity>
             <View style={styles.sessionInfo}>
               <Text style={styles.sessionTitle}>Yoga Session</Text>
               <Text style={styles.sessionTime}>{formatTime(sessionTime)}</Text>
             </View>
-            <View style={styles.progressContainer}>
-              <Text style={styles.progressText}>{Math.round(sessionProgress)}%</Text>
-            </View>
+            <TouchableOpacity onPress={() => openVideoTutorial(currentPose.videoUrl)} style={styles.videoIconButton}>
+              <Ionicons name="logo-youtube" size={28} color="#FF0000" />
+            </TouchableOpacity>
           </View>
 
           {/* Progress Bar */}
-          <View style={styles.progressBar}>
-            <View style={[styles.progressFill, { width: `${sessionProgress}%` }]} />
+          <View style={styles.sessionProgressContainer}>
+            <View style={styles.progressBar}>
+              <View style={[styles.progressFill, { width: `${sessionProgress}%` }]} />
+            </View>
+            <Text style={styles.sessionProgressText}>{Math.round(sessionProgress)}% Complete</Text>
           </View>
 
-          {/* Current Pose */}
-          <View style={styles.currentPoseContainer}>
-            <AnimatedCharacter
-              type="yoga"
-              size={120}
-              color={getPhaseColor(currentPose.phase)}
-              showText={false}
+          {/* Pose Image */}
+          <View style={styles.sessionImageContainer}>
+            <Image
+              source={{ uri: currentPose.image }}
+              style={styles.sessionPoseImage}
+              resizeMode="cover"
             />
-            <Text style={styles.currentPoseName}>{currentPose.name}</Text>
-            <Text style={styles.currentPosePhase}>{currentPose.phase} Phase</Text>
-            
-            {/* Pose Timer */}
-            <View style={styles.poseTimerContainer}>
+            <View style={styles.sessionImageOverlay}>
+              <Text style={styles.sessionPoseName}>{currentPose.name}</Text>
+              <Text style={styles.sessionPosePhase}>{currentPose.phase} Phase</Text>
+            </View>
+          </View>
+
+          {/* Pose Timer */}
+          <View style={styles.poseTimerContainer}>
+            <View style={styles.timerRow}>
+              <Ionicons name="time-outline" size={24} color="#E91E63" />
               <Text style={styles.poseTimerText}>
                 {formatTime(poseTime)} / {formatTime(currentPose.durationSeconds)}
               </Text>
-              <View style={styles.poseProgressBar}>
-                <View style={[styles.poseProgressFill, { 
-                  width: `${(poseTime / currentPose.durationSeconds) * 100}%` 
-                }]} />
-              </View>
+            </View>
+            <View style={styles.poseProgressBar}>
+              <View style={[styles.poseProgressFill, { 
+                width: `${(poseTime / currentPose.durationSeconds) * 100}%` 
+              }]} />
             </View>
           </View>
 
           {/* Instructions */}
           <View style={styles.instructionsContainer}>
-            <Text style={styles.instructionsTitle}>Instructions:</Text>
+            <Text style={styles.instructionsTitle}>📋 Step-by-Step Instructions:</Text>
             {currentPose.instructions.map((instruction, index) => (
               <View key={index} style={styles.instructionItem}>
-                <Text style={styles.instructionNumber}>{index + 1}.</Text>
+                <View style={styles.instructionNumberCircle}>
+                  <Text style={styles.instructionNumber}>{index + 1}</Text>
+                </View>
                 <Text style={styles.instructionText}>{instruction}</Text>
+              </View>
+            ))}
+          </View>
+
+          {/* Benefits */}
+          <View style={styles.sessionBenefitsContainer}>
+            <Text style={styles.sessionBenefitsTitle}>✨ Benefits:</Text>
+            {currentPose.benefits.map((benefit, index) => (
+              <View key={index} style={styles.sessionBenefitItem}>
+                <Ionicons name="checkmark-circle" size={18} color="#4CAF50" />
+                <Text style={styles.sessionBenefitText}>{benefit}</Text>
               </View>
             ))}
           </View>
@@ -428,23 +460,26 @@ export default function YogaScreen() {
           {/* Session Controls */}
           <View style={styles.sessionControls}>
             <TouchableOpacity 
-              style={styles.controlButton} 
+              style={[styles.navControlButton, currentPoseIndex === 0 && styles.disabledButton]} 
               onPress={previousPose}
               disabled={currentPoseIndex === 0}
             >
-              <Ionicons name="chevron-back" size={24} color={currentPoseIndex === 0 ? "#CCC" : "#E91E63"} />
+              <Ionicons name="chevron-back" size={28} color={currentPoseIndex === 0 ? "#CCC" : "#E91E63"} />
+              <Text style={[styles.navControlText, currentPoseIndex === 0 && styles.disabledText]}>Previous</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.pauseButton} onPress={pauseSession}>
-              <Ionicons name={isPaused ? "play" : "pause"} size={32} color="white" />
+              <Ionicons name={isPaused ? "play" : "pause"} size={36} color="white" />
+              <Text style={styles.pauseButtonText}>{isPaused ? 'Resume' : 'Pause'}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity 
-              style={styles.controlButton} 
+              style={[styles.navControlButton, currentPoseIndex === sessionPoses.length - 1 && styles.disabledButton]} 
               onPress={nextPose}
               disabled={currentPoseIndex === sessionPoses.length - 1}
             >
-              <Ionicons name="chevron-forward" size={24} color={currentPoseIndex === sessionPoses.length - 1 ? "#CCC" : "#E91E63"} />
+              <Ionicons name="chevron-forward" size={28} color={currentPoseIndex === sessionPoses.length - 1 ? "#CCC" : "#E91E63"} />
+              <Text style={[styles.navControlText, currentPoseIndex === sessionPoses.length - 1 && styles.disabledText]}>Next</Text>
             </TouchableOpacity>
           </View>
 
@@ -452,18 +487,20 @@ export default function YogaScreen() {
           <View style={styles.sessionStats}>
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{currentPoseIndex + 1}</Text>
-              <Text style={styles.statLabel}>of {sessionPoses.length}</Text>
+              <Text style={styles.statLabel}>of {sessionPoses.length} Poses</Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{currentPose.difficulty}</Text>
-              <Text style={styles.statLabel}>Level</Text>
+              <Text style={styles.statLabel}>Difficulty</Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{currentPose.category}</Text>
-              <Text style={styles.statLabel}>Type</Text>
+              <Text style={styles.statLabel}>Category</Text>
             </View>
           </View>
-        </View>
+          
+          <View style={{ height: 30 }} />
+        </ScrollView>
       </View>
     );
   }
@@ -901,17 +938,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF5F8',
   },
-  sessionContent: {
+  sessionScrollView: {
     flex: 1,
-    padding: 20,
   },
   sessionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    padding: 20,
+    paddingTop: 10,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
   },
   closeButton: {
+    padding: 8,
+  },
+  videoIconButton: {
     padding: 8,
   },
   sessionInfo: {
@@ -924,71 +967,101 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   sessionTime: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666',
     marginTop: 4,
   },
-  progressContainer: {
-    alignItems: 'center',
-  },
-  progressText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#E91E63',
+  sessionProgressContainer: {
+    padding: 20,
+    paddingBottom: 10,
   },
   progressBar: {
-    height: 4,
+    height: 6,
     backgroundColor: '#E0E0E0',
-    borderRadius: 2,
-    marginBottom: 20,
+    borderRadius: 3,
+    marginBottom: 8,
   },
   progressFill: {
     height: '100%',
     backgroundColor: '#E91E63',
-    borderRadius: 2,
+    borderRadius: 3,
   },
-  currentPoseContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  currentPoseName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginTop: 16,
+  sessionProgressText: {
+    fontSize: 12,
+    color: '#666',
     textAlign: 'center',
   },
-  currentPosePhase: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 4,
+  sessionImageContainer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 16,
+    overflow: 'hidden',
+    height: 250,
+    position: 'relative',
+  },
+  sessionPoseImage: {
+    width: '100%',
+    height: '100%',
+  },
+  sessionImageOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 16,
+  },
+  sessionPoseName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 4,
+  },
+  sessionPosePhase: {
+    fontSize: 14,
+    color: 'white',
+    opacity: 0.9,
   },
   poseTimerContainer: {
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  timerRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
+    justifyContent: 'center',
+    marginBottom: 12,
   },
   poseTimerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#E91E63',
-    marginBottom: 8,
+    marginLeft: 8,
   },
   poseProgressBar: {
-    width: 200,
-    height: 6,
+    height: 8,
     backgroundColor: '#E0E0E0',
-    borderRadius: 3,
+    borderRadius: 4,
   },
   poseProgressFill: {
     height: '100%',
     backgroundColor: '#E91E63',
-    borderRadius: 3,
+    borderRadius: 4,
   },
   instructionsContainer: {
     backgroundColor: 'white',
+    marginHorizontal: 20,
     borderRadius: 12,
     padding: 20,
-    marginBottom: 30,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -1003,50 +1076,120 @@ const styles = StyleSheet.create({
   },
   instructionItem: {
     flexDirection: 'row',
-    marginBottom: 12,
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  instructionNumberCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#E91E63',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
   },
   instructionNumber: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    color: '#E91E63',
-    marginRight: 12,
-    minWidth: 20,
+    color: 'white',
   },
   instructionText: {
     fontSize: 16,
-    color: '#666',
+    color: '#333',
     flex: 1,
-    lineHeight: 22,
+    lineHeight: 24,
+  },
+  sessionBenefitsContainer: {
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  sessionBenefitsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 12,
+  },
+  sessionBenefitItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  sessionBenefitText: {
+    fontSize: 15,
+    color: '#666',
+    marginLeft: 10,
+    flex: 1,
   },
   sessionControls: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 30,
-  },
-  controlButton: {
-    padding: 12,
+    justifyContent: 'space-between',
     marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  navControlButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#E91E63',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  disabledButton: {
+    borderColor: '#E0E0E0',
+    backgroundColor: '#F5F5F5',
+  },
+  navControlText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#E91E63',
+    marginLeft: 4,
+  },
+  disabledText: {
+    color: '#CCC',
   },
   pauseButton: {
     backgroundColor: '#E91E63',
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#E91E63',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.4,
     shadowRadius: 8,
-    elevation: 6,
+    elevation: 8,
+  },
+  pauseButtonText: {
+    color: 'white',
+    fontSize: 11,
+    fontWeight: 'bold',
+    marginTop: 4,
   },
   sessionStats: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: 'white',
+    marginHorizontal: 20,
     borderRadius: 12,
     padding: 20,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -1062,9 +1205,10 @@ const styles = StyleSheet.create({
     color: '#E91E63',
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
     marginTop: 4,
+    textAlign: 'center',
   },
 });
 
