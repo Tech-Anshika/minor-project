@@ -51,7 +51,7 @@ export default function YogaScreen() {
         'Lower your forehead to the mat',
         'Breathe deeply and relax your whole body'
       ],
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXkHXy2bGJ1OqC3BPpP9rSLfqmHJP8lZVmBQ&s',
+      image: 'https://via.placeholder.com/600x400/E91E63/FFFFFF?text=Child%27s+Pose',
       videoUrl: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
       difficulty: 'Beginner',
       category: 'Restorative'
@@ -71,7 +71,7 @@ export default function YogaScreen() {
         'Continue flowing between poses with breath',
         'Move slowly and breathe deeply for 5-10 rounds'
       ],
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO6rEfVYpCLemPGWN8uabQOB4rIz4Q0aWBkg&s',
+      image: 'https://via.placeholder.com/600x400/E91E63/FFFFFF?text=Cat-Cow+Stretch',
       videoUrl: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
@@ -91,7 +91,7 @@ export default function YogaScreen() {
         'Extend arms parallel to floor at shoulder height',
         'Gaze over front fingertips and hold'
       ],
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJKLZpQzqIWpN8Wb5d0F1kTvz_4FZ8vFRqJA&s',
+      image: 'https://via.placeholder.com/600x400/9C27B0/FFFFFF?text=Warrior+II',
       videoUrl: 'https://www.youtube.com/watch?v=EHl6TdjSIiQ',
       difficulty: 'Intermediate',
       category: 'Standing'
@@ -111,7 +111,7 @@ export default function YogaScreen() {
         'Bring hands to prayer position at chest',
         'Focus on a fixed point and breathe steadily'
       ],
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_2cGWzjRGJ0OqXzGvMYBQVOhkh4VpL7O_xw&s',
+      image: 'https://via.placeholder.com/600x400/9C27B0/FFFFFF?text=Tree+Pose',
       videoUrl: 'https://www.youtube.com/watch?v=vITtwSNkQoQ',
       difficulty: 'Beginner',
       category: 'Balance'
@@ -131,7 +131,7 @@ export default function YogaScreen() {
         'Inhale and lift chest up, straightening arms slightly',
         'Keep elbows close to body and shoulders relaxed'
       ],
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxK1vwZ6bqMYW0rK5nUwFqPvXRs-c3bLRkPw&s',
+      image: 'https://via.placeholder.com/600x400/FF9800/FFFFFF?text=Cobra+Pose',
       videoUrl: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
       difficulty: 'Beginner',
       category: 'Backbend'
@@ -151,7 +151,7 @@ export default function YogaScreen() {
         'Lift hips up towards ceiling',
         'Interlace fingers under body and hold'
       ],
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVxFkP8xqQsqJrLmC2cJD4fqoiLXWa8BVQlQ&s',
+      image: 'https://via.placeholder.com/600x400/FF9800/FFFFFF?text=Bridge+Pose',
       videoUrl: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
       difficulty: 'Beginner',
       category: 'Backbend'
@@ -171,7 +171,7 @@ export default function YogaScreen() {
         'Place arms by sides, palms up',
         'Close eyes, breathe deeply and relax'
       ],
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3UBqqj4kN9VNh2yN7YyxUiJW1OfUXF7JfBQ&s',
+      image: 'https://via.placeholder.com/600x400/4CAF50/FFFFFF?text=Legs+Up+Wall',
       videoUrl: 'https://www.youtube.com/watch?v=wRyhJwJ2OOY',
       difficulty: 'Beginner',
       category: 'Restorative'
@@ -191,7 +191,7 @@ export default function YogaScreen() {
         'Reach for feet, ankles, or shins',
         'Keep spine long and breathe deeply'
       ],
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBwKBxvOKcDH-JnXDPCQHGhOY8RpE5QX5nEA&s',
+      image: 'https://via.placeholder.com/600x400/4CAF50/FFFFFF?text=Forward+Bend',
       videoUrl: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
       difficulty: 'Beginner',
       category: 'Forward Fold'
