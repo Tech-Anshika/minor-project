@@ -52,7 +52,7 @@ export default function YogaScreen() {
         'Breathe deeply and hold the pose'
       ],
       image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
-      videoUrl: 'https://youtu.be/2MTbWLTIutM',
+      videoUrl: 'https://youtu.be/D65N9OvPdJM',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -72,7 +72,7 @@ export default function YogaScreen() {
         'Move slowly and breathe deeply'
       ],
       image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://youtu.be/kqnua4rHVVA',
+      videoUrl: 'https://youtu.be/9nqpR3fGbVM',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
     },
@@ -92,7 +92,7 @@ export default function YogaScreen() {
         'Gaze over front fingertips'
       ],
       image: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400',
-      videoUrl: 'https://youtu.be/lbS2SjJBN4s',
+      videoUrl: 'https://youtu.be/zLLkh3U6wRA',
       difficulty: 'Intermediate',
       category: 'Standing'
     },
@@ -112,7 +112,7 @@ export default function YogaScreen() {
         'Breathe steadily and hold'
       ],
       image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://youtu.be/vITtwSNkQoQ',
+      videoUrl: 'https://youtu.be/vXwNoUgTUqc',
       difficulty: 'Beginner',
       category: 'Balance'
     },
@@ -152,7 +152,7 @@ export default function YogaScreen() {
         'Interlace fingers under body'
       ],
       image: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=400',
-      videoUrl: 'https://youtu.be/j4jDKc6Sq2s',
+      videoUrl: 'https://youtu.be/Q0aD_L8rekQ',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -172,7 +172,7 @@ export default function YogaScreen() {
         'Close eyes and breathe deeply'
       ],
       image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400',
-      videoUrl: 'https://youtu.be/wRyhJwJ2OOY',
+      videoUrl: 'https://youtu.be/bBkCxZB6bNE',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -192,7 +192,7 @@ export default function YogaScreen() {
         'Keep spine long'
       ],
       image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://youtu.be/g_tea8ZNk5A',
+      videoUrl: 'https://youtu.be/CWGBNBDTRd4',
       difficulty: 'Beginner',
       category: 'Forward Fold'
     },
