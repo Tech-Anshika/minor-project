@@ -52,7 +52,7 @@ export default function YogaScreen() {
         'Breathe deeply and hold the pose'
       ],
       image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
+      videoUrl: 'https://www.youtube.com/watch?v=8h-sU_1Y8OY',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -92,7 +92,7 @@ export default function YogaScreen() {
         'Gaze over front fingertips'
       ],
       image: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=jUOSGJm7mhI',
+      videoUrl: 'https://www.youtube.com/watch?v=FHEo2GdwDRE',
       difficulty: 'Intermediate',
       category: 'Standing'
     },
@@ -132,7 +132,7 @@ export default function YogaScreen() {
         'Keep elbows close to body'
       ],
       image: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
+      videoUrl: 'https://www.youtube.com/watch?v=z21589j_qGo',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -152,7 +152,7 @@ export default function YogaScreen() {
         'Interlace fingers under body'
       ],
       image: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
+      videoUrl: 'https://www.youtube.com/watch?v=xvnljYpnw8M',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -192,7 +192,7 @@ export default function YogaScreen() {
         'Keep spine long'
       ],
       image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
+      videoUrl: 'https://www.youtube.com/watch?v=MeN9AKR4j0c',
       difficulty: 'Beginner',
       category: 'Forward Fold'
     },
