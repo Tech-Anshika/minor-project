@@ -180,3 +180,5 @@ EXPO_PUBLIC_EXPO_PROJECT_ID=your_expo_project_id`;
 
 // Start the setup process
 askQuestion(0);
+
+

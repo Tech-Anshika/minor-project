@@ -8,10 +8,11 @@ import {
   Image,
   Dimensions,
   Alert,
+  ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AnimatedCharacter from '../components/AnimatedCharacter';
-import PoseDemonstration from '../components/PoseDemonstration';
 
 const { width } = Dimensions.get('window');
 
@@ -26,9 +27,8 @@ export default function YogaScreen() {
   const [isPaused, setIsPaused] = useState(false);
   const [sessionPoses, setSessionPoses] = useState([]);
   const [currentPoseIndex, setCurrentPoseIndex] = useState(0);
-  const [showDemonstration, setShowDemonstration] = useState(false);
-  const [demonstrationPose, setDemonstrationPose] = useState(null);
-  const [isDemonstrationPlaying, setIsDemonstrationPlaying] = useState(false);
+  const [imageLoadingStates, setImageLoadingStates] = useState({});
+  const [imageErrors, setImageErrors] = useState({});
   
   const timerRef = useRef(null);
   const poseTimerRef = useRef(null);
@@ -41,7 +41,7 @@ export default function YogaScreen() {
       name: 'Child\'s Pose (Balasana)',
       phase: 'Menstrual',
       duration: '5-10 minutes',
-      durationSeconds: 300, // 5 minutes in seconds
+      durationSeconds: 300,
       benefits: ['Relieves menstrual cramps', 'Reduces stress', 'Calms the mind'],
       description: 'A gentle resting pose that helps relieve menstrual cramps and stress.',
       instructions: [
@@ -51,7 +51,8 @@ export default function YogaScreen() {
         'Lower your forehead to the mat',
         'Breathe deeply and hold the pose'
       ],
-      image: '🧘‍♀️',
+      image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -70,7 +71,8 @@ export default function YogaScreen() {
         'Continue flowing between poses',
         'Move slowly and breathe deeply'
       ],
-      image: '🐱',
+      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
     },
@@ -89,7 +91,8 @@ export default function YogaScreen() {
         'Extend arms parallel to floor',
         'Gaze over front fingertips'
       ],
-      image: '⚔️',
+      image: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=jUOSGJm7mhI',
       difficulty: 'Intermediate',
       category: 'Standing'
     },
@@ -108,7 +111,8 @@ export default function YogaScreen() {
         'Focus on a fixed point',
         'Breathe steadily and hold'
       ],
-      image: '🌳',
+      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=vITtwSNkQoQ',
       difficulty: 'Beginner',
       category: 'Balance'
     },
@@ -127,7 +131,8 @@ export default function YogaScreen() {
         'Lift chest and head up',
         'Keep elbows close to body'
       ],
-      image: '🐍',
+      image: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -146,7 +151,8 @@ export default function YogaScreen() {
         'Lift hips up',
         'Interlace fingers under body'
       ],
-      image: '🌉',
+      image: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -165,7 +171,8 @@ export default function YogaScreen() {
         'Place arms by sides',
         'Close eyes and breathe deeply'
       ],
-      image: '🦵',
+      image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=wRyhJwJ2OOY',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -184,7 +191,8 @@ export default function YogaScreen() {
         'Reach for feet or shins',
         'Keep spine long'
       ],
-      image: '🧘',
+      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
       difficulty: 'Beginner',
       category: 'Forward Fold'
     },
@@ -336,41 +344,18 @@ export default function YogaScreen() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Pose demonstration functions
-  const startPoseDemonstration = (pose) => {
-    setDemonstrationPose(pose);
-    setShowDemonstration(true);
-    setIsDemonstrationPlaying(true);
-  };
-
-  const closeDemonstration = () => {
-    setShowDemonstration(false);
-    setDemonstrationPose(null);
-    setIsDemonstrationPlaying(false);
-  };
-
-  const handleDemonstrationComplete = () => {
-    setIsDemonstrationPlaying(false);
-    Alert.alert(
-      'Demonstration Complete! 🎉',
-      'Ready to start your practice?',
-      [
-        { text: 'Watch Again', onPress: () => setIsDemonstrationPlaying(true) },
-        { text: 'Start Practice', onPress: () => {
-          closeDemonstration();
-          startYogaSession(demonstrationPose);
-        }},
-        { text: 'Close', onPress: closeDemonstration }
-      ]
-    );
-  };
-
-  const handleDemonstrationPause = () => {
-    setIsDemonstrationPlaying(false);
-  };
-
-  const handleDemonstrationPlay = () => {
-    setIsDemonstrationPlaying(true);
+  // Open video tutorial
+  const openVideoTutorial = async (videoUrl) => {
+    try {
+      const canOpen = await Linking.canOpenURL(videoUrl);
+      if (canOpen) {
+        await Linking.openURL(videoUrl);
+      } else {
+        Alert.alert('Error', 'Cannot open video tutorial');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to open video tutorial');
+    }
   };
 
   // Cleanup timers on unmount
@@ -380,19 +365,6 @@ export default function YogaScreen() {
       stopPoseTimer();
     };
   }, []);
-
-  // Pose Demonstration Interface
-  if (showDemonstration && demonstrationPose) {
-    return (
-      <PoseDemonstration
-        pose={demonstrationPose}
-        isPlaying={isDemonstrationPlaying}
-        onComplete={handleDemonstrationComplete}
-        onPause={handleDemonstrationPause}
-        onPlay={handleDemonstrationPlay}
-      />
-    );
-  }
 
   // Yoga Session Interface
   if (isSessionActive && currentPose) {
@@ -547,49 +519,85 @@ export default function YogaScreen() {
       <View style={styles.posesContainer}>
         {yogaPoses.map((pose) => (
           <View key={pose.id} style={styles.poseCard}>
-            <View style={styles.poseHeader}>
-              <View style={styles.poseImageContainer}>
-                <Text style={styles.poseEmoji}>{pose.image}</Text>
-              </View>
-              <View style={styles.poseInfo}>
-                <Text style={styles.poseName}>{pose.name}</Text>
-                <View style={styles.poseMeta}>
-                  <View style={[styles.phaseTag, { backgroundColor: getPhaseColor(pose.phase) }]}>
-                    <Text style={styles.phaseTagText}>{pose.phase}</Text>
+            {/* Pose Image Header */}
+            <View style={styles.imageWrapper}>
+              <Image
+                source={{ uri: pose.image }}
+                style={styles.poseImageFull}
+                resizeMode="cover"
+                onLoadStart={() => {
+                  setImageLoadingStates(prev => ({ ...prev, [pose.id]: true }));
+                }}
+                onLoadEnd={() => {
+                  setImageLoadingStates(prev => ({ ...prev, [pose.id]: false }));
+                }}
+                onError={() => {
+                  setImageErrors(prev => ({ ...prev, [pose.id]: true }));
+                  setImageLoadingStates(prev => ({ ...prev, [pose.id]: false }));
+                }}
+              />
+              {imageLoadingStates[pose.id] && (
+                <View style={styles.imageLoadingContainer}>
+                  <ActivityIndicator size="large" color="#E91E63" />
+                </View>
+              )}
+              {imageErrors[pose.id] && (
+                <View style={styles.imageErrorContainer}>
+                  <Ionicons name="image-outline" size={48} color="#CCC" />
+                  <Text style={styles.imageErrorText}>Image not available</Text>
+                </View>
+              )}
+            </View>
+            
+            <View style={styles.poseContent}>
+              <View style={styles.poseHeader}>
+                <View style={styles.poseInfo}>
+                  <Text style={styles.poseName}>{pose.name}</Text>
+                  <View style={styles.poseMeta}>
+                    <View style={[styles.phaseTag, { backgroundColor: getPhaseColor(pose.phase) }]}>
+                      <Text style={styles.phaseTagText}>{pose.phase}</Text>
+                    </View>
+                    <View style={styles.difficultyTag}>
+                      <Ionicons name="star" size={12} color="#FF9800" />
+                      <Text style={styles.difficultyText}>{pose.difficulty}</Text>
+                    </View>
                   </View>
-                  <Text style={styles.duration}>{pose.duration}</Text>
+                </View>
+                <View style={styles.durationBadge}>
+                  <Ionicons name="time" size={16} color="#666" />
+                  <Text style={styles.durationText}>{pose.duration}</Text>
                 </View>
               </View>
-            </View>
 
-            <Text style={styles.poseDescription}>{pose.description}</Text>
+              <Text style={styles.poseDescription}>{pose.description}</Text>
 
-            <View style={styles.benefitsContainer}>
-              <Text style={styles.benefitsTitle}>Benefits:</Text>
-              {pose.benefits.map((benefit, index) => (
-                <View key={index} style={styles.benefitItem}>
-                  <Ionicons name="checkmark-circle" size={16} color="#4CAF50" />
-                  <Text style={styles.benefitText}>{benefit}</Text>
-                </View>
-              ))}
-            </View>
+              <View style={styles.benefitsContainer}>
+                <Text style={styles.benefitsTitle}>Benefits:</Text>
+                {pose.benefits.map((benefit, index) => (
+                  <View key={index} style={styles.benefitItem}>
+                    <Ionicons name="checkmark-circle" size={16} color="#4CAF50" />
+                    <Text style={styles.benefitText}>{benefit}</Text>
+                  </View>
+                ))}
+              </View>
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity 
-                style={[styles.actionButton, styles.demoButton]}
-                onPress={() => startPoseDemonstration(pose)}
-              >
-                <Ionicons name="videocam" size={20} color="#E91E63" />
-                <Text style={styles.demoButtonText}>Watch Demo</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[styles.actionButton, styles.startButton]}
-                onPress={() => startYogaSession(pose)}
-              >
-                <Ionicons name="play" size={20} color="white" />
-                <Text style={styles.startButtonText}>Start Session</Text>
-              </TouchableOpacity>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity 
+                  style={[styles.actionButton, styles.videoButton]}
+                  onPress={() => openVideoTutorial(pose.videoUrl)}
+                >
+                  <Ionicons name="logo-youtube" size={22} color="#FF0000" />
+                  <Text style={styles.videoButtonText}>Watch Tutorial</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                  style={[styles.actionButton, styles.startButton]}
+                  onPress={() => startYogaSession(pose)}
+                >
+                  <Ionicons name="fitness" size={22} color="white" />
+                  <Text style={styles.startButtonText}>Start Session</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         ))}
@@ -670,33 +678,53 @@ const styles = StyleSheet.create({
   poseCard: {
     backgroundColor: 'white',
     borderRadius: 16,
-    padding: 20,
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
+    overflow: 'hidden',
+  },
+  imageWrapper: {
+    width: '100%',
+    height: 200,
+    position: 'relative',
+    backgroundColor: '#F5F5F5',
+  },
+  poseImageFull: {
+    width: '100%',
+    height: '100%',
+  },
+  imageLoadingContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+  },
+  imageErrorContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+  },
+  imageErrorText: {
+    marginTop: 8,
+    fontSize: 14,
+    color: '#999',
+  },
+  poseContent: {
+    padding: 20,
   },
   poseHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     marginBottom: 12,
-  },
-  poseImageContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#FFF5F8',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  poseEmoji: {
-    fontSize: 32,
   },
   poseInfo: {
     flex: 1,
+    marginRight: 12,
   },
   poseName: {
     fontSize: 18,
@@ -707,21 +735,46 @@ const styles = StyleSheet.create({
   poseMeta: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 8,
   },
   phaseTag: {
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
-    marginRight: 12,
   },
   phaseTagText: {
     color: 'white',
     fontSize: 12,
     fontWeight: '600',
   },
-  duration: {
-    fontSize: 14,
+  difficultyTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF3E0',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    gap: 4,
+  },
+  difficultyText: {
+    fontSize: 12,
+    color: '#F57C00',
+    fontWeight: '600',
+  },
+  durationBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    gap: 4,
+  },
+  durationText: {
+    fontSize: 12,
     color: '#666',
+    fontWeight: '600',
   },
   poseDescription: {
     fontSize: 16,
@@ -758,27 +811,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
+    paddingHorizontal: 12,
     borderRadius: 12,
   },
-  demoButton: {
-    backgroundColor: '#FFF5F8',
-    borderWidth: 1,
-    borderColor: '#E91E63',
+  videoButton: {
+    backgroundColor: '#FFF',
+    borderWidth: 2,
+    borderColor: '#FF0000',
   },
-  demoButtonText: {
-    color: '#E91E63',
+  videoButtonText: {
+    color: '#FF0000',
     fontSize: 14,
     fontWeight: 'bold',
-    marginLeft: 8,
+    marginLeft: 6,
   },
   startButton: {
     backgroundColor: '#E91E63',
+    shadowColor: '#E91E63',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
   },
   startButtonText: {
     color: 'white',
     fontSize: 14,
     fontWeight: 'bold',
-    marginLeft: 8,
+    marginLeft: 6,
   },
   tipsCard: {
     backgroundColor: 'white',

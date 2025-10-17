@@ -116,3 +116,5 @@ If you're still having issues:
 2. Verify all configuration values are correct
 3. Make sure Firebase services are enabled
 4. Check that your project is not in a restricted region
+
+

@@ -6,6 +6,10 @@ import {
   Animated,
   Dimensions,
   TouchableOpacity,
+  Image,
+  Linking,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AnimatedCharacter from './AnimatedCharacter';
@@ -22,6 +26,8 @@ export default function PoseDemonstration({
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
   
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
@@ -149,6 +155,19 @@ export default function PoseDemonstration({
     }
   };
 
+  const openVideoTutorial = async () => {
+    try {
+      const canOpen = await Linking.canOpenURL(pose.videoUrl);
+      if (canOpen) {
+        await Linking.openURL(pose.videoUrl);
+      } else {
+        Alert.alert('Error', 'Cannot open video tutorial');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to open video tutorial');
+    }
+  };
+
   const getPoseAnimation = (stepIndex) => {
     // Different character animations based on pose and step
     const instruction = pose.instructions[stepIndex].toLowerCase();
@@ -184,6 +203,9 @@ export default function PoseDemonstration({
       <View style={styles.header}>
         <Text style={styles.poseName}>{pose.name}</Text>
         <View style={styles.controls}>
+          <TouchableOpacity onPress={openVideoTutorial} style={styles.controlButton}>
+            <Ionicons name="logo-youtube" size={24} color="#FF0000" />
+          </TouchableOpacity>
           <TouchableOpacity onPress={handleRestart} style={styles.controlButton}>
             <Ionicons name="refresh" size={24} color="#E91E63" />
           </TouchableOpacity>
@@ -213,10 +235,10 @@ export default function PoseDemonstration({
         </Text>
       </View>
 
-      {/* Animated Character */}
+      {/* Pose Image with Animation Overlay */}
       <Animated.View 
         style={[
-          styles.characterContainer,
+          styles.poseImageContainer,
           {
             opacity: fadeAnim,
             transform: [
@@ -226,17 +248,44 @@ export default function PoseDemonstration({
           }
         ]}
       >
-        <AnimatedCharacter
-          type={getPoseAnimation(currentStep)}
-          size={200}
-          color={getPoseColor()}
-          showText={false}
+        <Image
+          source={{ uri: pose.image }}
+          style={styles.poseImage}
+          resizeMode="cover"
+          onLoadStart={() => setImageLoading(true)}
+          onLoadEnd={() => setImageLoading(false)}
+          onError={() => {
+            setImageError(true);
+            setImageLoading(false);
+          }}
         />
         
-        {/* Pose Emoji Overlay */}
-        <View style={styles.emojiOverlay}>
-          <Text style={styles.poseEmoji}>{pose.image}</Text>
-        </View>
+        {/* Loading Indicator */}
+        {imageLoading && (
+          <View style={styles.imageLoadingOverlay}>
+            <ActivityIndicator size="large" color="#E91E63" />
+          </View>
+        )}
+        
+        {/* Error State */}
+        {imageError && (
+          <View style={styles.imageErrorOverlay}>
+            <Ionicons name="image-outline" size={64} color="#CCC" />
+            <Text style={styles.imageErrorText}>Image not available</Text>
+          </View>
+        )}
+        
+        {/* Animation Character Overlay */}
+        {!imageError && (
+          <View style={styles.animationOverlay}>
+            <AnimatedCharacter
+              type={getPoseAnimation(currentStep)}
+              size={100}
+              color={getPoseColor()}
+              showText={false}
+            />
+          </View>
+        )}
       </Animated.View>
 
       {/* Current Instruction */}
@@ -341,21 +390,48 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
   },
-  characterContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
+  poseImageContainer: {
+    width: '100%',
+    height: 300,
+    marginBottom: 20,
+    borderRadius: 16,
+    overflow: 'hidden',
     position: 'relative',
+    backgroundColor: '#F5F5F5',
   },
-  emojiOverlay: {
+  poseImage: {
+    width: '100%',
+    height: '100%',
+  },
+  animationOverlay: {
     position: 'absolute',
-    top: 20,
-    right: 20,
+    bottom: 10,
+    right: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 20,
-    padding: 8,
+    borderRadius: 50,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  poseEmoji: {
-    fontSize: 24,
+  imageLoadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+  },
+  imageErrorOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+  },
+  imageErrorText: {
+    marginTop: 12,
+    fontSize: 14,
+    color: '#999',
   },
   instructionContainer: {
     backgroundColor: 'white',
@@ -447,5 +523,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
 });
+
 
 
