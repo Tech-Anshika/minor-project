@@ -45,14 +45,14 @@ export default function YogaScreen() {
       benefits: ['Relieves menstrual cramps', 'Reduces stress', 'Calms the mind'],
       description: 'A gentle resting pose that helps relieve menstrual cramps and stress.',
       instructions: [
-        'Start on your hands and knees',
+        'Start on your hands and knees in tabletop position',
         'Bring your big toes together and knees hip-width apart',
         'Sit back on your heels and extend your arms forward',
         'Lower your forehead to the mat',
-        'Breathe deeply and hold the pose'
+        'Breathe deeply and relax your whole body'
       ],
-      image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
-      videoUrl: 'https://youtu.be/D65N9OvPdJM',
+      image: 'https://images.pexels.com/photos/3822647/pexels-photo-3822647.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://youtu.be/D65FgMynYJ8',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -66,13 +66,13 @@ export default function YogaScreen() {
       description: 'Gentle spinal movement that helps with menstrual discomfort.',
       instructions: [
         'Start on hands and knees in tabletop position',
-        'Inhale and arch your back (cow pose)',
-        'Exhale and round your spine (cat pose)',
-        'Continue flowing between poses',
-        'Move slowly and breathe deeply'
+        'Inhale, drop belly and arch your back (cow pose)',
+        'Exhale, round your spine and tuck chin (cat pose)',
+        'Continue flowing between poses with breath',
+        'Move slowly and breathe deeply for 5-10 rounds'
       ],
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://youtu.be/9nqpR3fGbVM',
+      image: 'https://images.pexels.com/photos/4056535/pexels-photo-4056535.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://youtu.be/kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
     },
@@ -85,14 +85,14 @@ export default function YogaScreen() {
       benefits: ['Strengthens legs', 'Improves balance', 'Boosts energy'],
       description: 'A powerful standing pose that builds strength and confidence.',
       instructions: [
-        'Step feet wide apart',
+        'Step feet wide apart, about 3-4 feet',
         'Turn right foot out 90 degrees',
-        'Bend right knee over ankle',
-        'Extend arms parallel to floor',
-        'Gaze over front fingertips'
+        'Bend right knee deeply over ankle',
+        'Extend arms parallel to floor at shoulder height',
+        'Gaze over front fingertips and hold'
       ],
-      image: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400',
-      videoUrl: 'https://youtu.be/zLLkh3U6wRA',
+      image: 'https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://youtu.be/EHl6TdjSIiQ',
       difficulty: 'Intermediate',
       category: 'Standing'
     },
@@ -105,14 +105,14 @@ export default function YogaScreen() {
       benefits: ['Improves balance', 'Strengthens core', 'Enhances focus'],
       description: 'A balancing pose that helps improve concentration and stability.',
       instructions: [
-        'Stand on one leg',
-        'Place other foot on inner thigh or calf',
-        'Bring hands to prayer position',
-        'Focus on a fixed point',
-        'Breathe steadily and hold'
+        'Stand tall with feet hip-width apart',
+        'Shift weight to left leg',
+        'Place right foot on inner left thigh or calf (avoid knee)',
+        'Bring hands to prayer position at chest',
+        'Focus on a fixed point and breathe steadily'
       ],
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://youtu.be/vXwNoUgTUqc',
+      image: 'https://images.pexels.com/photos/3822906/pexels-photo-3822906.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://youtu.be/vITtwSNkQoQ',
       difficulty: 'Beginner',
       category: 'Balance'
     },
@@ -125,13 +125,13 @@ export default function YogaScreen() {
       benefits: ['Strengthens back', 'Opens chest', 'Improves circulation'],
       description: 'A gentle backbend that energizes the body during ovulation.',
       instructions: [
-        'Lie face down on mat',
-        'Place palms under shoulders',
-        'Press tops of feet into mat',
-        'Lift chest and head up',
-        'Keep elbows close to body'
+        'Lie face down with legs extended',
+        'Place palms flat under shoulders',
+        'Press tops of feet firmly into mat',
+        'Inhale and lift chest up, straightening arms slightly',
+        'Keep elbows close to body and shoulders relaxed'
       ],
-      image: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400',
+      image: 'https://images.pexels.com/photos/4056535/pexels-photo-4056535.jpeg?auto=compress&cs=tinysrgb&w=600',
       videoUrl: 'https://youtu.be/JUP_YdYKfWY',
       difficulty: 'Beginner',
       category: 'Backbend'
@@ -145,14 +145,14 @@ export default function YogaScreen() {
       benefits: ['Strengthens glutes', 'Opens chest', 'Improves thyroid function'],
       description: 'A gentle backbend that helps with hormonal balance.',
       instructions: [
-        'Lie on back with knees bent',
-        'Place feet hip-width apart',
-        'Press feet into floor',
-        'Lift hips up',
-        'Interlace fingers under body'
+        'Lie on back with knees bent, feet hip-width apart',
+        'Place arms alongside body, palms down',
+        'Press feet firmly into floor',
+        'Lift hips up towards ceiling',
+        'Interlace fingers under body and hold'
       ],
-      image: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=400',
-      videoUrl: 'https://youtu.be/Q0aD_L8rekQ',
+      image: 'https://images.pexels.com/photos/3822517/pexels-photo-3822517.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://youtu.be/j4jDKc6Sq2s',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -165,14 +165,14 @@ export default function YogaScreen() {
       benefits: ['Reduces swelling', 'Relieves stress', 'Improves circulation'],
       description: 'A restorative pose perfect for the luteal phase.',
       instructions: [
-        'Sit close to a wall',
-        'Swing legs up the wall',
-        'Lie back and rest',
-        'Place arms by sides',
-        'Close eyes and breathe deeply'
+        'Sit sideways next to a wall',
+        'Swing your legs up the wall as you lie back',
+        'Scoot hips close to wall',
+        'Place arms by sides, palms up',
+        'Close eyes, breathe deeply and relax'
       ],
-      image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400',
-      videoUrl: 'https://youtu.be/bBkCxZB6bNE',
+      image: 'https://images.pexels.com/photos/3822895/pexels-photo-3822895.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://youtu.be/wRyhJwJ2OOY',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -185,14 +185,14 @@ export default function YogaScreen() {
       benefits: ['Calms nervous system', 'Stretches spine', 'Relieves anxiety'],
       description: 'A calming forward bend that helps with premenstrual symptoms.',
       instructions: [
-        'Sit with legs extended',
-        'Inhale and lengthen spine',
-        'Exhale and fold forward',
-        'Reach for feet or shins',
-        'Keep spine long'
+        'Sit with legs extended straight in front',
+        'Inhale and lengthen spine upward',
+        'Exhale and hinge forward from hips',
+        'Reach for feet, ankles, or shins',
+        'Keep spine long and breathe deeply'
       ],
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://youtu.be/CWGBNBDTRd4',
+      image: 'https://images.pexels.com/photos/3822221/pexels-photo-3822221.jpeg?auto=compress&cs=tinysrgb&w=600',
+      videoUrl: 'https://youtu.be/g_tea8ZNk5A',
       difficulty: 'Beginner',
       category: 'Forward Fold'
     },
