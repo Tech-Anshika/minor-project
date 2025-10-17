@@ -51,8 +51,8 @@ export default function YogaScreen() {
         'Lower your forehead to the mat',
         'Breathe deeply and relax your whole body'
       ],
-      image: 'https://images.pexels.com/photos/3822647/pexels-photo-3822647.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://youtu.be/D65FgMynYJ8',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXkHXy2bGJ1OqC3BPpP9rSLfqmHJP8lZVmBQ&s',
+      videoUrl: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -71,8 +71,8 @@ export default function YogaScreen() {
         'Continue flowing between poses with breath',
         'Move slowly and breathe deeply for 5-10 rounds'
       ],
-      image: 'https://images.pexels.com/photos/4056535/pexels-photo-4056535.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://youtu.be/kqnua4rHVVA',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO6rEfVYpCLemPGWN8uabQOB4rIz4Q0aWBkg&s',
+      videoUrl: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
     },
@@ -91,8 +91,8 @@ export default function YogaScreen() {
         'Extend arms parallel to floor at shoulder height',
         'Gaze over front fingertips and hold'
       ],
-      image: 'https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://youtu.be/EHl6TdjSIiQ',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJKLZpQzqIWpN8Wb5d0F1kTvz_4FZ8vFRqJA&s',
+      videoUrl: 'https://www.youtube.com/watch?v=EHl6TdjSIiQ',
       difficulty: 'Intermediate',
       category: 'Standing'
     },
@@ -111,8 +111,8 @@ export default function YogaScreen() {
         'Bring hands to prayer position at chest',
         'Focus on a fixed point and breathe steadily'
       ],
-      image: 'https://images.pexels.com/photos/3822906/pexels-photo-3822906.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://youtu.be/vITtwSNkQoQ',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_2cGWzjRGJ0OqXzGvMYBQVOhkh4VpL7O_xw&s',
+      videoUrl: 'https://www.youtube.com/watch?v=vITtwSNkQoQ',
       difficulty: 'Beginner',
       category: 'Balance'
     },
@@ -131,8 +131,8 @@ export default function YogaScreen() {
         'Inhale and lift chest up, straightening arms slightly',
         'Keep elbows close to body and shoulders relaxed'
       ],
-      image: 'https://images.pexels.com/photos/4056535/pexels-photo-4056535.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://youtu.be/JUP_YdYKfWY',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxK1vwZ6bqMYW0rK5nUwFqPvXRs-c3bLRkPw&s',
+      videoUrl: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -151,8 +151,8 @@ export default function YogaScreen() {
         'Lift hips up towards ceiling',
         'Interlace fingers under body and hold'
       ],
-      image: 'https://images.pexels.com/photos/3822517/pexels-photo-3822517.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://youtu.be/j4jDKc6Sq2s',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVxFkP8xqQsqJrLmC2cJD4fqoiLXWa8BVQlQ&s',
+      videoUrl: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -171,8 +171,8 @@ export default function YogaScreen() {
         'Place arms by sides, palms up',
         'Close eyes, breathe deeply and relax'
       ],
-      image: 'https://images.pexels.com/photos/3822895/pexels-photo-3822895.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://youtu.be/wRyhJwJ2OOY',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3UBqqj4kN9VNh2yN7YyxUiJW1OfUXF7JfBQ&s',
+      videoUrl: 'https://www.youtube.com/watch?v=wRyhJwJ2OOY',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -191,8 +191,8 @@ export default function YogaScreen() {
         'Reach for feet, ankles, or shins',
         'Keep spine long and breathe deeply'
       ],
-      image: 'https://images.pexels.com/photos/3822221/pexels-photo-3822221.jpeg?auto=compress&cs=tinysrgb&w=600',
-      videoUrl: 'https://youtu.be/g_tea8ZNk5A',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBwKBxvOKcDH-JnXDPCQHGhOY8RpE5QX5nEA&s',
+      videoUrl: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
       difficulty: 'Beginner',
       category: 'Forward Fold'
     },
@@ -347,26 +347,20 @@ export default function YogaScreen() {
   // Open video tutorial
   const openVideoTutorial = async (videoUrl) => {
     try {
-      // Extract video ID from YouTube URL
-      let videoId = '';
-      if (videoUrl.includes('youtube.com/watch?v=')) {
-        videoId = videoUrl.split('watch?v=')[1].split('&')[0];
-      } else if (videoUrl.includes('youtu.be/')) {
-        videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
-      }
-      
-      // Try to open in YouTube app first, then fallback to browser
-      const youtubeAppUrl = `vnd.youtube://${videoId}`;
-      const youtubeBrowserUrl = `https://www.youtube.com/watch?v=${videoId}`;
-      
-      const canOpenApp = await Linking.canOpenURL(youtubeAppUrl);
-      if (canOpenApp) {
-        await Linking.openURL(youtubeAppUrl);
-      } else {
-        await Linking.openURL(youtubeBrowserUrl);
-      }
+      // Direct link approach - just open the URL
+      await Linking.openURL(videoUrl);
     } catch (error) {
-      Alert.alert('Error', 'Failed to open video tutorial. Please make sure you have YouTube app installed or a web browser.');
+      console.error('Error opening video:', error);
+      Alert.alert(
+        'Cannot Open Video',
+        'Please make sure you have YouTube app installed or try opening in your browser.',
+        [
+          {
+            text: 'OK',
+            onPress: () => console.log('Video open cancelled')
+          }
+        ]
+      );
     }
   };
 
