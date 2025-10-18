@@ -721,13 +721,15 @@ const styles = StyleSheet.create({
   foodMeta: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
     marginBottom: 8,
   },
   phaseTag: {
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
-    marginRight: 12,
+    marginRight: 8,
+    marginBottom: 6,
   },
   phaseTagText: {
     color: 'white',
@@ -742,6 +744,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     borderRadius: 12,
     marginRight: 8,
+    marginBottom: 6,
   },
   categoryTagText: {
     fontSize: 12,
@@ -755,6 +758,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 12,
     borderWidth: 1,
+    marginBottom: 6,
   },
   dietTypeTagText: {
     fontSize: 11,
