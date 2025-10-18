@@ -31,12 +31,9 @@ yarn-error.*
 *.pem
 
 # local env files
-.env
+# .env files are needed for Firebase to work, but should contain env-specific values
+.env.local
 .env*.local
-
-# Firebase config with secrets (use env vars instead)
-src/config/firebaseConfig.js
-src/config/firebaseConfig.demo.js
 
 # typescript
 *.tsbuildinfo
