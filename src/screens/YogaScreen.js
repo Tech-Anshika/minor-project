@@ -51,8 +51,8 @@ export default function YogaScreen() {
         'Lower your forehead to the mat',
         'Breathe deeply and hold the pose'
       ],
-      image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
+      image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800',
+      videoUrl: 'https://www.youtube.com/watch?v=SjB4sKe_IXk',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -71,7 +71,7 @@ export default function YogaScreen() {
         'Continue flowing between poses',
         'Move slowly and breathe deeply'
       ],
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
+      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800',
       videoUrl: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
@@ -91,8 +91,8 @@ export default function YogaScreen() {
         'Extend arms parallel to floor',
         'Gaze over front fingertips'
       ],
-      image: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=jUOSGJm7mhI',
+      image: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800',
+      videoUrl: 'https://www.youtube.com/watch?v=NcCBaiCCl0A',
       difficulty: 'Intermediate',
       category: 'Standing'
     },
@@ -111,8 +111,8 @@ export default function YogaScreen() {
         'Focus on a fixed point',
         'Breathe steadily and hold'
       ],
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=vITtwSNkQoQ',
+      image: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=800',
+      videoUrl: 'https://www.youtube.com/watch?v=Dic293YNJI8',
       difficulty: 'Beginner',
       category: 'Balance'
     },
@@ -131,8 +131,8 @@ export default function YogaScreen() {
         'Lift chest and head up',
         'Keep elbows close to body'
       ],
-      image: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
+      image: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800',
+      videoUrl: 'https://www.youtube.com/watch?v=fOdrW7nf9gw',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -151,8 +151,8 @@ export default function YogaScreen() {
         'Lift hips up',
         'Interlace fingers under body'
       ],
-      image: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
+      image: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=800',
+      videoUrl: 'https://www.youtube.com/watch?v=hgtfNp8KywM',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -171,8 +171,8 @@ export default function YogaScreen() {
         'Place arms by sides',
         'Close eyes and breathe deeply'
       ],
-      image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=wRyhJwJ2OOY',
+      image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800',
+      videoUrl: 'https://www.youtube.com/watch?v=xmcDj4Bf--0',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -191,8 +191,8 @@ export default function YogaScreen() {
         'Reach for feet or shins',
         'Keep spine long'
       ],
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-      videoUrl: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
+      image: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=800',
+      videoUrl: 'https://www.youtube.com/watch?v=T8sgVyF4Ux4',
       difficulty: 'Beginner',
       category: 'Forward Fold'
     },
