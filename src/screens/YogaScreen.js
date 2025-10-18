@@ -45,15 +45,14 @@ export default function YogaScreen() {
       benefits: ['Relieves menstrual cramps', 'Reduces stress', 'Calms the mind'],
       description: 'A gentle resting pose that helps relieve menstrual cramps and stress.',
       instructions: [
-        'Start on your hands and knees in tabletop position',
+        'Start on your hands and knees',
         'Bring your big toes together and knees hip-width apart',
         'Sit back on your heels and extend your arms forward',
         'Lower your forehead to the mat',
-        'Breathe deeply and relax your whole body'
+        'Breathe deeply and hold the pose'
       ],
-      image: 'https://picsum.photos/seed/childspose/600/400',
-      videoUrl: 'vnd.youtube://2MTd6TYnWXk',
-      videoUrlWeb: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
+      image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=2MTd6TYnWXk',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -67,14 +66,13 @@ export default function YogaScreen() {
       description: 'Gentle spinal movement that helps with menstrual discomfort.',
       instructions: [
         'Start on hands and knees in tabletop position',
-        'Inhale, drop belly and arch your back (cow pose)',
-        'Exhale, round your spine and tuck chin (cat pose)',
-        'Continue flowing between poses with breath',
-        'Move slowly and breathe deeply for 5-10 rounds'
+        'Inhale and arch your back (cow pose)',
+        'Exhale and round your spine (cat pose)',
+        'Continue flowing between poses',
+        'Move slowly and breathe deeply'
       ],
-      image: 'https://picsum.photos/seed/catcow/600/400',
-      videoUrl: 'vnd.youtube://kqnua4rHVVA',
-      videoUrlWeb: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
+      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
     },
@@ -87,15 +85,14 @@ export default function YogaScreen() {
       benefits: ['Strengthens legs', 'Improves balance', 'Boosts energy'],
       description: 'A powerful standing pose that builds strength and confidence.',
       instructions: [
-        'Step feet wide apart, about 3-4 feet',
+        'Step feet wide apart',
         'Turn right foot out 90 degrees',
-        'Bend right knee deeply over ankle',
-        'Extend arms parallel to floor at shoulder height',
-        'Gaze over front fingertips and hold'
+        'Bend right knee over ankle',
+        'Extend arms parallel to floor',
+        'Gaze over front fingertips'
       ],
-      image: 'https://picsum.photos/seed/warrior2/600/400',
-      videoUrl: 'vnd.youtube://EHl6TdjSIiQ',
-      videoUrlWeb: 'https://www.youtube.com/watch?v=EHl6TdjSIiQ',
+      image: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=jUOSGJm7mhI',
       difficulty: 'Intermediate',
       category: 'Standing'
     },
@@ -108,15 +105,14 @@ export default function YogaScreen() {
       benefits: ['Improves balance', 'Strengthens core', 'Enhances focus'],
       description: 'A balancing pose that helps improve concentration and stability.',
       instructions: [
-        'Stand tall with feet hip-width apart',
-        'Shift weight to left leg',
-        'Place right foot on inner left thigh or calf (avoid knee)',
-        'Bring hands to prayer position at chest',
-        'Focus on a fixed point and breathe steadily'
+        'Stand on one leg',
+        'Place other foot on inner thigh or calf',
+        'Bring hands to prayer position',
+        'Focus on a fixed point',
+        'Breathe steadily and hold'
       ],
-      image: 'https://picsum.photos/seed/treepose/600/400',
-      videoUrl: 'vnd.youtube://vITtwSNkQoQ',
-      videoUrlWeb: 'https://www.youtube.com/watch?v=vITtwSNkQoQ',
+      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=vITtwSNkQoQ',
       difficulty: 'Beginner',
       category: 'Balance'
     },
@@ -129,15 +125,14 @@ export default function YogaScreen() {
       benefits: ['Strengthens back', 'Opens chest', 'Improves circulation'],
       description: 'A gentle backbend that energizes the body during ovulation.',
       instructions: [
-        'Lie face down with legs extended',
-        'Place palms flat under shoulders',
-        'Press tops of feet firmly into mat',
-        'Inhale and lift chest up, straightening arms slightly',
-        'Keep elbows close to body and shoulders relaxed'
+        'Lie face down on mat',
+        'Place palms under shoulders',
+        'Press tops of feet into mat',
+        'Lift chest and head up',
+        'Keep elbows close to body'
       ],
-      image: 'https://picsum.photos/seed/cobrapose/600/400',
-      videoUrl: 'vnd.youtube://JUP_YdYKfWY',
-      videoUrlWeb: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
+      image: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=JUP_YdYKfWY',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -150,15 +145,14 @@ export default function YogaScreen() {
       benefits: ['Strengthens glutes', 'Opens chest', 'Improves thyroid function'],
       description: 'A gentle backbend that helps with hormonal balance.',
       instructions: [
-        'Lie on back with knees bent, feet hip-width apart',
-        'Place arms alongside body, palms down',
-        'Press feet firmly into floor',
-        'Lift hips up towards ceiling',
-        'Interlace fingers under body and hold'
+        'Lie on back with knees bent',
+        'Place feet hip-width apart',
+        'Press feet into floor',
+        'Lift hips up',
+        'Interlace fingers under body'
       ],
-      image: 'https://picsum.photos/seed/bridgepose/600/400',
-      videoUrl: 'vnd.youtube://j4jDKc6Sq2s',
-      videoUrlWeb: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
+      image: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=j4jDKc6Sq2s',
       difficulty: 'Beginner',
       category: 'Backbend'
     },
@@ -171,15 +165,14 @@ export default function YogaScreen() {
       benefits: ['Reduces swelling', 'Relieves stress', 'Improves circulation'],
       description: 'A restorative pose perfect for the luteal phase.',
       instructions: [
-        'Sit sideways next to a wall',
-        'Swing your legs up the wall as you lie back',
-        'Scoot hips close to wall',
-        'Place arms by sides, palms up',
-        'Close eyes, breathe deeply and relax'
+        'Sit close to a wall',
+        'Swing legs up the wall',
+        'Lie back and rest',
+        'Place arms by sides',
+        'Close eyes and breathe deeply'
       ],
-      image: 'https://picsum.photos/seed/legsupwall/600/400',
-      videoUrl: 'vnd.youtube://wRyhJwJ2OOY',
-      videoUrlWeb: 'https://www.youtube.com/watch?v=wRyhJwJ2OOY',
+      image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=wRyhJwJ2OOY',
       difficulty: 'Beginner',
       category: 'Restorative'
     },
@@ -192,15 +185,14 @@ export default function YogaScreen() {
       benefits: ['Calms nervous system', 'Stretches spine', 'Relieves anxiety'],
       description: 'A calming forward bend that helps with premenstrual symptoms.',
       instructions: [
-        'Sit with legs extended straight in front',
-        'Inhale and lengthen spine upward',
-        'Exhale and hinge forward from hips',
-        'Reach for feet, ankles, or shins',
-        'Keep spine long and breathe deeply'
+        'Sit with legs extended',
+        'Inhale and lengthen spine',
+        'Exhale and fold forward',
+        'Reach for feet or shins',
+        'Keep spine long'
       ],
-      image: 'https://picsum.photos/seed/forwardbend/600/400',
-      videoUrl: 'vnd.youtube://g_tea8ZNk5A',
-      videoUrlWeb: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
+      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
+      videoUrl: 'https://www.youtube.com/watch?v=g_tea8ZNk5A',
       difficulty: 'Beginner',
       category: 'Forward Fold'
     },
@@ -352,29 +344,17 @@ export default function YogaScreen() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Open video tutorial
-  const openVideoTutorial = async (pose) => {
+  // Open YouTube video tutorial
+  const openVideoTutorial = async (videoUrl) => {
     try {
-      // Try opening in YouTube app first
-      const canOpen = await Linking.canOpenURL(pose.videoUrl);
+      const canOpen = await Linking.canOpenURL(videoUrl);
       if (canOpen) {
-        await Linking.openURL(pose.videoUrl);
+        await Linking.openURL(videoUrl);
       } else {
-        // Fallback to web browser
-        await Linking.openURL(pose.videoUrlWeb);
+        Alert.alert('Error', 'Cannot open video tutorial. Please check your internet connection.');
       }
     } catch (error) {
-      // If all fails, try web URL
-      try {
-        await Linking.openURL(pose.videoUrlWeb);
-      } catch (webError) {
-        console.error('Error opening video:', webError);
-        Alert.alert(
-          'Cannot Open Video',
-          'Please make sure you have YouTube app installed or a web browser available.',
-          [{ text: 'OK' }]
-        );
-      }
+      Alert.alert('Error', 'Failed to open video tutorial. Please try again later.');
     }
   };
 
@@ -389,47 +369,58 @@ export default function YogaScreen() {
   // Yoga Session Interface
   if (isSessionActive && currentPose) {
     return (
-      <View style={styles.sessionContainer}>
-        <ScrollView style={styles.sessionScrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.sessionContainer}>
+        <View style={styles.sessionContent}>
           {/* Session Header */}
           <View style={styles.sessionHeader}>
             <TouchableOpacity onPress={endSession} style={styles.closeButton}>
               <Ionicons name="close" size={28} color="#E91E63" />
             </TouchableOpacity>
             <View style={styles.sessionInfo}>
-              <Text style={styles.sessionTitle}>Yoga Session</Text>
+              <Text style={styles.sessionTitle}>Practice Session</Text>
               <Text style={styles.sessionTime}>{formatTime(sessionTime)}</Text>
             </View>
-            <TouchableOpacity onPress={() => openVideoTutorial(currentPose)} style={styles.videoIconButton}>
+            <TouchableOpacity onPress={() => openVideoTutorial(currentPose.videoUrl)} style={styles.videoIconButton}>
               <Ionicons name="logo-youtube" size={28} color="#FF0000" />
             </TouchableOpacity>
           </View>
 
           {/* Progress Bar */}
-          <View style={styles.sessionProgressContainer}>
+          <View style={styles.progressBarContainer}>
             <View style={styles.progressBar}>
               <View style={[styles.progressFill, { width: `${sessionProgress}%` }]} />
             </View>
-            <Text style={styles.sessionProgressText}>{Math.round(sessionProgress)}% Complete</Text>
+            <Text style={styles.progressLabelText}>
+              Pose {currentPoseIndex + 1} of {sessionPoses.length}
+            </Text>
           </View>
 
           {/* Pose Image */}
-          <View style={styles.sessionImageContainer}>
+          <View style={styles.sessionPoseImageContainer}>
             <Image
               source={{ uri: currentPose.image }}
               style={styles.sessionPoseImage}
               resizeMode="cover"
             />
-            <View style={styles.sessionImageOverlay}>
-              <Text style={styles.sessionPoseName}>{currentPose.name}</Text>
-              <Text style={styles.sessionPosePhase}>{currentPose.phase} Phase</Text>
+            <View style={styles.poseInfoOverlay}>
+              <View style={[styles.phaseTagSession, { backgroundColor: getPhaseColor(currentPose.phase) }]}>
+                <Text style={styles.phaseTagText}>{currentPose.phase}</Text>
+              </View>
+              <View style={styles.difficultyTagSession}>
+                <Ionicons name="star" size={14} color="#FF9800" />
+                <Text style={styles.difficultyTagText}>{currentPose.difficulty}</Text>
+              </View>
             </View>
           </View>
 
-          {/* Pose Timer */}
-          <View style={styles.poseTimerContainer}>
-            <View style={styles.timerRow}>
-              <Ionicons name="time-outline" size={24} color="#E91E63" />
+          {/* Pose Name and Timer */}
+          <View style={styles.poseNameSection}>
+            <Text style={styles.currentPoseName}>{currentPose.name}</Text>
+            <Text style={styles.currentPoseDescription}>{currentPose.description}</Text>
+            
+            {/* Pose Timer */}
+            <View style={styles.poseTimerContainer}>
+              <Ionicons name="timer-outline" size={20} color="#E91E63" />
               <Text style={styles.poseTimerText}>
                 {formatTime(poseTime)} / {formatTime(currentPose.durationSeconds)}
               </Text>
@@ -441,12 +432,29 @@ export default function YogaScreen() {
             </View>
           </View>
 
+          {/* Benefits */}
+          <View style={styles.sessionBenefitsContainer}>
+            <View style={styles.sessionSectionHeader}>
+              <Ionicons name="heart" size={20} color="#E91E63" />
+              <Text style={styles.sessionSectionTitle}>Benefits</Text>
+            </View>
+            {currentPose.benefits.map((benefit, index) => (
+              <View key={index} style={styles.sessionBenefitItem}>
+                <Ionicons name="checkmark-circle" size={18} color="#4CAF50" />
+                <Text style={styles.sessionBenefitText}>{benefit}</Text>
+              </View>
+            ))}
+          </View>
+
           {/* Instructions */}
           <View style={styles.instructionsContainer}>
-            <Text style={styles.instructionsTitle}>📋 Step-by-Step Instructions:</Text>
+            <View style={styles.sessionSectionHeader}>
+              <Ionicons name="list" size={20} color="#E91E63" />
+              <Text style={styles.sessionSectionTitle}>Step-by-Step Instructions</Text>
+            </View>
             {currentPose.instructions.map((instruction, index) => (
               <View key={index} style={styles.instructionItem}>
-                <View style={styles.instructionNumberCircle}>
+                <View style={styles.instructionNumberBadge}>
                   <Text style={styles.instructionNumber}>{index + 1}</Text>
                 </View>
                 <Text style={styles.instructionText}>{instruction}</Text>
@@ -454,15 +462,24 @@ export default function YogaScreen() {
             ))}
           </View>
 
-          {/* Benefits */}
-          <View style={styles.sessionBenefitsContainer}>
-            <Text style={styles.sessionBenefitsTitle}>✨ Benefits:</Text>
-            {currentPose.benefits.map((benefit, index) => (
-              <View key={index} style={styles.sessionBenefitItem}>
-                <Ionicons name="checkmark-circle" size={18} color="#4CAF50" />
-                <Text style={styles.sessionBenefitText}>{benefit}</Text>
-              </View>
-            ))}
+          {/* Important Tips */}
+          <View style={styles.tipsSection}>
+            <View style={styles.sessionSectionHeader}>
+              <Ionicons name="information-circle" size={20} color="#FF9800" />
+              <Text style={styles.sessionSectionTitle}>Important Tips</Text>
+            </View>
+            <View style={styles.tipItem}>
+              <Ionicons name="fitness" size={16} color="#666" />
+              <Text style={styles.tipText}>Breathe deeply and maintain steady rhythm</Text>
+            </View>
+            <View style={styles.tipItem}>
+              <Ionicons name="warning" size={16} color="#666" />
+              <Text style={styles.tipText}>Stop if you feel pain or discomfort</Text>
+            </View>
+            <View style={styles.tipItem}>
+              <Ionicons name="water" size={16} color="#666" />
+              <Text style={styles.tipText}>Stay hydrated during practice</Text>
+            </View>
           </View>
 
           {/* Session Controls */}
@@ -472,13 +489,12 @@ export default function YogaScreen() {
               onPress={previousPose}
               disabled={currentPoseIndex === 0}
             >
-              <Ionicons name="chevron-back" size={28} color={currentPoseIndex === 0 ? "#CCC" : "#E91E63"} />
-              <Text style={[styles.navControlText, currentPoseIndex === 0 && styles.disabledText]}>Previous</Text>
+              <Ionicons name="chevron-back" size={24} color={currentPoseIndex === 0 ? "#CCC" : "white"} />
+              <Text style={[styles.navButtonText, currentPoseIndex === 0 && styles.disabledButtonText]}>Previous</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.pauseButton} onPress={pauseSession}>
               <Ionicons name={isPaused ? "play" : "pause"} size={36} color="white" />
-              <Text style={styles.pauseButtonText}>{isPaused ? 'Resume' : 'Pause'}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity 
@@ -486,30 +502,12 @@ export default function YogaScreen() {
               onPress={nextPose}
               disabled={currentPoseIndex === sessionPoses.length - 1}
             >
-              <Ionicons name="chevron-forward" size={28} color={currentPoseIndex === sessionPoses.length - 1 ? "#CCC" : "#E91E63"} />
-              <Text style={[styles.navControlText, currentPoseIndex === sessionPoses.length - 1 && styles.disabledText]}>Next</Text>
+              <Text style={[styles.navButtonText, currentPoseIndex === sessionPoses.length - 1 && styles.disabledButtonText]}>Next</Text>
+              <Ionicons name="chevron-forward" size={24} color={currentPoseIndex === sessionPoses.length - 1 ? "#CCC" : "white"} />
             </TouchableOpacity>
           </View>
-
-          {/* Session Stats */}
-          <View style={styles.sessionStats}>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{currentPoseIndex + 1}</Text>
-              <Text style={styles.statLabel}>of {sessionPoses.length} Poses</Text>
-            </View>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{currentPose.difficulty}</Text>
-              <Text style={styles.statLabel}>Difficulty</Text>
-            </View>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{currentPose.category}</Text>
-              <Text style={styles.statLabel}>Category</Text>
-            </View>
-          </View>
-          
-          <View style={{ height: 30 }} />
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     );
   }
 
@@ -629,9 +627,9 @@ export default function YogaScreen() {
               <View style={styles.buttonContainer}>
                 <TouchableOpacity 
                   style={[styles.actionButton, styles.videoButton]}
-                  onPress={() => openVideoTutorial(pose)}
+                  onPress={() => openVideoTutorial(pose.videoUrl)}
                 >
-                  <Ionicons name="logo-youtube" size={22} color="#FF0000" />
+                  <Ionicons name="logo-youtube" size={20} color="#FF0000" />
                   <Text style={styles.videoButtonText}>Watch Tutorial</Text>
                 </TouchableOpacity>
                 
@@ -639,8 +637,8 @@ export default function YogaScreen() {
                   style={[styles.actionButton, styles.startButton]}
                   onPress={() => startYogaSession(pose)}
                 >
-                  <Ionicons name="fitness" size={22} color="white" />
-                  <Text style={styles.startButtonText}>Start Session</Text>
+                  <Ionicons name="fitness" size={20} color="white" />
+                  <Text style={styles.startButtonText}>Start Practice</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -872,11 +870,6 @@ const styles = StyleSheet.create({
   },
   startButton: {
     backgroundColor: '#E91E63',
-    shadowColor: '#E91E63',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
   },
   startButtonText: {
     color: 'white',
@@ -946,18 +939,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF5F8',
   },
-  sessionScrollView: {
-    flex: 1,
+  sessionContent: {
+    padding: 20,
+    paddingBottom: 40,
   },
   sessionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20,
+    marginBottom: 16,
     paddingTop: 10,
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
   },
   closeButton: {
     padding: 8,
@@ -970,18 +961,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sessionTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#333',
   },
   sessionTime: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 16,
+    color: '#E91E63',
     marginTop: 4,
+    fontWeight: '600',
   },
-  sessionProgressContainer: {
-    padding: 20,
-    paddingBottom: 10,
+  progressBarContainer: {
+    marginBottom: 20,
   },
   progressBar: {
     height: 6,
@@ -994,67 +985,95 @@ const styles = StyleSheet.create({
     backgroundColor: '#E91E63',
     borderRadius: 3,
   },
-  sessionProgressText: {
-    fontSize: 12,
+  progressLabelText: {
+    fontSize: 14,
     color: '#666',
     textAlign: 'center',
+    fontWeight: '600',
   },
-  sessionImageContainer: {
-    marginHorizontal: 20,
-    marginBottom: 20,
+  sessionPoseImageContainer: {
+    width: '100%',
+    height: 280,
     borderRadius: 16,
     overflow: 'hidden',
-    height: 250,
+    marginBottom: 20,
     position: 'relative',
+    backgroundColor: '#F5F5F5',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
   },
   sessionPoseImage: {
     width: '100%',
     height: '100%',
   },
-  sessionImageOverlay: {
+  poseInfoOverlay: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: 16,
+    top: 12,
+    left: 12,
+    right: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  sessionPoseName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 4,
-  },
-  sessionPosePhase: {
-    fontSize: 14,
-    color: 'white',
-    opacity: 0.9,
-  },
-  poseTimerContainer: {
-    backgroundColor: 'white',
-    marginHorizontal: 20,
-    marginBottom: 20,
+  phaseTagSession: {
+    paddingHorizontal: 14,
+    paddingVertical: 6,
     borderRadius: 12,
-    padding: 16,
+  },
+  difficultyTagSession: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    gap: 4,
+  },
+  difficultyTagText: {
+    fontSize: 12,
+    color: '#F57C00',
+    fontWeight: '700',
+  },
+  poseNameSection: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
   },
-  timerRow: {
+  currentPoseName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 8,
+  },
+  currentPoseDescription: {
+    fontSize: 15,
+    color: '#666',
+    lineHeight: 22,
+    marginBottom: 16,
+  },
+  poseTimerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 8,
+    marginTop: 8,
     marginBottom: 12,
   },
   poseTimerText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#E91E63',
-    marginLeft: 8,
   },
   poseProgressBar: {
+    width: '100%',
     height: 8,
     backgroundColor: '#E0E0E0',
     borderRadius: 4,
@@ -1064,33 +1083,60 @@ const styles = StyleSheet.create({
     backgroundColor: '#E91E63',
     borderRadius: 4,
   },
-  instructionsContainer: {
+  sessionBenefitsContainer: {
     backgroundColor: 'white',
-    marginHorizontal: 20,
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
   },
-  instructionsTitle: {
+  sessionSectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 8,
+  },
+  sessionSectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
+  },
+  sessionBenefitItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 10,
+  },
+  sessionBenefitText: {
+    fontSize: 15,
+    color: '#666',
+    flex: 1,
+    lineHeight: 20,
+  },
+  instructionsContainer: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 20,
     marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
   instructionItem: {
     flexDirection: 'row',
+    marginBottom: 14,
     alignItems: 'flex-start',
-    marginBottom: 16,
   },
-  instructionNumberCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+  instructionNumberBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     backgroundColor: '#E91E63',
     alignItems: 'center',
     justifyContent: 'center',
@@ -1102,121 +1148,61 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   instructionText: {
-    fontSize: 16,
-    color: '#333',
-    flex: 1,
-    lineHeight: 24,
-  },
-  sessionBenefitsContainer: {
-    backgroundColor: 'white',
-    marginHorizontal: 20,
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  sessionBenefitsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 12,
-  },
-  sessionBenefitItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  sessionBenefitText: {
     fontSize: 15,
     color: '#666',
-    marginLeft: 10,
     flex: 1,
+    lineHeight: 22,
+    paddingTop: 4,
+  },
+  tipsSection: {
+    backgroundColor: '#FFF3E0',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#FFE0B2',
   },
   sessionControls: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: 20,
     marginBottom: 20,
+    gap: 12,
   },
   navControlButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
-    paddingHorizontal: 16,
+    backgroundColor: '#E91E63',
     paddingVertical: 12,
+    paddingHorizontal: 20,
     borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#E91E63',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    gap: 6,
+    flex: 1,
+    justifyContent: 'center',
+  },
+  navButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   disabledButton: {
-    borderColor: '#E0E0E0',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#E0E0E0',
   },
-  navControlText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#E91E63',
-    marginLeft: 4,
-  },
-  disabledText: {
-    color: '#CCC',
+  disabledButtonText: {
+    color: '#999',
   },
   pauseButton: {
     backgroundColor: '#E91E63',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#E91E63',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,
-  },
-  pauseButtonText: {
-    color: 'white',
-    fontSize: 11,
-    fontWeight: 'bold',
-    marginTop: 4,
-  },
-  sessionStats: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'white',
-    marginHorizontal: 20,
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#E91E63',
-  },
-  statLabel: {
-    fontSize: 11,
-    color: '#666',
-    marginTop: 4,
-    textAlign: 'center',
   },
 });
 

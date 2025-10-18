@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Demo Firebase configuration - Using real values from google-services.json
 const firebaseConfig = {
-  apiKey: "AIzaSyCovZlKWUBmfS6IXc0M7XgT-1H5Azbiv1k", // Real API key from google-services.json
+  apiKey: "your-firebase-api-key-here", // Get this from Firebase Console
   authDomain: "pcosense-app.firebaseapp.com", // Real auth domain
   projectId: "pcosense-app", // Real project ID
   storageBucket: "pcosense-app.firebasestorage.app", // Real storage bucket

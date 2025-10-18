@@ -34,6 +34,10 @@ yarn-error.*
 .env
 .env*.local
 
+# Firebase config with secrets (use env vars instead)
+src/config/firebaseConfig.js
+src/config/firebaseConfig.demo.js
+
 # typescript
 *.tsbuildinfo
 

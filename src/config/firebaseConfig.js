@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Firebase configuration - Using real values from google-services.json
 const firebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY || "AIzaSyCovZlKWUBmfS6IXc0M7XgT-1H5Azbiv1k",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY || "your-firebase-api-key-here",
   authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN || "pcosense-app.firebaseapp.com",
   projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID || "pcosense-app",
   storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET || "pcosense-app.firebasestorage.app",
