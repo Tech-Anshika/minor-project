@@ -15,21 +15,25 @@ const { width } = Dimensions.get('window');
 export default function FoodScreen() {
   const [selectedPhase, setSelectedPhase] = useState('All');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedDietType, setSelectedDietType] = useState('All');
   const [foodItems, setFoodItems] = useState([]);
 
   const phases = ['All', 'Menstrual', 'Follicular', 'Ovulation', 'Luteal'];
   const categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Beverages'];
+  const dietTypes = ['All', 'Vegetarian', 'Non-Vegetarian'];
 
   const foodData = [
+    // VEGETARIAN FOODS
     {
       id: 1,
       name: 'Palak (Spinach) Poha',
       phase: 'Menstrual',
       category: 'Breakfast',
+      dietType: 'Vegetarian',
       calories: 280,
       prepTime: '15 mins',
       ingredients: ['Poha (flattened rice)', 'Palak (Spinach)', 'Onion', 'Peanuts', 'Lemon', 'Haldi (Turmeric)'],
-      benefits: ['High in iron', 'Easy to digest', 'Boosts energy'],
+      benefits: ['High in iron for blood loss recovery', 'Easy to digest during cramps', 'Boosts energy naturally', 'Rich in vitamin C for iron absorption'],
       description: 'Iron-rich breakfast perfect for replenishing nutrients during menstruation.',
       image: '🍚',
     },
@@ -38,10 +42,11 @@ export default function FoodScreen() {
       name: 'Moong Dal Khichdi with Dahi',
       phase: 'Menstrual',
       category: 'Lunch',
+      dietType: 'Vegetarian',
       calories: 350,
       prepTime: '20 mins',
       ingredients: ['Moong dal', 'Rice', 'Ghee', 'Jeera (Cumin)', 'Dahi (Curd)', 'Ginger'],
-      benefits: ['Easy to digest', 'Complete protein', 'Reduces cramps'],
+      benefits: ['Easy to digest during cramps', 'Complete protein source', 'Reduces menstrual discomfort', 'Probiotic-rich from curd'],
       description: 'Comforting and nutritious khichdi that soothes menstrual discomfort.',
       image: '🥘',
     },
@@ -50,10 +55,11 @@ export default function FoodScreen() {
       name: 'Methi Thepla with Curd',
       phase: 'Follicular',
       category: 'Breakfast',
+      dietType: 'Vegetarian',
       calories: 320,
       prepTime: '20 mins',
       ingredients: ['Whole wheat flour', 'Methi (Fenugreek) leaves', 'Dahi', 'Spices', 'Oil'],
-      benefits: ['Regulates blood sugar', 'High fiber', 'Supports hormone balance'],
+      benefits: ['Regulates blood sugar levels', 'High fiber for gut health', 'Supports hormone balance', 'Fenugreek aids insulin sensitivity'],
       description: 'Healthy flatbread loaded with fenugreek for hormonal support.',
       image: '🫓',
     },
@@ -62,10 +68,11 @@ export default function FoodScreen() {
       name: 'Chana Masala with Brown Rice',
       phase: 'Follicular',
       category: 'Dinner',
+      dietType: 'Vegetarian',
       calories: 400,
       prepTime: '30 mins',
       ingredients: ['Kabuli chana (Chickpeas)', 'Tomato', 'Onion', 'Brown rice', 'Spices', 'Coriander'],
-      benefits: ['High protein', 'Rich in folate', 'Supports egg development'],
+      benefits: ['High protein for tissue repair', 'Rich in folate for egg development', 'Supports follicular growth', 'Low glycemic index'],
       description: 'Protein-packed meal that supports the follicular phase.',
       image: '🍛',
     },
@@ -74,10 +81,11 @@ export default function FoodScreen() {
       name: 'Ragi (Finger Millet) Dosa',
       phase: 'Ovulation',
       category: 'Breakfast',
+      dietType: 'Vegetarian',
       calories: 300,
       prepTime: '15 mins',
       ingredients: ['Ragi flour', 'Rice flour', 'Curd', 'Coconut chutney', 'Sambar'],
-      benefits: ['High calcium', 'Sustained energy', 'Regulates metabolism'],
+      benefits: ['High calcium for bone health', 'Sustained energy release', 'Regulates metabolism', 'Rich in amino acids'],
       description: 'Nutritious South Indian breakfast for peak energy days.',
       image: '🥞',
     },
@@ -86,10 +94,11 @@ export default function FoodScreen() {
       name: 'Rajma (Kidney Beans) Chawal',
       phase: 'Ovulation',
       category: 'Lunch',
+      dietType: 'Vegetarian',
       calories: 420,
       prepTime: '35 mins',
       ingredients: ['Rajma (Kidney beans)', 'Basmati rice', 'Tomato', 'Onion', 'Ginger-garlic', 'Spices'],
-      benefits: ['High protein', 'Rich in fiber', 'Supports fertility'],
+      benefits: ['High protein for energy', 'Rich in fiber for digestion', 'Supports fertility naturally', 'Contains zinc and folate'],
       description: 'Classic North Indian meal perfect for high energy needs.',
       image: '🍲',
     },
@@ -98,10 +107,11 @@ export default function FoodScreen() {
       name: 'Haldi Doodh (Turmeric Milk)',
       phase: 'Luteal',
       category: 'Beverages',
+      dietType: 'Vegetarian',
       calories: 150,
       prepTime: '5 mins',
       ingredients: ['Milk', 'Haldi (Turmeric)', 'Ginger', 'Black pepper', 'Honey', 'Elaichi (Cardamom)'],
-      benefits: ['Anti-inflammatory', 'Improves sleep', 'Reduces PMS symptoms'],
+      benefits: ['Anti-inflammatory properties', 'Improves sleep quality', 'Reduces PMS symptoms', 'Boosts immunity'],
       description: 'Traditional Indian drink that calms the mind and body.',
       image: '🥛',
     },
@@ -110,10 +120,11 @@ export default function FoodScreen() {
       name: 'Til (Sesame) Ladoo',
       phase: 'Luteal',
       category: 'Snacks',
+      dietType: 'Vegetarian',
       calories: 200,
       prepTime: '15 mins',
       ingredients: ['Til (Sesame seeds)', 'Gur (Jaggery)', 'Ghee', 'Elaichi'],
-      benefits: ['High in calcium', 'Boosts energy', 'Reduces menstrual pain'],
+      benefits: ['High in calcium and iron', 'Boosts energy levels', 'Reduces menstrual pain', 'Warming effect on body'],
       description: 'Traditional sweet that helps manage PMS and provides warmth.',
       image: '🍬',
     },
@@ -122,10 +133,11 @@ export default function FoodScreen() {
       name: 'Besan Chilla with Vegetables',
       phase: 'Menstrual',
       category: 'Snacks',
+      dietType: 'Vegetarian',
       calories: 250,
       prepTime: '15 mins',
       ingredients: ['Besan (Gram flour)', 'Onion', 'Tomato', 'Green chili', 'Coriander', 'Spices'],
-      benefits: ['High protein', 'Low glycemic index', 'Rich in iron'],
+      benefits: ['High protein for muscle repair', 'Low glycemic index', 'Rich in iron and folate', 'Easy to prepare and digest'],
       description: 'Savory pancake loaded with vegetables and protein.',
       image: '🥘',
     },
@@ -134,10 +146,11 @@ export default function FoodScreen() {
       name: 'Masala Oats Upma',
       phase: 'Follicular',
       category: 'Breakfast',
+      dietType: 'Vegetarian',
       calories: 280,
       prepTime: '12 mins',
       ingredients: ['Oats', 'Mixed vegetables', 'Curry leaves', 'Mustard seeds', 'Peanuts', 'Lemon'],
-      benefits: ['High fiber', 'Low GI', 'Helps weight management'],
+      benefits: ['High fiber for gut health', 'Low GI for stable blood sugar', 'Helps weight management', 'Rich in antioxidants'],
       description: 'Healthy Indian-style oats perfect for hormonal balance.',
       image: '🥣',
     },
@@ -146,10 +159,11 @@ export default function FoodScreen() {
       name: 'Lauki (Bottle Gourd) Sabzi with Roti',
       phase: 'Luteal',
       category: 'Dinner',
+      dietType: 'Vegetarian',
       calories: 320,
       prepTime: '25 mins',
       ingredients: ['Lauki (Bottle gourd)', 'Whole wheat roti', 'Tomato', 'Onion', 'Jeera', 'Haldi'],
-      benefits: ['Low calorie', 'Cooling effect', 'Aids digestion'],
+      benefits: ['Low calorie for weight control', 'Cooling effect on body', 'Aids digestion', 'Reduces water retention'],
       description: 'Light and soothing dinner for the luteal phase.',
       image: '🫕',
     },
@@ -158,10 +172,11 @@ export default function FoodScreen() {
       name: 'Dahi (Curd) with Roasted Jeera',
       phase: 'Ovulation',
       category: 'Snacks',
+      dietType: 'Vegetarian',
       calories: 120,
       prepTime: '5 mins',
       ingredients: ['Fresh dahi (Curd)', 'Roasted jeera powder', 'Salt', 'Coriander'],
-      benefits: ['Probiotic-rich', 'Cooling', 'Improves gut health'],
+      benefits: ['Probiotic-rich for gut health', 'Cooling and soothing', 'Improves digestion', 'Supports fertility'],
       description: 'Simple probiotic snack for better digestion and fertility.',
       image: '🥛',
     },
@@ -170,10 +185,11 @@ export default function FoodScreen() {
       name: 'Bajra Roti with Ghee',
       phase: 'Menstrual',
       category: 'Dinner',
+      dietType: 'Vegetarian',
       calories: 380,
       prepTime: '20 mins',
       ingredients: ['Bajra (Pearl millet) flour', 'Ghee', 'Gur (Jaggery)', 'Lasun (Garlic)'],
-      benefits: ['Warming food', 'High in iron', 'Provides strength'],
+      benefits: ['Warming food for cold weather', 'High in iron and magnesium', 'Provides strength', 'Good for anemia'],
       description: 'Traditional winter food that provides warmth and energy during periods.',
       image: '🫓',
     },
@@ -182,42 +198,177 @@ export default function FoodScreen() {
       name: 'Coconut Chutney with Idli',
       phase: 'Follicular',
       category: 'Snacks',
+      dietType: 'Vegetarian',
       calories: 220,
       prepTime: '20 mins',
       ingredients: ['Idli rice', 'Urad dal', 'Coconut', 'Green chili', 'Curry leaves', 'Mustard seeds'],
-      benefits: ['Fermented food', 'Easy to digest', 'Probiotic-rich'],
+      benefits: ['Fermented food for gut health', 'Easy to digest', 'Probiotic-rich', 'Low in calories'],
       description: 'South Indian fermented food great for gut health.',
       image: '⚪',
     },
+
+    // NON-VEGETARIAN FOODS
     {
-      id: 15,
+      id: 17,
+      name: 'Anda Bhurji (Scrambled Eggs)',
+      phase: 'Menstrual',
+      category: 'Breakfast',
+      dietType: 'Non-Vegetarian',
+      calories: 320,
+      prepTime: '10 mins',
+      ingredients: ['Eggs', 'Onion', 'Tomato', 'Green chili', 'Coriander', 'Spices'],
+      benefits: ['High quality protein for tissue repair', 'Rich in iron and B12', 'Replenishes blood loss', 'Easy to digest'],
+      description: 'Protein-packed Indian-style scrambled eggs for menstrual phase.',
+      image: '🍳',
+    },
+    {
+      id: 18,
+      name: 'Chicken Soup with Vegetables',
+      phase: 'Menstrual',
+      category: 'Dinner',
+      dietType: 'Non-Vegetarian',
+      calories: 280,
+      prepTime: '30 mins',
+      ingredients: ['Chicken pieces', 'Carrots', 'Beans', 'Ginger-garlic', 'Black pepper', 'Coriander'],
+      benefits: ['Easy to digest during cramps', 'High protein for recovery', 'Warming and comforting', 'Reduces inflammation'],
+      description: 'Nourishing chicken soup that provides comfort during menstruation.',
+      image: '🍜',
+    },
+    {
+      id: 19,
+      name: 'Boiled Egg Salad',
+      phase: 'Follicular',
+      category: 'Breakfast',
+      dietType: 'Non-Vegetarian',
+      calories: 250,
+      prepTime: '15 mins',
+      ingredients: ['Boiled eggs', 'Cucumber', 'Tomato', 'Lettuce', 'Lemon', 'Black pepper'],
+      benefits: ['Complete protein source', 'Rich in choline for hormone production', 'Supports egg development', 'Low calorie high nutrition'],
+      description: 'Fresh and protein-rich salad perfect for follicular phase.',
+      image: '🥗',
+    },
+    {
+      id: 20,
+      name: 'Tandoori Chicken with Mint Chutney',
+      phase: 'Follicular',
+      category: 'Lunch',
+      dietType: 'Non-Vegetarian',
+      calories: 380,
+      prepTime: '40 mins',
+      ingredients: ['Chicken', 'Dahi', 'Tandoori masala', 'Mint', 'Coriander', 'Lemon'],
+      benefits: ['Lean protein for muscle building', 'Low fat high protein', 'Supports hormone synthesis', 'Rich in B-complex vitamins'],
+      description: 'Flavorful grilled chicken that supports follicular growth.',
+      image: '🍗',
+    },
+    {
+      id: 21,
+      name: 'Fish Curry (Machli) with Rice',
+      phase: 'Ovulation',
+      category: 'Lunch',
+      dietType: 'Non-Vegetarian',
+      calories: 450,
+      prepTime: '35 mins',
+      ingredients: ['Fish (Rohu/Katla)', 'Coconut', 'Tomato', 'Curry leaves', 'Spices', 'Rice'],
+      benefits: ['Rich in Omega-3 fatty acids', 'Supports fertility and ovulation', 'Reduces inflammation', 'Good for brain health'],
+      description: 'Omega-3 rich fish curry perfect for peak fertility days.',
+      image: '🐟',
+    },
+    {
+      id: 22,
+      name: 'Grilled Chicken Breast with Vegetables',
+      phase: 'Ovulation',
+      category: 'Dinner',
+      dietType: 'Non-Vegetarian',
+      calories: 420,
+      prepTime: '30 mins',
+      ingredients: ['Chicken breast', 'Bell peppers', 'Broccoli', 'Lemon', 'Herbs', 'Olive oil'],
+      benefits: ['High protein for peak energy', 'Low fat for weight management', 'Rich in zinc for fertility', 'Supports reproductive health'],
+      description: 'Lean protein meal that boosts energy during ovulation.',
+      image: '🍗',
+    },
+    {
+      id: 23,
+      name: 'Egg Curry with Whole Wheat Roti',
+      phase: 'Luteal',
+      category: 'Dinner',
+      dietType: 'Non-Vegetarian',
+      calories: 400,
+      prepTime: '25 mins',
+      ingredients: ['Boiled eggs', 'Onion-tomato gravy', 'Spices', 'Coriander', 'Whole wheat roti'],
+      benefits: ['High protein for PMS management', 'Rich in vitamin D', 'Reduces mood swings', 'Satisfying and filling'],
+      description: 'Protein-rich curry that helps manage PMS symptoms.',
+      image: '🥘',
+    },
+    {
+      id: 24,
+      name: 'Fish Tikka (Grilled)',
+      phase: 'Luteal',
+      category: 'Snacks',
+      dietType: 'Non-Vegetarian',
+      calories: 280,
+      prepTime: '30 mins',
+      ingredients: ['Fish pieces', 'Dahi', 'Tikka masala', 'Lemon', 'Ginger-garlic', 'Chaat masala'],
+      benefits: ['Omega-3 reduces PMS symptoms', 'Anti-inflammatory properties', 'Low calorie high protein', 'Mood boosting'],
+      description: 'Healthy grilled fish snack that helps reduce PMS discomfort.',
+      image: '🐠',
+    },
+    {
+      id: 25,
+      name: 'Chicken Biryani (Light version)',
+      phase: 'Ovulation',
+      category: 'Lunch',
+      dietType: 'Non-Vegetarian',
+      calories: 480,
+      prepTime: '45 mins',
+      ingredients: ['Chicken', 'Basmati rice', 'Yogurt', 'Saffron', 'Whole spices', 'Fried onions'],
+      benefits: ['Complete meal with protein and carbs', 'Rich in B vitamins', 'Provides sustained energy', 'Supports high energy needs'],
+      description: 'Aromatic biryani perfect for high energy ovulation phase.',
+      image: '🍛',
+    },
+    {
+      id: 26,
       name: 'Masala Chai (Spiced Tea)',
       phase: 'Ovulation',
       category: 'Beverages',
+      dietType: 'Vegetarian',
       calories: 80,
       prepTime: '8 mins',
       ingredients: ['Tea leaves', 'Milk', 'Ginger', 'Elaichi', 'Cloves', 'Black pepper'],
-      benefits: ['Boosts metabolism', 'Warming', 'Improves digestion'],
+      benefits: ['Boosts metabolism', 'Warming effect', 'Improves digestion', 'Antioxidant-rich'],
       description: 'Traditional Indian tea that energizes and warms the body.',
       image: '☕',
     },
     {
-      id: 16,
+      id: 27,
       name: 'Akhrot Badam (Walnut-Almond) Mix',
       phase: 'Luteal',
       category: 'Snacks',
+      dietType: 'Vegetarian',
       calories: 220,
       prepTime: '2 mins',
       ingredients: ['Akhrot (Walnuts)', 'Badam (Almonds)', 'Kismis (Raisins)', 'Kaju (Cashews)'],
-      benefits: ['Omega-3 rich', 'Reduces inflammation', 'Mood boosting'],
+      benefits: ['Omega-3 rich for brain health', 'Reduces inflammation', 'Mood boosting properties', 'Rich in magnesium for PMS'],
       description: 'Dry fruit mix perfect for managing PMS and mood swings.',
       image: '🌰',
+    },
+    {
+      id: 28,
+      name: 'Mutton Keema (Minced Goat Meat)',
+      phase: 'Menstrual',
+      category: 'Lunch',
+      dietType: 'Non-Vegetarian',
+      calories: 420,
+      prepTime: '40 mins',
+      ingredients: ['Mutton keema', 'Peas', 'Onion', 'Tomato', 'Ginger-garlic', 'Spices'],
+      benefits: ['Very high in iron and zinc', 'Replenishes blood loss quickly', 'Rich in B12 vitamin', 'Provides strength during periods'],
+      description: 'Iron-rich minced meat perfect for menstrual phase nutrition.',
+      image: '🍖',
     },
   ];
 
   useEffect(() => {
     filterFoodItems();
-  }, [selectedPhase, selectedCategory]);
+  }, [selectedPhase, selectedCategory, selectedDietType]);
 
   const filterFoodItems = () => {
     let filtered = foodData;
@@ -228,6 +379,10 @@ export default function FoodScreen() {
 
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(item => item.category === selectedCategory);
+    }
+
+    if (selectedDietType !== 'All') {
+      filtered = filtered.filter(item => item.dietType === selectedDietType);
     }
 
     setFoodItems(filtered);
@@ -324,6 +479,40 @@ export default function FoodScreen() {
         ))}
       </ScrollView>
 
+      {/* Diet Type Filter */}
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        style={styles.filterContainer}
+        contentContainerStyle={styles.filterContent}
+      >
+        {dietTypes.map((dietType) => (
+          <TouchableOpacity
+            key={dietType}
+            style={[
+              styles.filterButton,
+              selectedDietType === dietType && styles.selectedFilterButton,
+              selectedDietType === dietType && dietType === 'Vegetarian' && { backgroundColor: '#4CAF50' },
+              selectedDietType === dietType && dietType === 'Non-Vegetarian' && { backgroundColor: '#FF5722' },
+            ]}
+            onPress={() => setSelectedDietType(dietType)}
+          >
+            <Ionicons 
+              name={dietType === 'Vegetarian' ? 'leaf' : dietType === 'Non-Vegetarian' ? 'restaurant' : 'fast-food'} 
+              size={16} 
+              color={selectedDietType === dietType ? 'white' : '#666'} 
+              style={styles.filterIcon}
+            />
+            <Text style={[
+              styles.filterButtonText,
+              selectedDietType === dietType && styles.selectedFilterButtonText,
+            ]}>
+              {dietType}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+
       {/* Food Items List */}
       <View style={styles.foodContainer}>
         {foodItems.map((item) => (
@@ -341,6 +530,22 @@ export default function FoodScreen() {
                   <View style={styles.categoryTag}>
                     <Ionicons name={getCategoryIcon(item.category)} size={12} color="#666" />
                     <Text style={styles.categoryTagText}>{item.category}</Text>
+                  </View>
+                  <View style={[
+                    styles.dietTypeTag, 
+                    { backgroundColor: item.dietType === 'Vegetarian' ? '#E8F5E9' : '#FFEBEE' }
+                  ]}>
+                    <Ionicons 
+                      name={item.dietType === 'Vegetarian' ? 'leaf' : 'restaurant'} 
+                      size={12} 
+                      color={item.dietType === 'Vegetarian' ? '#4CAF50' : '#FF5722'} 
+                    />
+                    <Text style={[
+                      styles.dietTypeTagText,
+                      { color: item.dietType === 'Vegetarian' ? '#4CAF50' : '#FF5722' }
+                    ]}>
+                      {item.dietType === 'Vegetarian' ? 'Veg' : 'Non-Veg'}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.foodStats}>
@@ -536,10 +741,24 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     backgroundColor: '#F5F5F5',
     borderRadius: 12,
+    marginRight: 8,
   },
   categoryTagText: {
     fontSize: 12,
     color: '#666',
+    marginLeft: 4,
+  },
+  dietTypeTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  dietTypeTagText: {
+    fontSize: 11,
+    fontWeight: '600',
     marginLeft: 4,
   },
   foodStats: {
