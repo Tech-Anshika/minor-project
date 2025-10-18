@@ -49,7 +49,7 @@ export default function YogaScreen() {
         'Lower your forehead to the mat',
         'Breathe deeply and hold the pose'
       ],
-      image: require('../assets/yoga-poses/childs-pose.jpg'),
+      image: { uri: 'https://www.healthshots.com/wp-content/uploads/2023/05/childs-pose.jpg' },
       videoUrl: 'https://www.youtube.com/watch?v=SjB4sKe_IXk',
       difficulty: 'Beginner',
       category: 'Restorative'
@@ -69,7 +69,7 @@ export default function YogaScreen() {
         'Continue flowing between poses',
         'Move slowly and breathe deeply'
       ],
-      image: require('../assets/yoga-poses/cat-cow-stretch.jpg'),
+      image: { uri: 'https://media1.popsugar-assets.com/files/thumbor/bVzpK_JqkQDhJLqXDRVXNKqLxII/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2016/05/06/912/n/1922729/2e4d3f98_edit_img_cover_file_42649584_1462566893_Cat-Cow-Stretch/i/Cat-Cow-Stretch.jpg' },
       videoUrl: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
@@ -89,7 +89,7 @@ export default function YogaScreen() {
         'Extend arms parallel to floor',
         'Gaze over front fingertips'
       ],
-      image: require('../assets/yoga-poses/warrior-2.jpg'),
+      image: { uri: 'https://www.shvasa.com/wp-content/uploads/2023/03/Warrior-II-Pose.jpg' },
       videoUrl: 'https://www.youtube.com/watch?v=NcCBaiCCl0A',
       difficulty: 'Intermediate',
       category: 'Standing'
@@ -109,7 +109,7 @@ export default function YogaScreen() {
         'Focus on a fixed point',
         'Breathe steadily and hold'
       ],
-      image: require('../assets/yoga-poses/tree-pose.jpg'),
+      image: { uri: 'https://www.myyogateacher.com/blog/wp-content/uploads/2022/08/Vrikshasana-Tree-Pose.jpg' },
       videoUrl: 'https://www.youtube.com/watch?v=Dic293YNJI8',
       difficulty: 'Beginner',
       category: 'Balance'
@@ -129,7 +129,7 @@ export default function YogaScreen() {
         'Lift chest and head up',
         'Keep elbows close to body'
       ],
-      image: require('../assets/yoga-poses/cobra-pose.jpg'),
+      image: { uri: 'https://rishikeshashtangayogaschool.com/blog/wp-content/uploads/2020/07/Bhujangasana.jpg' },
       videoUrl: 'https://www.youtube.com/watch?v=fOdrW7nf9gw',
       difficulty: 'Beginner',
       category: 'Backbend'
@@ -149,7 +149,7 @@ export default function YogaScreen() {
         'Lift hips up',
         'Interlace fingers under body'
       ],
-      image: require('../assets/yoga-poses/bridge-pose.jpg'),
+      image: { uri: 'https://www.gynaecworld.com/wp-content/uploads/2022/09/Setu-Bandhasana-Bridge-Pose.jpg' },
       videoUrl: 'https://www.youtube.com/watch?v=hgtfNp8KywM',
       difficulty: 'Beginner',
       category: 'Backbend'
@@ -169,7 +169,7 @@ export default function YogaScreen() {
         'Place arms by sides',
         'Close eyes and breathe deeply'
       ],
-      image: require('../assets/yoga-poses/legs-up-wall.jpg'),
+      image: { uri: 'https://www.stylecraze.com/wp-content/uploads/2023/07/Viparita-Karani-Legs-Up-The-Wall-Pose.jpg' },
       videoUrl: 'https://www.youtube.com/watch?v=xmcDj4Bf--0',
       difficulty: 'Beginner',
       category: 'Restorative'
@@ -189,7 +189,7 @@ export default function YogaScreen() {
         'Reach for feet or shins',
         'Keep spine long'
       ],
-      image: require('../assets/yoga-poses/seated-forward-bend.jpg'),
+      image: { uri: 'https://www.vinyasayogaacademy.com/blog/wp-content/uploads/2023/04/Paschimottanasana-Seated-Forward-Bend.jpg' },
       videoUrl: 'https://www.youtube.com/watch?v=T8sgVyF4Ux4',
       difficulty: 'Beginner',
       category: 'Forward Fold'
