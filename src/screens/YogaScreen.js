@@ -27,8 +27,6 @@ export default function YogaScreen() {
   const [isPaused, setIsPaused] = useState(false);
   const [sessionPoses, setSessionPoses] = useState([]);
   const [currentPoseIndex, setCurrentPoseIndex] = useState(0);
-  const [imageLoadingStates, setImageLoadingStates] = useState({});
-  const [imageErrors, setImageErrors] = useState({});
   
   const timerRef = useRef(null);
   const poseTimerRef = useRef(null);
@@ -51,7 +49,7 @@ export default function YogaScreen() {
         'Lower your forehead to the mat',
         'Breathe deeply and hold the pose'
       ],
-      image: 'https://www.healthshots.com/wp-content/uploads/2023/05/childs-pose.jpg',
+      image: require('../assets/yoga-poses/childs-pose.jpg'),
       videoUrl: 'https://www.youtube.com/watch?v=SjB4sKe_IXk',
       difficulty: 'Beginner',
       category: 'Restorative'
@@ -71,7 +69,7 @@ export default function YogaScreen() {
         'Continue flowing between poses',
         'Move slowly and breathe deeply'
       ],
-      image: 'https://media1.popsugar-assets.com/files/thumbor/bVzpK_JqkQDhJLqXDRVXNKqLxII/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2016/05/06/912/n/1922729/2e4d3f98_edit_img_cover_file_42649584_1462566893_Cat-Cow-Stretch/i/Cat-Cow-Stretch.jpg',
+      image: require('../assets/yoga-poses/cat-cow-stretch.jpg'),
       videoUrl: 'https://www.youtube.com/watch?v=kqnua4rHVVA',
       difficulty: 'Beginner',
       category: 'Gentle Flow'
@@ -91,7 +89,7 @@ export default function YogaScreen() {
         'Extend arms parallel to floor',
         'Gaze over front fingertips'
       ],
-      image: 'https://www.shvasa.com/wp-content/uploads/2023/03/Warrior-II-Pose.jpg',
+      image: require('../assets/yoga-poses/warrior-2.jpg'),
       videoUrl: 'https://www.youtube.com/watch?v=NcCBaiCCl0A',
       difficulty: 'Intermediate',
       category: 'Standing'
@@ -111,7 +109,7 @@ export default function YogaScreen() {
         'Focus on a fixed point',
         'Breathe steadily and hold'
       ],
-      image: 'https://www.myyogateacher.com/blog/wp-content/uploads/2022/08/Vrikshasana-Tree-Pose.jpg',
+      image: require('../assets/yoga-poses/tree-pose.jpg'),
       videoUrl: 'https://www.youtube.com/watch?v=Dic293YNJI8',
       difficulty: 'Beginner',
       category: 'Balance'
@@ -131,7 +129,7 @@ export default function YogaScreen() {
         'Lift chest and head up',
         'Keep elbows close to body'
       ],
-      image: 'https://rishikeshashtangayogaschool.com/blog/wp-content/uploads/2020/07/Bhujangasana.jpg',
+      image: require('../assets/yoga-poses/cobra-pose.jpg'),
       videoUrl: 'https://www.youtube.com/watch?v=fOdrW7nf9gw',
       difficulty: 'Beginner',
       category: 'Backbend'
@@ -151,7 +149,7 @@ export default function YogaScreen() {
         'Lift hips up',
         'Interlace fingers under body'
       ],
-      image: 'https://www.gynaecworld.com/wp-content/uploads/2022/09/Setu-Bandhasana-Bridge-Pose.jpg',
+      image: require('../assets/yoga-poses/bridge-pose.jpg'),
       videoUrl: 'https://www.youtube.com/watch?v=hgtfNp8KywM',
       difficulty: 'Beginner',
       category: 'Backbend'
@@ -171,7 +169,7 @@ export default function YogaScreen() {
         'Place arms by sides',
         'Close eyes and breathe deeply'
       ],
-      image: 'https://www.stylecraze.com/wp-content/uploads/2023/07/Viparita-Karani-Legs-Up-The-Wall-Pose.jpg',
+      image: require('../assets/yoga-poses/legs-up-wall.jpg'),
       videoUrl: 'https://www.youtube.com/watch?v=xmcDj4Bf--0',
       difficulty: 'Beginner',
       category: 'Restorative'
@@ -191,7 +189,7 @@ export default function YogaScreen() {
         'Reach for feet or shins',
         'Keep spine long'
       ],
-      image: 'https://www.vinyasayogaacademy.com/blog/wp-content/uploads/2023/04/Paschimottanasana-Seated-Forward-Bend.jpg',
+      image: require('../assets/yoga-poses/seated-forward-bend.jpg'),
       videoUrl: 'https://www.youtube.com/watch?v=T8sgVyF4Ux4',
       difficulty: 'Beginner',
       category: 'Forward Fold'
@@ -398,7 +396,7 @@ export default function YogaScreen() {
           {/* Pose Image */}
           <View style={styles.sessionPoseImageContainer}>
             <Image
-              source={{ uri: currentPose.image }}
+              source={currentPose.image}
               style={styles.sessionPoseImage}
               resizeMode="cover"
             />
@@ -565,31 +563,10 @@ export default function YogaScreen() {
             {/* Pose Image Header */}
             <View style={styles.imageWrapper}>
               <Image
-                source={{ uri: pose.image }}
+                source={pose.image}
                 style={styles.poseImageFull}
                 resizeMode="cover"
-                onLoadStart={() => {
-                  setImageLoadingStates(prev => ({ ...prev, [pose.id]: true }));
-                }}
-                onLoadEnd={() => {
-                  setImageLoadingStates(prev => ({ ...prev, [pose.id]: false }));
-                }}
-                onError={() => {
-                  setImageErrors(prev => ({ ...prev, [pose.id]: true }));
-                  setImageLoadingStates(prev => ({ ...prev, [pose.id]: false }));
-                }}
               />
-              {imageLoadingStates[pose.id] && (
-                <View style={styles.imageLoadingContainer}>
-                  <ActivityIndicator size="large" color="#E91E63" />
-                </View>
-              )}
-              {imageErrors[pose.id] && (
-                <View style={styles.imageErrorContainer}>
-                  <Ionicons name="image-outline" size={48} color="#CCC" />
-                  <Text style={styles.imageErrorText}>Image not available</Text>
-                </View>
-              )}
             </View>
             
             <View style={styles.poseContent}>
