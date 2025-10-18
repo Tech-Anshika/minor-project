@@ -23,99 +23,195 @@ export default function FoodScreen() {
   const foodData = [
     {
       id: 1,
-      name: 'Iron-Rich Smoothie',
+      name: 'Palak (Spinach) Poha',
       phase: 'Menstrual',
       category: 'Breakfast',
-      calories: 250,
-      prepTime: '5 mins',
-      ingredients: ['Spinach', 'Banana', 'Berries', 'Almond milk', 'Chia seeds'],
-      benefits: ['High in iron', 'Reduces inflammation', 'Boosts energy'],
-      description: 'A nutrient-dense smoothie perfect for replenishing iron during menstruation.',
-      image: '🥤',
+      calories: 280,
+      prepTime: '15 mins',
+      ingredients: ['Poha (flattened rice)', 'Palak (Spinach)', 'Onion', 'Peanuts', 'Lemon', 'Haldi (Turmeric)'],
+      benefits: ['High in iron', 'Easy to digest', 'Boosts energy'],
+      description: 'Iron-rich breakfast perfect for replenishing nutrients during menstruation.',
+      image: '🍚',
     },
     {
       id: 2,
-      name: 'Quinoa Buddha Bowl',
+      name: 'Moong Dal Khichdi with Dahi',
       phase: 'Menstrual',
       category: 'Lunch',
-      calories: 400,
-      prepTime: '15 mins',
-      ingredients: ['Quinoa', 'Roasted vegetables', 'Avocado', 'Tahini dressing', 'Pumpkin seeds'],
-      benefits: ['Complete protein', 'High fiber', 'Anti-inflammatory'],
-      description: 'A balanced meal with complex carbs and healthy fats.',
-      image: '🥗',
+      calories: 350,
+      prepTime: '20 mins',
+      ingredients: ['Moong dal', 'Rice', 'Ghee', 'Jeera (Cumin)', 'Dahi (Curd)', 'Ginger'],
+      benefits: ['Easy to digest', 'Complete protein', 'Reduces cramps'],
+      description: 'Comforting and nutritious khichdi that soothes menstrual discomfort.',
+      image: '🥘',
     },
     {
       id: 3,
-      name: 'Green Goddess Salad',
+      name: 'Methi Thepla with Curd',
       phase: 'Follicular',
-      category: 'Lunch',
-      calories: 300,
-      prepTime: '10 mins',
-      ingredients: ['Mixed greens', 'Cucumber', 'Broccoli', 'Green apple', 'Walnuts'],
-      benefits: ['Rich in folate', 'Supports egg development', 'High in antioxidants'],
-      description: 'Fresh and energizing salad perfect for the follicular phase.',
-      image: '🥬',
+      category: 'Breakfast',
+      calories: 320,
+      prepTime: '20 mins',
+      ingredients: ['Whole wheat flour', 'Methi (Fenugreek) leaves', 'Dahi', 'Spices', 'Oil'],
+      benefits: ['Regulates blood sugar', 'High fiber', 'Supports hormone balance'],
+      description: 'Healthy flatbread loaded with fenugreek for hormonal support.',
+      image: '🫓',
     },
     {
       id: 4,
-      name: 'Salmon with Sweet Potato',
+      name: 'Chana Masala with Brown Rice',
       phase: 'Follicular',
       category: 'Dinner',
-      calories: 450,
-      prepTime: '25 mins',
-      ingredients: ['Salmon fillet', 'Sweet potato', 'Asparagus', 'Lemon', 'Herbs'],
-      benefits: ['Omega-3 fatty acids', 'High protein', 'Supports hormone production'],
-      description: 'Nutrient-rich dinner that supports hormonal balance.',
-      image: '🐟',
+      calories: 400,
+      prepTime: '30 mins',
+      ingredients: ['Kabuli chana (Chickpeas)', 'Tomato', 'Onion', 'Brown rice', 'Spices', 'Coriander'],
+      benefits: ['High protein', 'Rich in folate', 'Supports egg development'],
+      description: 'Protein-packed meal that supports the follicular phase.',
+      image: '🍛',
     },
     {
       id: 5,
-      name: 'Energy Boosting Oatmeal',
+      name: 'Ragi (Finger Millet) Dosa',
       phase: 'Ovulation',
       category: 'Breakfast',
-      calories: 350,
-      prepTime: '8 mins',
-      ingredients: ['Oats', 'Greek yogurt', 'Honey', 'Nuts', 'Fresh berries'],
-      benefits: ['Sustained energy', 'High fiber', 'Supports ovulation'],
-      description: 'Energizing breakfast perfect for peak fertility days.',
-      image: '🥣',
+      calories: 300,
+      prepTime: '15 mins',
+      ingredients: ['Ragi flour', 'Rice flour', 'Curd', 'Coconut chutney', 'Sambar'],
+      benefits: ['High calcium', 'Sustained energy', 'Regulates metabolism'],
+      description: 'Nutritious South Indian breakfast for peak energy days.',
+      image: '🥞',
     },
     {
       id: 6,
-      name: 'Mediterranean Wrap',
+      name: 'Rajma (Kidney Beans) Chawal',
       phase: 'Ovulation',
       category: 'Lunch',
-      calories: 380,
-      prepTime: '12 mins',
-      ingredients: ['Whole wheat tortilla', 'Hummus', 'Cucumber', 'Tomato', 'Feta cheese'],
-      benefits: ['Balanced macros', 'Anti-inflammatory', 'Supports fertility'],
-      description: 'Light and nutritious wrap for peak energy days.',
-      image: '🌯',
+      calories: 420,
+      prepTime: '35 mins',
+      ingredients: ['Rajma (Kidney beans)', 'Basmati rice', 'Tomato', 'Onion', 'Ginger-garlic', 'Spices'],
+      benefits: ['High protein', 'Rich in fiber', 'Supports fertility'],
+      description: 'Classic North Indian meal perfect for high energy needs.',
+      image: '🍲',
     },
     {
       id: 7,
-      name: 'Warm Turmeric Latte',
+      name: 'Haldi Doodh (Turmeric Milk)',
       phase: 'Luteal',
       category: 'Beverages',
-      calories: 120,
+      calories: 150,
       prepTime: '5 mins',
-      ingredients: ['Turmeric', 'Coconut milk', 'Ginger', 'Cinnamon', 'Black pepper'],
-      benefits: ['Anti-inflammatory', 'Supports progesterone', 'Calming'],
-      description: 'Soothing drink perfect for the luteal phase.',
-      image: '☕',
+      ingredients: ['Milk', 'Haldi (Turmeric)', 'Ginger', 'Black pepper', 'Honey', 'Elaichi (Cardamom)'],
+      benefits: ['Anti-inflammatory', 'Improves sleep', 'Reduces PMS symptoms'],
+      description: 'Traditional Indian drink that calms the mind and body.',
+      image: '🥛',
     },
     {
       id: 8,
-      name: 'Dark Chocolate Bark',
+      name: 'Til (Sesame) Ladoo',
       phase: 'Luteal',
       category: 'Snacks',
-      calories: 180,
-      prepTime: '10 mins',
-      ingredients: ['Dark chocolate', 'Almonds', 'Pumpkin seeds', 'Coconut flakes'],
-      benefits: ['Magnesium rich', 'Mood boosting', 'Antioxidants'],
-      description: 'Healthy treat that helps with PMS symptoms.',
-      image: '🍫',
+      calories: 200,
+      prepTime: '15 mins',
+      ingredients: ['Til (Sesame seeds)', 'Gur (Jaggery)', 'Ghee', 'Elaichi'],
+      benefits: ['High in calcium', 'Boosts energy', 'Reduces menstrual pain'],
+      description: 'Traditional sweet that helps manage PMS and provides warmth.',
+      image: '🍬',
+    },
+    {
+      id: 9,
+      name: 'Besan Chilla with Vegetables',
+      phase: 'Menstrual',
+      category: 'Snacks',
+      calories: 250,
+      prepTime: '15 mins',
+      ingredients: ['Besan (Gram flour)', 'Onion', 'Tomato', 'Green chili', 'Coriander', 'Spices'],
+      benefits: ['High protein', 'Low glycemic index', 'Rich in iron'],
+      description: 'Savory pancake loaded with vegetables and protein.',
+      image: '🥘',
+    },
+    {
+      id: 10,
+      name: 'Masala Oats Upma',
+      phase: 'Follicular',
+      category: 'Breakfast',
+      calories: 280,
+      prepTime: '12 mins',
+      ingredients: ['Oats', 'Mixed vegetables', 'Curry leaves', 'Mustard seeds', 'Peanuts', 'Lemon'],
+      benefits: ['High fiber', 'Low GI', 'Helps weight management'],
+      description: 'Healthy Indian-style oats perfect for hormonal balance.',
+      image: '🥣',
+    },
+    {
+      id: 11,
+      name: 'Lauki (Bottle Gourd) Sabzi with Roti',
+      phase: 'Luteal',
+      category: 'Dinner',
+      calories: 320,
+      prepTime: '25 mins',
+      ingredients: ['Lauki (Bottle gourd)', 'Whole wheat roti', 'Tomato', 'Onion', 'Jeera', 'Haldi'],
+      benefits: ['Low calorie', 'Cooling effect', 'Aids digestion'],
+      description: 'Light and soothing dinner for the luteal phase.',
+      image: '🫕',
+    },
+    {
+      id: 12,
+      name: 'Dahi (Curd) with Roasted Jeera',
+      phase: 'Ovulation',
+      category: 'Snacks',
+      calories: 120,
+      prepTime: '5 mins',
+      ingredients: ['Fresh dahi (Curd)', 'Roasted jeera powder', 'Salt', 'Coriander'],
+      benefits: ['Probiotic-rich', 'Cooling', 'Improves gut health'],
+      description: 'Simple probiotic snack for better digestion and fertility.',
+      image: '🥛',
+    },
+    {
+      id: 13,
+      name: 'Bajra Roti with Ghee',
+      phase: 'Menstrual',
+      category: 'Dinner',
+      calories: 380,
+      prepTime: '20 mins',
+      ingredients: ['Bajra (Pearl millet) flour', 'Ghee', 'Gur (Jaggery)', 'Lasun (Garlic)'],
+      benefits: ['Warming food', 'High in iron', 'Provides strength'],
+      description: 'Traditional winter food that provides warmth and energy during periods.',
+      image: '🫓',
+    },
+    {
+      id: 14,
+      name: 'Coconut Chutney with Idli',
+      phase: 'Follicular',
+      category: 'Snacks',
+      calories: 220,
+      prepTime: '20 mins',
+      ingredients: ['Idli rice', 'Urad dal', 'Coconut', 'Green chili', 'Curry leaves', 'Mustard seeds'],
+      benefits: ['Fermented food', 'Easy to digest', 'Probiotic-rich'],
+      description: 'South Indian fermented food great for gut health.',
+      image: '⚪',
+    },
+    {
+      id: 15,
+      name: 'Masala Chai (Spiced Tea)',
+      phase: 'Ovulation',
+      category: 'Beverages',
+      calories: 80,
+      prepTime: '8 mins',
+      ingredients: ['Tea leaves', 'Milk', 'Ginger', 'Elaichi', 'Cloves', 'Black pepper'],
+      benefits: ['Boosts metabolism', 'Warming', 'Improves digestion'],
+      description: 'Traditional Indian tea that energizes and warms the body.',
+      image: '☕',
+    },
+    {
+      id: 16,
+      name: 'Akhrot Badam (Walnut-Almond) Mix',
+      phase: 'Luteal',
+      category: 'Snacks',
+      calories: 220,
+      prepTime: '2 mins',
+      ingredients: ['Akhrot (Walnuts)', 'Badam (Almonds)', 'Kismis (Raisins)', 'Kaju (Cashews)'],
+      benefits: ['Omega-3 rich', 'Reduces inflammation', 'Mood boosting'],
+      description: 'Dry fruit mix perfect for managing PMS and mood swings.',
+      image: '🌰',
     },
   ];
 
@@ -295,23 +391,31 @@ export default function FoodScreen() {
       <View style={styles.tipsCard}>
         <View style={styles.tipsHeader}>
           <Ionicons name="nutrition" size={24} color="#4CAF50" />
-          <Text style={styles.tipsTitle}>Nutrition Tips</Text>
+          <Text style={styles.tipsTitle}>Indian PCOS Diet Tips</Text>
         </View>
         <View style={styles.tipItem}>
           <Ionicons name="leaf" size={16} color="#666" />
-          <Text style={styles.tipText}>Focus on whole, unprocessed foods</Text>
+          <Text style={styles.tipText}>Include methi (fenugreek) in your diet - helps regulate blood sugar</Text>
         </View>
         <View style={styles.tipItem}>
           <Ionicons name="water" size={16} color="#666" />
-          <Text style={styles.tipText}>Stay hydrated with 8-10 glasses of water daily</Text>
+          <Text style={styles.tipText}>Drink jeera water or methi water on empty stomach</Text>
         </View>
         <View style={styles.tipItem}>
           <Ionicons name="time" size={16} color="#666" />
-          <Text style={styles.tipText}>Eat regular meals to maintain stable blood sugar</Text>
+          <Text style={styles.tipText}>Replace white rice with brown rice, ragi, or bajra</Text>
         </View>
         <View style={styles.tipItem}>
           <Ionicons name="heart" size={16} color="#666" />
-          <Text style={styles.tipText}>Include anti-inflammatory foods like turmeric and ginger</Text>
+          <Text style={styles.tipText}>Add haldi (turmeric) and ginger to daily meals for anti-inflammatory benefits</Text>
+        </View>
+        <View style={styles.tipItem}>
+          <Ionicons name="restaurant" size={16} color="#666" />
+          <Text style={styles.tipText}>Choose ghee over refined oils - provides healthy fats</Text>
+        </View>
+        <View style={styles.tipItem}>
+          <Ionicons name="nutrition" size={16} color="#666" />
+          <Text style={styles.tipText}>Eat local seasonal vegetables from Delhi sabzi mandi</Text>
         </View>
       </View>
     </ScrollView>
