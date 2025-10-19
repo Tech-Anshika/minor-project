@@ -301,7 +301,7 @@ export default function MedicineScreen() {
                 <View style={styles.scheduleStatus}>
                   <View style={[
                     styles.statusIndicator,
-                    { backgroundColor: schedule.isActive ? '#4CAF50' : '#F44336' }
+                    { backgroundColor: schedule.isActive ? '#A855F7' : '#F44336' }
                   ]} />
                   <Text style={styles.statusText}>
                     {schedule.isActive ? 'Active' : 'Inactive'}
@@ -1114,8 +1114,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   takenButtonActive: {
-    backgroundColor: '#10B981',
-    borderColor: '#10B981',
+    backgroundColor: '#A855F7',
+    borderColor: '#A855F7',
   },
   takenButtonInactive: {
     backgroundColor: 'transparent',
