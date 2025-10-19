@@ -9,19 +9,28 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../config/firebaseConfig';
+import OfflineHealthAssistant from '../services/OfflineHealthAssistant';
 
 export default function ChatbotScreen() {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [quickSuggestions, setQuickSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const flatListRef = useRef(null);
+  const messageCount = useRef(0);
 
   useEffect(() => {
     loadChatHistory();
+    // Show welcome message and suggestions on first load
+    if (messages.length === 0) {
+      showWelcomeMessage();
+    }
   }, []);
 
   const loadChatHistory = () => {
@@ -43,30 +52,41 @@ export default function ChatbotScreen() {
     }
   };
 
-  const getAIResponse = async (userMessage) => {
-    // TODO: Replace with actual Gemini API integration
-    // For now, return mock responses
-    const mockResponses = [
-      "I understand you're dealing with PCOD symptoms. Have you tried incorporating more fiber-rich foods into your diet?",
-      "Regular exercise, especially yoga and cardio, can help manage PCOD symptoms. Would you like some specific exercise recommendations?",
-      "Stress management is crucial for hormonal balance. Try meditation or deep breathing exercises for 10-15 minutes daily.",
-      "It's important to maintain a consistent sleep schedule. Aim for 7-9 hours of quality sleep each night.",
-      "Consider tracking your symptoms and cycle patterns to identify triggers. This can help you and your healthcare provider make better decisions.",
-    ];
-
-    const randomResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];
-    
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    return randomResponse;
+  const showWelcomeMessage = () => {
+    const welcomeMessage = {
+      text: OfflineHealthAssistant.getGreeting(),
+      isUser: false,
+      timestamp: new Date(),
+    };
+    setMessages([welcomeMessage]);
+    setQuickSuggestions(OfflineHealthAssistant.getQuickSuggestions());
   };
 
-  const sendMessage = async () => {
-    if (!inputText.trim()) return;
+  const getAIResponse = async (userMessage) => {
+    // Use our offline AI assistant - completely free!
+    const response = OfflineHealthAssistant.getResponse(userMessage);
+    
+    // Simulate natural typing delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Every 5 messages, add an encouraging note
+    messageCount.current += 1;
+    if (messageCount.current % 5 === 0) {
+      return `${response}\n\n${OfflineHealthAssistant.getEncouragingMessage()}`;
+    }
+    
+    return response;
+  };
+
+  const sendMessage = async (messageText = null) => {
+    const textToSend = messageText || inputText.trim();
+    if (!textToSend) return;
+
+    // Hide suggestions after first user message
+    setShowSuggestions(false);
 
     const userMessage = {
-      text: inputText.trim(),
+      text: textToSend,
       isUser: true,
       timestamp: new Date(),
     };
@@ -81,8 +101,8 @@ export default function ChatbotScreen() {
         await addDoc(collection(db, 'chats', auth.currentUser.uid, 'messages'), userMessage);
       }
 
-      // Get AI response
-      const aiResponse = await getAIResponse(inputText.trim());
+      // Get AI response from offline assistant
+      const aiResponse = await getAIResponse(textToSend);
       
       const botMessage = {
         text: aiResponse,
@@ -96,12 +116,19 @@ export default function ChatbotScreen() {
       if (auth.currentUser) {
         await addDoc(collection(db, 'chats', auth.currentUser.uid, 'messages'), botMessage);
       }
+
+      // Refresh quick suggestions
+      setQuickSuggestions(OfflineHealthAssistant.getQuickSuggestions());
     } catch (error) {
       console.error('Error sending message:', error);
       Alert.alert('Error', 'Failed to send message. Please try again.');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleQuickSuggestion = (suggestion) => {
+    sendMessage(suggestion);
   };
 
   const renderMessage = ({ item }) => (
@@ -139,7 +166,7 @@ export default function ChatbotScreen() {
           <Ionicons name="chatbubble" size={24} color="#E91E63" />
           <Text style={styles.headerTitle}>AI Health Assistant</Text>
         </View>
-        <Text style={styles.headerSubtitle}>Ask me anything about PCOD/PCOS</Text>
+        <Text style={styles.headerSubtitle}>Free offline AI • PCOS/PCOD Expert</Text>
       </View>
 
       <FlatList
@@ -153,13 +180,25 @@ export default function ChatbotScreen() {
         onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
       />
 
-      {messages.length === 0 && (
-        <View style={styles.emptyState}>
-          <Ionicons name="chatbubbles-outline" size={64} color="#E0E0E0" />
-          <Text style={styles.emptyTitle}>Start a conversation</Text>
-          <Text style={styles.emptySubtitle}>
-            Ask me about PCOD symptoms, diet tips, exercise routines, or any health concerns you have.
-          </Text>
+      {/* Quick Suggestions */}
+      {quickSuggestions.length > 0 && !loading && (
+        <View style={styles.suggestionsContainer}>
+          <Text style={styles.suggestionsTitle}>💡 Quick Questions:</Text>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.suggestionsScroll}
+          >
+            {quickSuggestions.map((suggestion, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.suggestionButton}
+                onPress={() => handleQuickSuggestion(suggestion)}
+              >
+                <Text style={styles.suggestionText}>{suggestion}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
       )}
 
@@ -318,6 +357,36 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: '#CCC',
+  },
+  suggestionsContainer: {
+    backgroundColor: 'white',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#F0F0F0',
+  },
+  suggestionsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 8,
+  },
+  suggestionsScroll: {
+    paddingRight: 16,
+  },
+  suggestionButton: {
+    backgroundColor: '#FFF0F5',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: '#FFB6D9',
+  },
+  suggestionText: {
+    color: '#E91E63',
+    fontSize: 14,
+    fontWeight: '500',
   },
 });
 
