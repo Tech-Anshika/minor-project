@@ -426,7 +426,7 @@ export default function MedicineScreen() {
                 <Ionicons
                   name={tab.icon}
                   size={20}
-                  color={selectedTab === tab.id ? '#E91E63' : '#9CA3AF'}
+                  color={selectedTab === tab.id ? '#FF6B9D' : '#9CA3AF'}
                 />
                 <Text
                   style={[
@@ -472,7 +472,7 @@ const AddMedicineModal = ({ visible, onClose, onSave }) => {
     dosage: '',
     unit: 'mg',
     description: '',
-    color: '#E91E63',
+    color: '#FF6B9D',
     icon: 'medical',
   });
 
@@ -496,7 +496,7 @@ const AddMedicineModal = ({ visible, onClose, onSave }) => {
         dosage: '',
         unit: 'mg',
         description: '',
-        color: '#E91E63',
+        color: '#FF6B9D',
         icon: 'medical',
       });
     } catch (error) {
