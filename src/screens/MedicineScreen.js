@@ -111,7 +111,7 @@ export default function MedicineScreen() {
         <ModernCard type="glass" style={styles.statsCard}>
           <View style={styles.cardHeader}>
             <View style={styles.cardTitleContainer}>
-              <Ionicons name="analytics" size={24} color="#E91E63" />
+              <Ionicons name="analytics" size={26} color="#FF6B9D" />
               <Text style={styles.cardTitle}>Today's Overview</Text>
             </View>
           </View>
@@ -144,14 +144,14 @@ export default function MedicineScreen() {
         <ModernCard type="glass" style={styles.scheduleCard}>
           <View style={styles.cardHeader}>
             <View style={styles.cardTitleContainer}>
-              <Ionicons name="time" size={24} color="#E91E63" />
+              <Ionicons name="time" size={26} color="#FF6B9D" />
               <Text style={styles.cardTitle}>Today's Schedule</Text>
             </View>
             <TouchableOpacity 
               style={styles.addButton}
               onPress={() => setShowAddSchedule(true)}
             >
-              <Ionicons name="add" size={20} color="white" />
+              <Ionicons name="add" size={22} color="white" />
             </TouchableOpacity>
           </View>
           
@@ -205,14 +205,14 @@ export default function MedicineScreen() {
       <ModernCard type="glass" style={styles.medicinesCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="medical" size={24} color="#E91E63" />
+            <Ionicons name="medical" size={26} color="#FF6B9D" />
             <Text style={styles.cardTitle}>My Medicines</Text>
           </View>
           <TouchableOpacity 
             style={styles.addButton}
             onPress={() => setShowAddMedicine(true)}
           >
-            <Ionicons name="add" size={20} color="white" />
+            <Ionicons name="add" size={22} color="white" />
           </TouchableOpacity>
         </View>
         
@@ -246,13 +246,13 @@ export default function MedicineScreen() {
                       setShowAddSchedule(true);
                     }}
                   >
-                    <Ionicons name="time" size={20} color="#E91E63" />
+                    <Ionicons name="time" size={22} color="#FF6B9D" />
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.actionButton}
                     onPress={() => handleDeleteMedicine(medicine.id)}
                   >
-                    <Ionicons name="trash" size={20} color="#F44336" />
+                    <Ionicons name="trash" size={22} color="#EF4444" />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -268,7 +268,7 @@ export default function MedicineScreen() {
       <ModernCard type="glass" style={styles.schedulesCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="time" size={24} color="#E91E63" />
+            <Ionicons name="time" size={26} color="#FF6B9D" />
             <Text style={styles.cardTitle}>Medicine Schedules</Text>
           </View>
         </View>
@@ -320,7 +320,7 @@ export default function MedicineScreen() {
       <ModernCard type="glass" style={styles.historyCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="calendar" size={24} color="#E91E63" />
+            <Ionicons name="calendar" size={26} color="#FF6B9D" />
             <Text style={styles.cardTitle}>Medicine History</Text>
           </View>
         </View>
@@ -854,7 +854,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   
-  // Modern Header
+  // Modern Header - Updated Colors
   modernHeader: {
     paddingHorizontal: 20,
     paddingTop: 50,
@@ -871,34 +871,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#E91E63',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#FF6B9D',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
+    shadowColor: '#FF6B9D',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 8,
   },
   titleText: {
     flex: 1,
   },
   modernTitle: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 4,
     textShadowColor: 'rgba(0,0,0,0.3)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
+    letterSpacing: 0.5,
   },
   modernSubtitle: {
     fontSize: 16,
-    color: '#333',
+    color: 'rgba(255,255,255,0.9)',
     lineHeight: 22,
     fontWeight: '500',
   },
@@ -906,32 +907,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatarCircle: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 75,
+    height: 75,
+    borderRadius: 37.5,
+    backgroundColor: 'rgba(255,255,255,0.25)',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowRadius: 12,
+    elevation: 10,
+    borderWidth: 3,
+    borderColor: 'rgba(255,255,255,0.3)',
   },
   avatarEmoji: {
-    fontSize: 35,
+    fontSize: 38,
   },
 
-  // Tab Navigation
+  // Tab Navigation - Updated Colors
   tabContainer: {
     flexDirection: 'row',
     paddingHorizontal: 16,
     marginBottom: 20,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: 'rgba(255,255,255,0.95)',
     marginHorizontal: 20,
-    borderRadius: 12,
-    padding: 12,
+    borderRadius: 16,
+    padding: 8,
     gap: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 6,
   },
   tab: {
     flex: 1,
@@ -940,26 +948,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 8,
-    borderRadius: 8,
-    minHeight: 60,
+    borderRadius: 12,
+    minHeight: 65,
   },
   activeTab: {
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    backgroundColor: '#FF6B9D',
+    shadowColor: '#FF6B9D',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   tabText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 11,
+    fontWeight: '700',
     color: '#9CA3AF',
-    marginTop: 4,
+    marginTop: 6,
     textAlign: 'center',
   },
   activeTabText: {
-    color: '#E91E63',
+    color: 'white',
   },
 
   // Tab Content
@@ -997,12 +1005,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
-  // Card Headers
+  // Card Headers - Updated Colors
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    marginBottom: 20,
     minHeight: 40,
   },
   cardTitleContainer: {
@@ -1012,60 +1020,73 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   cardTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#E91E63',
+    color: '#FF6B9D',
     marginLeft: 12,
+    letterSpacing: 0.3,
   },
   addButton: {
-    backgroundColor: '#E91E63',
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    backgroundColor: '#FF6B9D',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowColor: '#FF6B9D',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
     alignSelf: 'center',
   },
 
-  // Statistics
+  // Statistics - Updated Colors
   statsGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 12,
   },
   statItem: {
     alignItems: 'center',
     flex: 1,
+    backgroundColor: 'rgba(255, 107, 157, 0.08)',
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 107, 157, 0.2)',
   },
   statValue: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
+    color: '#FF6B9D',
+    marginBottom: 6,
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
     textAlign: 'center',
+    fontWeight: '600',
   },
 
-  // Schedule Items
+  // Schedule Items - Updated Colors
   scheduleList: {
-    gap: 12,
+    gap: 14,
   },
   scheduleItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#F8FAFC',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    minHeight: 80,
+    padding: 18,
+    backgroundColor: 'white',
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 107, 157, 0.15)',
+    minHeight: 85,
+    shadowColor: '#FF6B9D',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
   },
   scheduleInfo: {
     flexDirection: 'row',
@@ -1074,159 +1095,190 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   medicineIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 54,
+    height: 54,
+    borderRadius: 27,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   scheduleDetails: {
     flex: 1,
   },
   medicineName: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 2,
+    color: '#1F2937',
+    marginBottom: 4,
   },
   medicineDosage: {
     fontSize: 14,
-    color: '#666',
-    marginBottom: 2,
+    color: '#6B7280',
+    marginBottom: 3,
+    fontWeight: '500',
   },
   medicineTime: {
-    fontSize: 12,
-    color: '#999',
+    fontSize: 13,
+    color: '#9CA3AF',
+    fontWeight: '600',
   },
   takenButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
+    borderWidth: 2.5,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
     alignSelf: 'center',
   },
   takenButtonActive: {
-    backgroundColor: '#4CAF50',
-    borderColor: '#4CAF50',
+    backgroundColor: '#10B981',
+    borderColor: '#10B981',
+    shadowColor: '#10B981',
   },
   takenButtonInactive: {
-    backgroundColor: 'transparent',
-    borderColor: '#E2E8F0',
+    backgroundColor: 'white',
+    borderColor: '#FFB6D9',
   },
 
-  // Medicine Items
+  // Medicine Items - Updated Colors
   medicinesList: {
-    gap: 12,
+    gap: 14,
   },
   medicineItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#F8FAFC',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    minHeight: 80,
+    padding: 18,
+    backgroundColor: 'white',
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 107, 157, 0.15)',
+    minHeight: 85,
+    shadowColor: '#FF6B9D',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
   },
   medicineDetails: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 14,
   },
   medicineDescription: {
-    fontSize: 12,
-    color: '#999',
+    fontSize: 13,
+    color: '#9CA3AF',
     marginTop: 4,
+    fontWeight: '500',
   },
   medicineActions: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
     alignItems: 'center',
   },
   actionButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#F8FAFC',
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 107, 157, 0.2)',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
 
-  // Schedule Details
+  // Schedule Details - Updated Colors
   scheduleDays: {
-    fontSize: 12,
-    color: '#666',
-    marginBottom: 2,
+    fontSize: 13,
+    color: '#6B7280',
+    marginBottom: 3,
+    fontWeight: '600',
   },
   schedulePeriod: {
     fontSize: 12,
-    color: '#999',
+    color: '#9CA3AF',
+    fontWeight: '500',
   },
   scheduleStatus: {
     alignItems: 'center',
     marginLeft: 12,
   },
   statusIndicator: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginBottom: 4,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    marginBottom: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
   },
   statusText: {
-    fontSize: 10,
-    color: '#666',
+    fontSize: 11,
+    color: '#6B7280',
+    fontWeight: '700',
   },
 
-  // History Stats
+  // History Stats - Updated Colors
   historyStats: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 12,
   },
   historyStat: {
     alignItems: 'center',
     flex: 1,
+    backgroundColor: 'rgba(255, 107, 157, 0.08)',
+    padding: 20,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 107, 157, 0.2)',
   },
   historyStatValue: {
-    fontSize: 20,
+    fontSize: 26,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
+    color: '#FF6B9D',
+    marginBottom: 6,
   },
   historyStatLabel: {
     fontSize: 12,
-    color: '#666',
+    color: '#6B7280',
     textAlign: 'center',
+    fontWeight: '600',
   },
 
-  // Empty State
+  // Empty State - Updated Colors
   emptyState: {
     alignItems: 'center',
-    paddingVertical: 40,
+    paddingVertical: 50,
   },
   emptyStateText: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 16,
-    marginBottom: 8,
+    fontSize: 18,
+    color: '#6B7280',
+    marginTop: 20,
+    marginBottom: 10,
+    fontWeight: '600',
   },
   emptyStateSubtext: {
-    fontSize: 14,
-    color: '#999',
+    fontSize: 15,
+    color: '#9CA3AF',
     textAlign: 'center',
+    fontWeight: '500',
   },
 
   // Modal Styles
@@ -1318,57 +1370,68 @@ const styles = StyleSheet.create({
     borderColor: '#333',
   },
 
-  // Days Picker
+  // Days Picker - Updated Colors
   daysContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
   dayButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#F8FAFC',
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 24,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 107, 157, 0.3)',
+    backgroundColor: 'white',
   },
   selectedDay: {
-    backgroundColor: '#E91E63',
-    borderColor: '#E91E63',
+    backgroundColor: '#FF6B9D',
+    borderColor: '#FF6B9D',
+    shadowColor: '#FF6B9D',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
   },
   dayButtonText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#666',
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#6B7280',
   },
   selectedDayText: {
     color: 'white',
   },
 
-  // Buttons
+  // Buttons - Updated Colors
   cancelButton: {
     flex: 1,
-    paddingVertical: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 107, 157, 0.3)',
     alignItems: 'center',
+    backgroundColor: 'white',
   },
   cancelButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#666',
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#6B7280',
   },
   saveButton: {
     flex: 1,
-    paddingVertical: 12,
-    borderRadius: 8,
-    backgroundColor: '#E91E63',
+    paddingVertical: 14,
+    borderRadius: 12,
+    backgroundColor: '#FF6B9D',
     alignItems: 'center',
+    shadowColor: '#FF6B9D',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
   },
   saveButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 17,
+    fontWeight: '700',
     color: 'white',
   },
 
