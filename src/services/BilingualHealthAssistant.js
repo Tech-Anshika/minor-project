@@ -14,7 +14,7 @@ class BilingualHealthAssistant {
       // PCOS/PCOD Basics
       pcos_basics: [
         {
-          keywords: ['what is pcos', 'what is pcod', 'explain pcos', 'pcos meaning', 'pcod meaning', 'pcos kya hai', 'pcod kya hai', 'pcos kya hota hai'],
+          keywords: ['what is pcos', 'what is pcod', 'explain pcos', 'pcos meaning', 'pcod meaning', 'pcos kya hai', 'pcod kya hai', 'pcos kya hota hai', 'पीसीओएस क्या है', 'पीसीओडी क्या है', 'pcos ke bare me', 'pcod kya hota hai', 'pcos ke lakshan', 'pcos symptoms', 'लक्षण', 'pcos ka matlab', 'पीसीओएस के लक्षण'],
           responses: {
             en: [
               "PCOS (Polycystic Ovary Syndrome) and PCOD (Polycystic Ovarian Disease) are hormonal disorders affecting women of reproductive age. PCOS is more severe with metabolic issues, while PCOD is primarily about irregular periods and cysts. Both involve hormonal imbalances affecting ovaries, periods, and overall health.",
@@ -57,7 +57,7 @@ class BilingualHealthAssistant {
       // Symptoms - Expanded
       symptoms: [
         {
-          keywords: ['irregular period', 'missed period', 'no period', 'late period', 'period delay', 'periods nahi aa rahe', 'mahwari', 'maahvaari'],
+          keywords: ['irregular period', 'missed period', 'no period', 'late period', 'period delay', 'periods nahi aa rahe', 'mahwari', 'maahvaari', 'अनियमित पीरियड', 'पीरियड नहीं आ रहे', 'पीरियड देरी', 'महवारी नहीं आई', 'मासिक धर्म अनियमित', 'periods irregular', 'period nahi aa rahe'],
           responses: {
             en: [
               "Irregular periods are the #1 PCOS symptom. Track your cycles in our app to identify patterns. Support tips: Consume iron-rich foods (palak, dates, pomegranate), try seed cycling (flax+pumpkin seeds in first half), drink shatavari tea, maintain consistent sleep schedule, reduce stress. If absent >3 months, see a gynecologist.",
@@ -139,7 +139,7 @@ class BilingualHealthAssistant {
       // Diet & Nutrition - Expanded
       diet: [
         {
-          keywords: ['what to eat', 'diet plan', 'food', 'meal', 'breakfast', 'lunch', 'dinner', 'snacks', 'kya khana chahiye', 'khaana', 'khana', 'diet'],
+          keywords: ['what to eat', 'diet plan', 'food', 'meal', 'breakfast', 'lunch', 'dinner', 'snacks', 'kya khana chahiye', 'khaana', 'khana', 'diet', 'डाइट', 'खाना', 'भोजन', 'आहार', 'खाने', 'diet plan', 'meal plan', 'डाइट प्लान', 'भोजन योजना', 'क्या खाएं', 'क्या खाना', 'नाश्ता', 'दोपहर का खाना', 'रात का खाना'],
           responses: {
             en: [
               "PCOS-friendly Indian diet:\n🌅 Breakfast: Palak poha/Besan chilla/Moong dal cheela/Oats with nuts & seeds/Eggs\n🌞 Lunch: Brown rice/Quinoa + Mix veg sabzi + Dal + Cucumber salad + Buttermilk\n🌆 Evening: Roasted makhana/Fruit (apple, guava)/Nuts (almonds, walnuts)/Green tea\n🌙 Dinner: 2 Multigrain roti + Paneer/Chicken + Soup/Salad\nKey: Low GI, high fiber, balanced macros!",
@@ -152,7 +152,7 @@ class BilingualHealthAssistant {
           }
         },
         {
-          keywords: ['avoid', 'bad food', 'dont eat', 'what not to eat', 'restrict', 'kya nahi khana chahiye', 'avoid karna'],
+          keywords: ['avoid', 'bad food', 'dont eat', 'what not to eat', 'restrict', 'kya nahi khana chahiye', 'avoid karna', 'परहेज', 'बचें', 'क्या नहीं खाना', 'नहीं खाना चाहिए', 'avoid food', 'restricted food'],
           responses: {
             en: [
               "Foods to AVOID/LIMIT in PCOS:\n❌ Refined carbs: Maida, white bread, white rice, pasta\n❌ Sugar: Sweets, packaged juices, cold drinks, ice cream\n❌ Processed foods: Chips, biscuits, instant noodles (Maggi), packaged snacks\n❌ Excessive dairy: Can trigger acne in some women\n❌ Trans fats: Fried foods (samosa, pakora), bakery items\n❌ High GI fruits: Mango, banana, grapes (in excess)\nSmall portions occasionally are okay - don't be too strict!",
@@ -165,7 +165,7 @@ class BilingualHealthAssistant {
           }
         },
         {
-          keywords: ['weight loss', 'lose weight', 'diet for weight loss', 'reduce weight', 'vajan kam karna', 'pet kam karna'],
+          keywords: ['weight loss', 'lose weight', 'diet for weight loss', 'reduce weight', 'vajan kam karna', 'pet kam karna', 'वजन कम', 'वजन घटाना', 'मोटापा कम', 'पेट कम', 'वजन कैसे कम करें', 'weight kam kaise kare', 'motapa kam karna'],
           responses: {
             en: [
               "PCOS weight loss diet principles:\n1️⃣ Low-carb (not zero!) - 40% carbs, 30% protein, 30% fat\n2️⃣ High protein at every meal (keeps you full, builds muscle)\n3️⃣ Healthy fats (ghee 1-2 tsp, nuts handful, coconut oil)\n4️⃣ Intermittent fasting (12-16 hours - dinner by 8pm, breakfast at 8-10am)\n5️⃣ No liquid calories (no juice, soda, sweetened tea)\n6️⃣ Fiber-rich foods (vegetables, whole grains, seeds)\nAim for 0.5-1 kg/month!",
@@ -195,7 +195,7 @@ class BilingualHealthAssistant {
       // Exercise & Yoga - Expanded
       exercise: [
         {
-          keywords: ['exercise', 'workout', 'gym', 'cardio', 'weight training', 'physical activity', 'exercise kaise kare', 'workout plan', 'kasrat'],
+          keywords: ['exercise', 'workout', 'gym', 'cardio', 'weight training', 'physical activity', 'exercise kaise kare', 'workout plan', 'kasrat', 'व्यायाम', 'कसरत', 'जिम', 'योग', 'yoga', 'exercise plan', 'व्यायाम कैसे करें', 'कसरत कैसे करें', 'best exercise'],
           responses: {
             en: [
               "Best PCOS exercise combination:\n💪 Strength training 3x/week (builds muscle, improves insulin) - Squats, Lunges, Push-ups, Planks, Dumbbell exercises\n🏃 Moderate cardio 150 mins/week - Brisk walking, Cycling, Swimming, Dancing\n⚡ HIIT 2x/week (short bursts) - 20 mins: 30 sec sprint, 30 sec rest\n🧘 Yoga daily 20-30 mins - Stress relief, hormone balance\n🚶 10,000 steps daily - Use our step counter!\nAvoid: Excessive cardio (spikes cortisol)",
@@ -225,7 +225,7 @@ class BilingualHealthAssistant {
       // Periods & Fertility - Expanded
       periods: [
         {
-          keywords: ['period pain', 'cramps', 'menstrual pain', 'painful periods', 'dysmenorrhea', 'pet dard', 'period ka dard', 'cramps ka ilaj'],
+          keywords: ['period pain', 'cramps', 'menstrual pain', 'painful periods', 'dysmenorrhea', 'pet dard', 'period ka dard', 'cramps ka ilaj', 'पीरियड दर्द', 'पीरियड का दर्द', 'महवारी दर्द', 'मासिक धर्म दर्द', 'ऐंठन', 'पेट दर्द', 'period dard', 'महवारी में दर्द', 'periods me dard', 'पीरियड्स दर्द कैसे कम करें'],
           responses: {
             en: [
               "Natural cramp relief:\n🔥 Heat therapy - Hot water bottle/heating pad on abdomen (best remedy!)\n☕ Herbal teas - Ginger, Chamomile, Cinnamon, Ajwain, Saunf\n🧘 Gentle yoga - Child's pose, Cat-Cow, Supine twist\n🍫 Magnesium foods - Dark chocolate, Bananas, Almonds\n💧 Stay hydrated - 8-10 glasses water\n💆 Abdominal massage - Warm sesame oil, circular motions\nAvoid: Caffeine, Cold foods, Salty foods. If severe (can't function), take Ibuprofen or see doctor!",
