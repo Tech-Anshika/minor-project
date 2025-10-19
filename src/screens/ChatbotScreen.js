@@ -10,11 +10,13 @@ import {
   Platform,
   Alert,
   ScrollView,
+  Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../config/firebaseConfig';
 import BilingualHealthAssistant from '../services/BilingualHealthAssistant';
+import * as Speech from 'expo-speech';
 
 export default function ChatbotScreen() {
   const [messages, setMessages] = useState([]);
@@ -24,16 +26,42 @@ export default function ChatbotScreen() {
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [currentLanguage, setCurrentLanguage] = useState('en'); // 'en' or 'hi'
   const [isRecording, setIsRecording] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const pulseAnim = useRef(new Animated.Value(1)).current;
   const flatListRef = useRef(null);
   const messageCount = useRef(0);
 
   useEffect(() => {
     loadChatHistory();
+    // Initialize language in assistant
+    BilingualHealthAssistant.setLanguage(currentLanguage);
     // Show welcome message and suggestions on first load
     if (messages.length === 0) {
       showWelcomeMessage();
     }
   }, []);
+
+  useEffect(() => {
+    // Pulse animation for recording
+    if (isRecording) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1.3,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    } else {
+      pulseAnim.setValue(1);
+    }
+  }, [isRecording]);
 
   const loadChatHistory = () => {
     if (auth.currentUser) {
@@ -88,16 +116,60 @@ export default function ChatbotScreen() {
 
   const startVoiceRecording = () => {
     setIsRecording(true);
-    Alert.alert(
-      currentLanguage === 'hi' ? 'वॉइस रिकॉर्डिंग' : 'Voice Recording',
+    
+    Alert.prompt(
+      currentLanguage === 'hi' ? '🎤 वॉइस इनपुट' : '🎤 Voice Input',
       currentLanguage === 'hi' 
-        ? 'वॉइस रिकॉर्डिंग फीचर जल्द आ रहा है! अभी के लिए, कृपया टाइप करें।'
-        : 'Voice recording feature coming soon! For now, please type your message.',
-      [{ 
-        text: currentLanguage === 'hi' ? 'ठीक है' : 'OK', 
-        onPress: () => setIsRecording(false) 
-      }]
+        ? 'अपना सवाल बोलें या टाइप करें:\n(स्पीच-टू-टेक्स्ट API की जरूरत होती है जो paid है, इसलिए अभी टाइप करें)'
+        : 'Speak or type your question:\n(Speech-to-text requires paid API, so please type for now)',
+      [
+        {
+          text: currentLanguage === 'hi' ? 'रद्द करें' : 'Cancel',
+          style: 'cancel',
+          onPress: () => setIsRecording(false)
+        },
+        {
+          text: currentLanguage === 'hi' ? 'भेजें' : 'Send',
+          onPress: (text) => {
+            setIsRecording(false);
+            if (text && text.trim()) {
+              sendMessage(text.trim());
+            }
+          }
+        }
+      ],
+      'plain-text',
+      '',
+      'default'
     );
+  };
+
+  const speakResponse = (text) => {
+    if (isSpeaking) {
+      Speech.stop();
+      setIsSpeaking(false);
+      return;
+    }
+
+    setIsSpeaking(true);
+    const language = currentLanguage === 'hi' ? 'hi-IN' : 'en-IN';
+    
+    Speech.speak(text, {
+      language: language,
+      pitch: 1.0,
+      rate: 0.9,
+      onDone: () => setIsSpeaking(false),
+      onStopped: () => setIsSpeaking(false),
+      onError: () => {
+        setIsSpeaking(false);
+        Alert.alert(
+          currentLanguage === 'hi' ? 'त्रुटि' : 'Error',
+          currentLanguage === 'hi' 
+            ? 'टेक्स्ट-टू-स्पीच काम नहीं कर रहा। कृपया दोबारा कोशिश करें।'
+            : 'Text-to-speech failed. Please try again.'
+        );
+      }
+    });
   };
 
   const getAIResponse = async (userMessage) => {
@@ -184,14 +256,28 @@ export default function ChatbotScreen() {
         ]}>
           {item.text}
         </Text>
-        <Text style={[
-          styles.timestamp,
-          item.isUser ? styles.userTimestamp : styles.botTimestamp
-        ]}>
-          {item.timestamp && item.timestamp.toLocaleTimeString 
-            ? item.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : 'Now'}
-        </Text>
+        <View style={styles.messageFooter}>
+          <Text style={[
+            styles.timestamp,
+            item.isUser ? styles.userTimestamp : styles.botTimestamp
+          ]}>
+            {item.timestamp && item.timestamp.toLocaleTimeString 
+              ? item.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              : 'Now'}
+          </Text>
+          {!item.isUser && (
+            <TouchableOpacity 
+              onPress={() => speakResponse(item.text)}
+              style={styles.speakerButton}
+            >
+              <Ionicons 
+                name={isSpeaking ? "volume-high" : "volume-medium-outline"} 
+                size={16} 
+                color="#666" 
+              />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -253,16 +339,18 @@ export default function ChatbotScreen() {
       )}
 
       <View style={styles.inputContainer}>
-        <TouchableOpacity 
-          style={styles.voiceButton} 
-          onPress={startVoiceRecording}
-        >
-          <Ionicons 
-            name={isRecording ? "mic" : "mic-outline"} 
-            size={24} 
-            color={isRecording ? "#E91E63" : "#666"} 
-          />
-        </TouchableOpacity>
+        <Animated.View style={{ transform: [{ scale: isRecording ? pulseAnim : 1 }] }}>
+          <TouchableOpacity 
+            style={[styles.voiceButton, isRecording && styles.voiceButtonActive]} 
+            onPress={startVoiceRecording}
+          >
+            <Ionicons 
+              name={isRecording ? "mic" : "mic-outline"} 
+              size={24} 
+              color={isRecording ? "#E91E63" : "#666"} 
+            />
+          </TouchableOpacity>
+        </Animated.View>
         <TextInput
           style={styles.textInput}
           value={inputText}
@@ -380,15 +468,24 @@ const styles = StyleSheet.create({
   botText: {
     color: '#333',
   },
+  messageFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 4,
+  },
   timestamp: {
     fontSize: 12,
-    marginTop: 4,
   },
   userTimestamp: {
     color: 'rgba(255, 255, 255, 0.7)',
   },
   botTimestamp: {
     color: '#999',
+  },
+  speakerButton: {
+    padding: 4,
+    marginLeft: 8,
   },
   emptyState: {
     flex: 1,
@@ -426,6 +523,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
+  },
+  voiceButtonActive: {
+    backgroundColor: '#FFE0EC',
+    borderWidth: 2,
+    borderColor: '#E91E63',
   },
   textInput: {
     flex: 1,
