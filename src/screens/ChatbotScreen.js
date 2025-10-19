@@ -41,10 +41,15 @@ export default function ChatbotScreen() {
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        const chatMessages = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const chatMessages = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            // Convert Firestore Timestamp to JavaScript Date
+            timestamp: data.timestamp?.toDate ? data.timestamp.toDate() : new Date(),
+          };
+        });
         setMessages(chatMessages);
       });
 
@@ -150,7 +155,9 @@ export default function ChatbotScreen() {
           styles.timestamp,
           item.isUser ? styles.userTimestamp : styles.botTimestamp
         ]}>
-          {item.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {item.timestamp && item.timestamp.toLocaleTimeString 
+            ? item.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : 'Now'}
         </Text>
       </View>
     </View>
