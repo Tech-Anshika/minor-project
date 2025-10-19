@@ -14,7 +14,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../config/firebaseConfig';
-import OfflineHealthAssistant from '../services/OfflineHealthAssistant';
+import BilingualHealthAssistant from '../services/BilingualHealthAssistant';
 
 export default function ChatbotScreen() {
   const [messages, setMessages] = useState([]);
@@ -22,6 +22,8 @@ export default function ChatbotScreen() {
   const [loading, setLoading] = useState(false);
   const [quickSuggestions, setQuickSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [currentLanguage, setCurrentLanguage] = useState('en'); // 'en' or 'hi'
+  const [isRecording, setIsRecording] = useState(false);
   const flatListRef = useRef(null);
   const messageCount = useRef(0);
 
@@ -59,17 +61,48 @@ export default function ChatbotScreen() {
 
   const showWelcomeMessage = () => {
     const welcomeMessage = {
-      text: OfflineHealthAssistant.getGreeting(),
+      text: BilingualHealthAssistant.getGreeting(),
       isUser: false,
       timestamp: new Date(),
     };
     setMessages([welcomeMessage]);
-    setQuickSuggestions(OfflineHealthAssistant.getQuickSuggestions());
+    setQuickSuggestions(BilingualHealthAssistant.getQuickSuggestions());
+  };
+
+  const toggleLanguage = () => {
+    const newLang = currentLanguage === 'en' ? 'hi' : 'en';
+    setCurrentLanguage(newLang);
+    BilingualHealthAssistant.setLanguage(newLang);
+    setQuickSuggestions(BilingualHealthAssistant.getQuickSuggestions());
+    
+    // Show language change message
+    const langChangeMessage = {
+      text: newLang === 'hi' 
+        ? '✅ भाषा हिंदी में बदल गई। अब आप हिंदी में सवाल पूछ सकती हैं!'
+        : '✅ Language changed to English. You can now ask questions in English!',
+      isUser: false,
+      timestamp: new Date(),
+    };
+    setMessages(prev => [...prev, langChangeMessage]);
+  };
+
+  const startVoiceRecording = () => {
+    setIsRecording(true);
+    Alert.alert(
+      currentLanguage === 'hi' ? 'वॉइस रिकॉर्डिंग' : 'Voice Recording',
+      currentLanguage === 'hi' 
+        ? 'वॉइस रिकॉर्डिंग फीचर जल्द आ रहा है! अभी के लिए, कृपया टाइप करें।'
+        : 'Voice recording feature coming soon! For now, please type your message.',
+      [{ 
+        text: currentLanguage === 'hi' ? 'ठीक है' : 'OK', 
+        onPress: () => setIsRecording(false) 
+      }]
+    );
   };
 
   const getAIResponse = async (userMessage) => {
-    // Use our offline AI assistant - completely free!
-    const response = OfflineHealthAssistant.getResponse(userMessage);
+    // Use our bilingual offline AI assistant - completely free!
+    const response = BilingualHealthAssistant.getResponse(userMessage);
     
     // Simulate natural typing delay
     await new Promise(resolve => setTimeout(resolve, 800));
@@ -77,7 +110,7 @@ export default function ChatbotScreen() {
     // Every 5 messages, add an encouraging note
     messageCount.current += 1;
     if (messageCount.current % 5 === 0) {
-      return `${response}\n\n${OfflineHealthAssistant.getEncouragingMessage()}`;
+      return `${response}\n\n${BilingualHealthAssistant.getEncouragingMessage()}`;
     }
     
     return response;
@@ -123,7 +156,7 @@ export default function ChatbotScreen() {
       }
 
       // Refresh quick suggestions
-      setQuickSuggestions(OfflineHealthAssistant.getQuickSuggestions());
+      setQuickSuggestions(BilingualHealthAssistant.getQuickSuggestions());
     } catch (error) {
       console.error('Error sending message:', error);
       Alert.alert('Error', 'Failed to send message. Please try again.');
@@ -169,11 +202,21 @@ export default function ChatbotScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <Ionicons name="chatbubble" size={24} color="#E91E63" />
-          <Text style={styles.headerTitle}>AI Health Assistant</Text>
+        <View style={styles.headerRow}>
+          <View style={styles.headerContent}>
+            <Ionicons name="chatbubble" size={24} color="#E91E63" />
+            <View>
+              <Text style={styles.headerTitle}>AI Health Assistant</Text>
+              <Text style={styles.headerSubtitle}>
+                {currentLanguage === 'en' ? '🇮🇳 Free offline AI • PCOS Expert' : '🇮🇳 मुफ्त ऑफलाइन AI • PCOS विशेषज्ञ'}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.languageButton} onPress={toggleLanguage}>
+            <Ionicons name="language" size={20} color="#E91E63" />
+            <Text style={styles.languageButtonText}>{currentLanguage === 'en' ? 'हिं' : 'EN'}</Text>
+          </TouchableOpacity>
         </View>
-        <Text style={styles.headerSubtitle}>Free offline AI • PCOS/PCOD Expert</Text>
       </View>
 
       <FlatList
@@ -210,11 +253,21 @@ export default function ChatbotScreen() {
       )}
 
       <View style={styles.inputContainer}>
+        <TouchableOpacity 
+          style={styles.voiceButton} 
+          onPress={startVoiceRecording}
+        >
+          <Ionicons 
+            name={isRecording ? "mic" : "mic-outline"} 
+            size={24} 
+            color={isRecording ? "#E91E63" : "#666"} 
+          />
+        </TouchableOpacity>
         <TextInput
           style={styles.textInput}
           value={inputText}
           onChangeText={setInputText}
-          placeholder="Type your message..."
+          placeholder={currentLanguage === 'en' ? "Type your message..." : "अपना संदेश लिखें..."}
           multiline
           maxLength={500}
         />
@@ -246,21 +299,43 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4,
+    flex: 1,
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
     marginLeft: 8,
   },
   headerSubtitle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#666',
-    marginLeft: 32,
+    marginLeft: 8,
+    marginTop: 2,
+  },
+  languageButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF0F5',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#FFB6D9',
+  },
+  languageButtonText: {
+    color: '#E91E63',
+    fontSize: 14,
+    fontWeight: '600',
+    marginLeft: 4,
   },
   messagesList: {
     flex: 1,
@@ -342,6 +417,15 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderTopWidth: 1,
     borderTopColor: '#F0F0F0',
+  },
+  voiceButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
   },
   textInput: {
     flex: 1,
