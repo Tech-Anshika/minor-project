@@ -40,7 +40,7 @@ export default function ModernGradientBackground({
       case 'more':
         return ['#f8f9fa', '#e9ecef', '#dee2e6'];
       case 'medicine':
-        return ['#e8f5e8', '#f0f8ff', '#fff0f5'];
+        return ['#fce7f3', '#fae8ff', '#ffe4e6'];
       default:
         return ['#667eea', '#764ba2', '#f093fb'];
     }
