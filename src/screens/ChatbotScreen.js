@@ -11,6 +11,7 @@ import {
   Alert,
   ScrollView,
   Animated,
+  Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
@@ -27,6 +28,8 @@ export default function ChatbotScreen() {
   const [currentLanguage, setCurrentLanguage] = useState('en'); // 'en' or 'hi'
   const [isRecording, setIsRecording] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
+  const [voiceInputText, setVoiceInputText] = useState('');
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const flatListRef = useRef(null);
   const messageCount = useRef(0);
@@ -115,33 +118,29 @@ export default function ChatbotScreen() {
   };
 
   const startVoiceRecording = () => {
+    setVoiceInputText('');
+    setShowVoiceModal(true);
     setIsRecording(true);
-    
-    Alert.prompt(
-      currentLanguage === 'hi' ? '🎤 वॉइस इनपुट' : '🎤 Voice Input',
-      currentLanguage === 'hi' 
-        ? 'अपना सवाल बोलें या टाइप करें:\n(स्पीच-टू-टेक्स्ट API की जरूरत होती है जो paid है, इसलिए अभी टाइप करें)'
-        : 'Speak or type your question:\n(Speech-to-text requires paid API, so please type for now)',
-      [
-        {
-          text: currentLanguage === 'hi' ? 'रद्द करें' : 'Cancel',
-          style: 'cancel',
-          onPress: () => setIsRecording(false)
-        },
-        {
-          text: currentLanguage === 'hi' ? 'भेजें' : 'Send',
-          onPress: (text) => {
-            setIsRecording(false);
-            if (text && text.trim()) {
-              sendMessage(text.trim());
-            }
-          }
-        }
-      ],
-      'plain-text',
-      '',
-      'default'
-    );
+  };
+
+  const closeVoiceModal = () => {
+    setShowVoiceModal(false);
+    setIsRecording(false);
+    setVoiceInputText('');
+  };
+
+  const sendVoiceMessage = () => {
+    if (voiceInputText && voiceInputText.trim()) {
+      sendMessage(voiceInputText.trim());
+      closeVoiceModal();
+    } else {
+      Alert.alert(
+        currentLanguage === 'hi' ? 'त्रुटि' : 'Error',
+        currentLanguage === 'hi' 
+          ? 'कृपया कुछ लिखें'
+          : 'Please type something'
+      );
+    }
   };
 
   const speakResponse = (text) => {
@@ -371,6 +370,98 @@ export default function ChatbotScreen() {
           />
         </TouchableOpacity>
       </View>
+
+      {/* Voice Input Modal */}
+      <Modal
+        visible={showVoiceModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={closeVoiceModal}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            {/* Header */}
+            <View style={styles.modalHeader}>
+              <View style={styles.modalTitleContainer}>
+                <Ionicons name="mic" size={24} color="#E91E63" />
+                <Text style={styles.modalTitle}>
+                  {currentLanguage === 'hi' ? '🎤 वॉइस इनपुट' : '🎤 Voice Input'}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={closeVoiceModal}>
+                <Ionicons name="close" size={28} color="#666" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Info Text */}
+            <Text style={styles.modalInfo}>
+              {currentLanguage === 'hi' 
+                ? '📝 अपना सवाल यहाँ टाइप करें:\n(स्पीच-टू-टेक्स्ट के लिए paid API की जरूरत है)'
+                : '📝 Type your question here:\n(Speech-to-text requires paid API)'}
+            </Text>
+
+            {/* Text Input */}
+            <TextInput
+              style={styles.modalInput}
+              value={voiceInputText}
+              onChangeText={setVoiceInputText}
+              placeholder={currentLanguage === 'hi' ? 'अपना सवाल लिखें...' : 'Type your question...'}
+              placeholderTextColor="#999"
+              multiline
+              autoFocus
+              maxLength={500}
+            />
+
+            {/* Character Count */}
+            <Text style={styles.characterCount}>
+              {voiceInputText.length}/500
+            </Text>
+
+            {/* Quick Suggestions */}
+            <Text style={styles.quickSuggestionsTitle}>
+              {currentLanguage === 'hi' ? '💡 सुझाए गए सवाल:' : '💡 Quick Questions:'}
+            </Text>
+            <ScrollView style={styles.modalSuggestions}>
+              {quickSuggestions.slice(0, 3).map((suggestion, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.modalSuggestionButton}
+                  onPress={() => {
+                    setVoiceInputText(suggestion);
+                  }}
+                >
+                  <Text style={styles.modalSuggestionText}>{suggestion}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            {/* Buttons */}
+            <View style={styles.modalButtons}>
+              <TouchableOpacity 
+                style={styles.modalCancelButton}
+                onPress={closeVoiceModal}
+              >
+                <Text style={styles.modalCancelButtonText}>
+                  {currentLanguage === 'hi' ? 'रद्द करें' : 'Cancel'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[
+                  styles.modalSendButton,
+                  !voiceInputText.trim() && styles.modalSendButtonDisabled
+                ]}
+                onPress={sendVoiceMessage}
+                disabled={!voiceInputText.trim()}
+              >
+                <Ionicons name="send" size={18} color="white" />
+                <Text style={styles.modalSendButtonText}>
+                  {currentLanguage === 'hi' ? 'भेजें' : 'Send'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 }
@@ -580,6 +671,120 @@ const styles = StyleSheet.create({
     color: '#E91E63',
     fontSize: 14,
     fontWeight: '500',
+  },
+  // Voice Input Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingTop: 20,
+    paddingBottom: 30,
+    paddingHorizontal: 20,
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  modalTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginLeft: 8,
+  },
+  modalInfo: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 16,
+    lineHeight: 20,
+    textAlign: 'center',
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
+    minHeight: 120,
+    maxHeight: 200,
+    textAlignVertical: 'top',
+    backgroundColor: '#F9F9F9',
+  },
+  characterCount: {
+    fontSize: 12,
+    color: '#999',
+    textAlign: 'right',
+    marginTop: 4,
+    marginBottom: 16,
+  },
+  quickSuggestionsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 8,
+  },
+  modalSuggestions: {
+    maxHeight: 120,
+    marginBottom: 20,
+  },
+  modalSuggestionButton: {
+    backgroundColor: '#FFF0F5',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#FFB6D9',
+  },
+  modalSuggestionText: {
+    color: '#E91E63',
+    fontSize: 14,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  modalCancelButton: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 12,
+    backgroundColor: '#F5F5F5',
+    alignItems: 'center',
+  },
+  modalCancelButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#666',
+  },
+  modalSendButton: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 12,
+    backgroundColor: '#E91E63',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalSendButtonDisabled: {
+    backgroundColor: '#CCC',
+  },
+  modalSendButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'white',
+    marginLeft: 6,
   },
 });
 
