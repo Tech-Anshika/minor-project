@@ -20,7 +20,7 @@ const { width } = Dimensions.get('window');
 
 export default function ProgressScreen() {
   const [selectedTab, setSelectedTab] = useState('overview');
-  const [selectedPeriod, setSelectedPeriod] = useState('day'); // day, week, month
+  const [selectedPeriod, setSelectedPeriod] = useState('week'); // New: week, month, year
   const [progressData, setProgressData] = useState({
     waterIntake: { current: 0, target: 8 },
     steps: { current: 0, target: 8000 },
@@ -28,7 +28,6 @@ export default function ProgressScreen() {
     mood: { current: 5, target: 10 },
     pain: { current: 0, target: 0 },
   });
-  const [periodData, setPeriodData] = useState(null); // For weekly/monthly averages
   const [recommendations, setRecommendations] = useState({});
   const [progressSummary, setProgressSummary] = useState({});
   const [cyclePhase, setCyclePhase] = useState('unknown');
@@ -36,7 +35,6 @@ export default function ProgressScreen() {
   const [todaysData, setTodaysData] = useState(null);
   const [achievements, setAchievements] = useState([]);
   const [streaks, setStreaks] = useState({});
-  const [progressHistory, setProgressHistory] = useState([]);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: 'analytics' },
@@ -77,16 +75,12 @@ export default function ProgressScreen() {
       setCyclePhase(summary.cyclePhase);
       
       // Load progress history and calculate achievements/streaks
-      const history = await ProgressTracker.getProgressHistory(30);
-      const calculatedStreaks = ProgressTracker.calculateStreaks(history);
-      const calculatedAchievements = ProgressTracker.getAchievements(history, calculatedStreaks);
+      const progressHistory = await ProgressTracker.getProgressHistory(30);
+      const calculatedStreaks = ProgressTracker.calculateStreaks(progressHistory);
+      const calculatedAchievements = ProgressTracker.getAchievements(progressHistory, calculatedStreaks);
       
-      setProgressHistory(history);
       setStreaks(calculatedStreaks);
       setAchievements(calculatedAchievements);
-      
-      // Calculate period-specific data
-      updatePeriodData(selectedPeriod, history);
       
       // Update progress data with personalized targets
       setProgressData({
@@ -146,48 +140,6 @@ export default function ProgressScreen() {
     }));
   };
 
-  // Update period-specific data (weekly/monthly averages)
-  const updatePeriodData = (period, history) => {
-    if (!history || history.length === 0) {
-      setPeriodData(null);
-      return;
-    }
-
-    if (period === 'week') {
-      const weeklyAvg = ProgressTracker.calculateWeeklyAverages(history);
-      setPeriodData(weeklyAvg);
-      // Update current values with weekly averages
-      setProgressData(prev => ({
-        waterIntake: { ...prev.waterIntake, current: weeklyAvg.waterIntake },
-        steps: { ...prev.steps, current: weeklyAvg.steps },
-        sleep: { ...prev.sleep, current: weeklyAvg.sleep },
-        mood: { ...prev.mood, current: weeklyAvg.mood },
-        pain: { ...prev.pain, current: weeklyAvg.pain },
-      }));
-    } else if (period === 'month') {
-      const monthlyAvg = ProgressTracker.calculateMonthlyAverages(history);
-      setPeriodData(monthlyAvg);
-      // Update current values with monthly averages
-      setProgressData(prev => ({
-        waterIntake: { ...prev.waterIntake, current: monthlyAvg.waterIntake },
-        steps: { ...prev.steps, current: monthlyAvg.steps },
-        sleep: { ...prev.sleep, current: monthlyAvg.sleep },
-        mood: { ...prev.mood, current: monthlyAvg.mood },
-        pain: { ...prev.pain, current: monthlyAvg.pain },
-      }));
-    } else {
-      // Day view - data is already set by todaysData
-      setPeriodData(null);
-    }
-  };
-
-  // Handle period change
-  useEffect(() => {
-    if (progressHistory.length > 0) {
-      updatePeriodData(selectedPeriod, progressHistory);
-    }
-  }, [selectedPeriod]);
-
   const getCyclePhaseInfo = (phase) => {
     const phaseInfo = {
       menstrual: { 
@@ -204,19 +156,19 @@ export default function ProgressScreen() {
       },
       ovulation: { 
         name: 'Ovulation Phase', 
-        color: '#F59E0B', 
+        color: '#FF6B9D', 
         icon: 'sunny',
         description: 'Peak energy and performance time'
       },
       luteal: { 
         name: 'Luteal Phase', 
-        color: '#8B5CF6', 
+        color: '#A855F7', 
         icon: 'moon',
         description: 'Focus on maintenance and preparation'
       },
       premenstrual: { 
         name: 'Premenstrual Phase', 
-        color: '#EC4899', 
+        color: '#FF6B9D', 
         icon: 'warning',
         description: 'Gentle care and stress management'
       },
@@ -238,7 +190,7 @@ export default function ProgressScreen() {
       current: progressData.waterIntake.current,
       target: progressData.waterIntake.target,
       unit: 'glasses',
-      color: '#06B6D4',
+      color: '#60A5FA',
       icon: 'water',
       reason: recommendations.waterIntake?.reason || 'Maintain optimal hydration',
     },
@@ -268,7 +220,7 @@ export default function ProgressScreen() {
       current: progressData.mood.current,
       target: progressData.mood.target,
       unit: '/10',
-      color: '#F59E0B',
+      color: '#FF6B9D',
       icon: 'happy',
       reason: 'Track emotional well-being',
     },
@@ -285,11 +237,40 @@ export default function ProgressScreen() {
     },
   ];
 
+  const periods = [
+    { id: 'week', label: 'Week' },
+    { id: 'month', label: 'Month' },
+    { id: 'year', label: 'Year' },
+  ];
+
   const renderOverview = () => {
     const phaseInfo = getCyclePhaseInfo(cyclePhase);
     
     return (
       <View style={styles.tabContent}>
+        {/* Time Period Selector */}
+        <View style={styles.periodSelector}>
+          {periods.map((period) => (
+            <TouchableOpacity
+              key={period.id}
+              style={[
+                styles.periodButton,
+                selectedPeriod === period.id && styles.periodButtonActive,
+              ]}
+              onPress={() => setSelectedPeriod(period.id)}
+            >
+              <Text
+                style={[
+                  styles.periodButtonText,
+                  selectedPeriod === period.id && styles.periodButtonTextActive,
+                ]}
+              >
+                {period.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
         {/* Cycle Phase Card */}
         <ModernCard type="glass" style={styles.cyclePhaseCard}>
           <View style={styles.cardHeader}>
@@ -384,7 +365,7 @@ export default function ProgressScreen() {
           <View style={styles.streaksGrid}>
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="water" size={20} color="#06B6D4" />
+                <Ionicons name="water" size={20} color="#2196F3" />
               </View>
               <Text style={styles.streakValue}>{streaks.water || 0}</Text>
               <Text style={styles.streakLabel}>Water Days</Text>
@@ -392,7 +373,7 @@ export default function ProgressScreen() {
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="walk" size={20} color="#A855F7" />
+                <Ionicons name="walk" size={20} color="#4CAF50" />
               </View>
               <Text style={styles.streakValue}>{streaks.steps || 0}</Text>
               <Text style={styles.streakLabel}>Step Days</Text>
@@ -400,7 +381,7 @@ export default function ProgressScreen() {
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="fitness" size={20} color="#F59E0B" />
+                <Ionicons name="fitness" size={20} color="#FF9800" />
               </View>
               <Text style={styles.streakValue}>{streaks.exercise || 0}</Text>
               <Text style={styles.streakLabel}>Exercise Days</Text>
@@ -408,7 +389,7 @@ export default function ProgressScreen() {
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="medical" size={20} color="#8B5CF6" />
+                <Ionicons name="medical" size={20} color="#9C27B0" />
               </View>
               <Text style={styles.streakValue}>{streaks.medication || 0}</Text>
               <Text style={styles.streakLabel}>Medication Days</Text>
@@ -477,7 +458,7 @@ export default function ProgressScreen() {
       <ModernCard type="glass" style={styles.fitnessCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="fitness" size={24} color="#FF6B9D" />
+            <Ionicons name="fitness" size={24} color="#E91E63" />
             <Text style={styles.cardTitle}>Personalized Fitness</Text>
           </View>
         </View>
@@ -532,7 +513,7 @@ export default function ProgressScreen() {
       <ModernCard type="glass" style={styles.nutritionCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="restaurant" size={24} color="#FF6B9D" />
+            <Ionicons name="restaurant" size={24} color="#E91E63" />
             <Text style={styles.cardTitle}>Personalized Nutrition</Text>
           </View>
         </View>
@@ -584,7 +565,7 @@ export default function ProgressScreen() {
       <ModernCard type="glass" style={styles.achievementsOverviewCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="trophy" size={24} color="#FF6B9D" />
+            <Ionicons name="trophy" size={24} color="#E91E63" />
             <Text style={styles.cardTitle}>Your Achievements</Text>
           </View>
           <View style={styles.achievementCount}>
@@ -673,7 +654,7 @@ export default function ProgressScreen() {
         <View style={styles.upcomingAchievementsList}>
           <View style={styles.upcomingAchievementItem}>
             <View style={styles.upcomingAchievementIcon}>
-              <Ionicons name="water" size={20} color="#06B6D4" />
+              <Ionicons name="water" size={20} color="#2196F3" />
             </View>
             <View style={styles.upcomingAchievementContent}>
               <Text style={styles.upcomingAchievementTitle}>Hydration Hero</Text>
@@ -698,7 +679,7 @@ export default function ProgressScreen() {
           
           <View style={styles.upcomingAchievementItem}>
             <View style={styles.upcomingAchievementIcon}>
-              <Ionicons name="walk" size={20} color="#A855F7" />
+              <Ionicons name="walk" size={20} color="#4CAF50" />
             </View>
             <View style={styles.upcomingAchievementContent}>
               <Text style={styles.upcomingAchievementTitle}>Step Master</Text>
@@ -731,7 +712,7 @@ export default function ProgressScreen() {
       <ModernCard type="glass" style={styles.insightsCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="analytics" size={24} color="#FF6B9D" />
+            <Ionicons name="analytics" size={24} color="#E91E63" />
             <Text style={styles.cardTitle}>Cycle Insights</Text>
           </View>
         </View>
@@ -897,69 +878,6 @@ export default function ProgressScreen() {
             ))}
           </View>
 
-          {/* Period Selector */}
-          <View style={styles.periodSelectorContainer}>
-            <TouchableOpacity
-              style={[
-                styles.periodButton,
-                selectedPeriod === 'day' && styles.periodButtonActive
-              ]}
-              onPress={() => setSelectedPeriod('day')}
-            >
-              <Ionicons 
-                name="today" 
-                size={16} 
-                color={selectedPeriod === 'day' ? 'white' : '#666'} 
-              />
-              <Text style={[
-                styles.periodButtonText,
-                selectedPeriod === 'day' && styles.periodButtonTextActive
-              ]}>
-                Today
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.periodButton,
-                selectedPeriod === 'week' && styles.periodButtonActive
-              ]}
-              onPress={() => setSelectedPeriod('week')}
-            >
-              <Ionicons 
-                name="calendar" 
-                size={16} 
-                color={selectedPeriod === 'week' ? 'white' : '#666'} 
-              />
-              <Text style={[
-                styles.periodButtonText,
-                selectedPeriod === 'week' && styles.periodButtonTextActive
-              ]}>
-                Week
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.periodButton,
-                selectedPeriod === 'month' && styles.periodButtonActive
-              ]}
-              onPress={() => setSelectedPeriod('month')}
-            >
-              <Ionicons 
-                name="calendar-outline" 
-                size={16} 
-                color={selectedPeriod === 'month' ? 'white' : '#666'} 
-              />
-              <Text style={[
-                styles.periodButtonText,
-                selectedPeriod === 'month' && styles.periodButtonTextActive
-              ]}>
-                Month
-              </Text>
-            </TouchableOpacity>
-          </View>
-
           {/* Tab Content */}
           {renderTabContent()}
         </ScrollView>
@@ -1084,35 +1002,27 @@ const styles = StyleSheet.create({
   },
 
   // Period Selector
-  periodSelectorContainer: {
+  periodSelector: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
-    paddingHorizontal: 20,
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    borderRadius: 12,
+    padding: 4,
     marginBottom: 20,
-  },
-  periodButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 24,
-    backgroundColor: 'white',
-    borderWidth: 2,
-    borderColor: 'rgba(255, 107, 157, 0.2)',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 3,
+  },
+  periodButton: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
   },
   periodButtonActive: {
     backgroundColor: '#FF6B9D',
-    borderColor: '#FF6B9D',
-    shadowColor: '#FF6B9D',
-    shadowOpacity: 0.3,
-    elevation: 4,
   },
   periodButtonText: {
     fontSize: 14,
@@ -1472,7 +1382,7 @@ const styles = StyleSheet.create({
   },
   nutritionProgressFill: {
     height: '100%',
-    backgroundColor: '#06B6D4',
+    backgroundColor: '#60A5FA',
     borderRadius: 4,
   },
 
