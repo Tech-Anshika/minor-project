@@ -58,6 +58,11 @@ export default function ProgressScreen() {
     };
   }, []);
 
+  // Reload data when period changes
+  useEffect(() => {
+    loadProgressData();
+  }, [selectedPeriod]);
+
   const loadProgressData = async () => {
     try {
       setIsLoading(true);
@@ -71,34 +76,50 @@ export default function ProgressScreen() {
       setProgressSummary(summary);
       setCyclePhase(summary.cyclePhase);
       
+      // Determine number of days based on selected period
+      const daysToFetch = selectedPeriod === 'week' ? 7 : selectedPeriod === 'month' ? 30 : 365;
+      
       // Load progress history and calculate achievements/streaks
-      const progressHistory = await ProgressTracker.getProgressHistory(30);
+      const progressHistory = await ProgressTracker.getProgressHistory(daysToFetch);
       const calculatedStreaks = ProgressTracker.calculateStreaks(progressHistory);
       const calculatedAchievements = ProgressTracker.getAchievements(progressHistory, calculatedStreaks);
       
       setStreaks(calculatedStreaks);
       setAchievements(calculatedAchievements);
       
-      // Update progress data with personalized targets
+      // Calculate period-based averages
+      let periodAverages = {};
+      if (progressHistory.length > 0) {
+        if (selectedPeriod === 'week') {
+          periodAverages = ProgressTracker.calculateWeeklyAverages(progressHistory);
+        } else if (selectedPeriod === 'month') {
+          periodAverages = ProgressTracker.calculateMonthlyAverages(progressHistory);
+        } else {
+          // For year, calculate custom average
+          periodAverages = calculateYearlyAverages(progressHistory);
+        }
+      }
+      
+      // Update progress data with period averages
       setProgressData({
         waterIntake: { 
-          current: 0, // Will be updated by todaysData
+          current: periodAverages.waterIntake || 0,
           target: recs.waterIntake.target 
         },
         steps: { 
-          current: 0, // Will be updated by todaysData
+          current: periodAverages.steps || 0,
           target: recs.steps.target 
         },
         sleep: { 
-          current: 0, // Will be updated by todaysData
+          current: periodAverages.sleep || 0,
           target: recs.sleep.targetHours 
         },
         mood: { 
-          current: summary.avgMood === 'happy' ? 8 : summary.avgMood === 'sad' ? 3 : 5,
+          current: periodAverages.mood || (summary.avgMood === 'happy' ? 8 : summary.avgMood === 'sad' ? 3 : 5),
           target: 10 
         },
         pain: { 
-          current: summary.avgPain,
+          current: periodAverages.pain || summary.avgPain,
           target: 0 
         },
       });
@@ -109,6 +130,41 @@ export default function ProgressScreen() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const calculateYearlyAverages = (progressHistory) => {
+    const yearlyData = {
+      waterIntake: 0,
+      steps: 0,
+      sleep: 0,
+      mood: 0,
+      pain: 0,
+      exerciseDays: 0,
+      medicationDays: 0,
+    };
+
+    if (progressHistory.length === 0) {
+      return yearlyData;
+    }
+    
+    progressHistory.forEach(day => {
+      yearlyData.waterIntake += day.waterIntake || 0;
+      yearlyData.steps += day.steps || 0;
+      yearlyData.sleep += day.sleep || 0;
+      yearlyData.mood += day.mood || 0;
+      yearlyData.pain += day.pain || 0;
+      if (day.exercise) yearlyData.exerciseDays++;
+      if (day.medication) yearlyData.medicationDays++;
+    });
+
+    const days = progressHistory.length;
+    yearlyData.waterIntake = Math.round(yearlyData.waterIntake / days);
+    yearlyData.steps = Math.round(yearlyData.steps / days);
+    yearlyData.sleep = Math.round((yearlyData.sleep / days) * 10) / 10;
+    yearlyData.mood = Math.round((yearlyData.mood / days) * 10) / 10;
+    yearlyData.pain = Math.round((yearlyData.pain / days) * 10) / 10;
+
+    return yearlyData;
   };
 
   const updateProgressDataWithTodaysData = (data) => {
@@ -1157,32 +1213,32 @@ const styles = StyleSheet.create({
   metricGridCard: {
     width: (width - 60) / 2,
     marginBottom: 16,
-    padding: 20,
+    padding: 16,
     alignItems: 'center',
   },
   metricGridIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   metricGridValue: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   metricGridUnit: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500',
     color: '#999',
   },
   metricGridLabel: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
-    marginBottom: 12,
+    marginBottom: 10,
     fontWeight: '600',
   },
   metricGridProgressContainer: {
@@ -1190,11 +1246,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   metricGridProgressBar: {
-    height: 6,
+    height: 5,
     backgroundColor: '#F0F0F0',
-    borderRadius: 3,
+    borderRadius: 2.5,
     width: '100%',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   metricGridProgressFill: {
     height: '100%',
@@ -1536,29 +1592,29 @@ const styles = StyleSheet.create({
   streakItem: {
     width: (width - 84) / 2,
     alignItems: 'center',
-    padding: 20,
+    padding: 14,
     backgroundColor: 'rgba(255,107,157,0.08)',
     borderRadius: 16,
     borderWidth: 2,
     borderColor: 'rgba(255,107,157,0.2)',
   },
   streakIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   streakValue: {
-    fontSize: 32,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#FF6B9D',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   streakLabel: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#666',
     textAlign: 'center',
     fontWeight: '600',
