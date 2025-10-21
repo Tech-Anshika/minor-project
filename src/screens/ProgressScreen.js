@@ -38,11 +38,8 @@ export default function ProgressScreen() {
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: 'analytics' },
-    { id: 'health', label: 'Health', icon: 'heart' },
-    { id: 'fitness', label: 'Fitness', icon: 'fitness' },
-    { id: 'nutrition', label: 'Nutrition', icon: 'restaurant' },
+    { id: 'health', label: 'Metrics', icon: 'heart' },
     { id: 'achievements', label: 'Achievements', icon: 'trophy' },
-    { id: 'insights', label: 'Insights', icon: 'bulb' },
   ];
 
   useEffect(() => {
@@ -322,35 +319,38 @@ export default function ProgressScreen() {
           </View>
         </ModernCard>
 
-        {/* Quick Stats */}
-        <View style={styles.quickStatsContainer}>
-          {healthMetrics.slice(0, 4).map((metric) => (
-            <ModernCard key={metric.id} type="glass" style={styles.quickStatCard}>
-              <View style={styles.quickStatContent}>
-                <View style={[styles.quickStatIcon, { backgroundColor: metric.color + '20' }]}>
-                  <Ionicons name={metric.icon} size={24} color={metric.color} />
+        {/* Daily Metrics */}
+        <Text style={styles.sectionTitle}>Today's Progress</Text>
+        <View style={styles.metricsGrid}>
+          {healthMetrics.map((metric) => {
+            const percentage = metric.target > 0 ? Math.min(100, (metric.current / metric.target) * 100) : 0;
+            return (
+              <ModernCard key={metric.id} type="glass" style={styles.metricGridCard}>
+                <View style={[styles.metricGridIcon, { backgroundColor: metric.color + '15' }]}>
+                  <Ionicons name={metric.icon} size={28} color={metric.color} />
                 </View>
-                <View style={styles.quickStatInfo}>
-                  <Text style={styles.quickStatValue}>
-                    {metric.current}{metric.unit}
-                  </Text>
-                  <Text style={styles.quickStatLabel}>{metric.title}</Text>
-                  <Text style={styles.quickStatReason}>{metric.reason}</Text>
-                  <View style={styles.quickStatProgress}>
+                <Text style={styles.metricGridValue}>
+                  {metric.current}
+                  <Text style={styles.metricGridUnit}>/{metric.target}</Text>
+                </Text>
+                <Text style={styles.metricGridLabel}>{metric.title}</Text>
+                <View style={styles.metricGridProgressContainer}>
+                  <View style={styles.metricGridProgressBar}>
                     <View 
                       style={[
-                        styles.quickStatProgressBar,
+                        styles.metricGridProgressFill,
                         { 
-                          width: `${Math.min(100, (metric.current / metric.target) * 100)}%`,
+                          width: `${percentage}%`,
                           backgroundColor: metric.color
                         }
                       ]} 
                     />
                   </View>
+                  <Text style={styles.metricGridPercentage}>{Math.round(percentage)}%</Text>
                 </View>
-              </View>
-            </ModernCard>
-          ))}
+              </ModernCard>
+            );
+          })}
         </View>
 
         {/* Current Streaks */}
@@ -803,7 +803,7 @@ export default function ProgressScreen() {
     if (isLoading) {
       return (
         <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>Loading personalized recommendations...</Text>
+          <Text style={styles.loadingText}>Loading your progress data...</Text>
         </View>
       );
     }
@@ -813,14 +813,8 @@ export default function ProgressScreen() {
         return renderOverview();
       case 'health':
         return renderHealth();
-      case 'fitness':
-        return renderFitness();
-      case 'nutrition':
-        return renderNutrition();
       case 'achievements':
         return renderAchievements();
-      case 'insights':
-        return renderInsights();
       default:
         return renderOverview();
     }
@@ -1053,12 +1047,13 @@ const styles = StyleSheet.create({
 
   // Cycle Phase Card
   cyclePhaseCard: {
-    marginBottom: 16,
+    marginBottom: 20,
+    padding: 20,
   },
   phaseIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -1067,35 +1062,36 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   phaseTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   phaseDescription: {
-    fontSize: 14,
+    fontSize: 15,
     color: '#666',
-    lineHeight: 20,
+    lineHeight: 22,
   },
   phaseBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 16,
   },
   phaseBadgeText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '700',
   },
 
   // Summary Card
   summaryCard: {
-    marginBottom: 16,
+    marginBottom: 20,
+    padding: 20,
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   cardTitleContainer: {
     flexDirection: 'row',
@@ -1103,102 +1099,121 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#FF6B9D',
     marginLeft: 12,
   },
   summaryBadge: {
     backgroundColor: '#FF6B9D',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 16,
   },
   summaryBadgeText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 15,
+    fontWeight: '700',
     color: 'white',
   },
   summaryContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 16,
   },
   summaryItem: {
     alignItems: 'center',
     flex: 1,
   },
   summaryValue: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
+    color: '#FF6B9D',
+    marginBottom: 6,
   },
   summaryLabel: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#666',
     textAlign: 'center',
+    fontWeight: '600',
   },
 
-  // Quick Stats
-  quickStatsContainer: {
+  // Section Title
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 16,
+    marginTop: 8,
+  },
+
+  // Metrics Grid (New Design)
+  metricsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginBottom: 20,
   },
-  quickStatCard: {
+  metricGridCard: {
     width: (width - 60) / 2,
-    marginBottom: 12,
-  },
-  quickStatContent: {
-    flexDirection: 'row',
+    marginBottom: 16,
+    padding: 20,
     alignItems: 'center',
   },
-  quickStatIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+  metricGridIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginBottom: 12,
   },
-  quickStatInfo: {
-    flex: 1,
-  },
-  quickStatValue: {
-    fontSize: 18,
+  metricGridValue: {
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 2,
-  },
-  quickStatLabel: {
-    fontSize: 12,
-    color: '#666',
     marginBottom: 4,
   },
-  quickStatReason: {
-    fontSize: 10,
+  metricGridUnit: {
+    fontSize: 18,
+    fontWeight: '500',
     color: '#999',
-    marginBottom: 6,
   },
-  quickStatProgress: {
-    height: 4,
+  metricGridLabel: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 12,
+    fontWeight: '600',
+  },
+  metricGridProgressContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  metricGridProgressBar: {
+    height: 6,
     backgroundColor: '#F0F0F0',
-    borderRadius: 2,
+    borderRadius: 3,
+    width: '100%',
+    marginBottom: 8,
   },
-  quickStatProgressBar: {
+  metricGridProgressFill: {
     height: '100%',
-    borderRadius: 2,
+    borderRadius: 3,
+  },
+  metricGridPercentage: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#666',
   },
 
   // Metric Cards
   metricCard: {
-    marginBottom: 16,
+    marginBottom: 20,
+    padding: 20,
   },
   metricHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   metricTitleContainer: {
     flex: 1,
@@ -1206,9 +1221,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   metricIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -1217,18 +1232,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   metricTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 2,
-  },
-  metricSubtitle: {
-    fontSize: 14,
-    color: '#666',
     marginBottom: 4,
   },
+  metricSubtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 6,
+    fontWeight: '600',
+  },
   metricReason: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#999',
     fontStyle: 'italic',
   },
@@ -1238,20 +1254,25 @@ const styles = StyleSheet.create({
   metricDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: 'rgba(255,107,157,0.05)',
+    padding: 16,
+    borderRadius: 12,
+    gap: 12,
   },
   metricDetailItem: {
     alignItems: 'center',
     flex: 1,
   },
   metricDetailLabel: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#666',
-    marginBottom: 4,
+    marginBottom: 6,
+    fontWeight: '600',
   },
   metricDetailValue: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#FF6B9D',
   },
 
   // Fitness Card
@@ -1498,40 +1519,44 @@ const styles = StyleSheet.create({
 
   // Streaks Card
   streaksCard: {
-    marginBottom: 16,
+    marginBottom: 20,
+    padding: 20,
   },
   streaksGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    gap: 12,
   },
   streakItem: {
-    width: (width - 80) / 2,
+    width: (width - 84) / 2,
     alignItems: 'center',
-    padding: 12,
-    backgroundColor: '#F0FDF4',
-    borderRadius: 12,
-    marginBottom: 8,
+    padding: 20,
+    backgroundColor: 'rgba(255,107,157,0.08)',
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: 'rgba(255,107,157,0.2)',
   },
   streakIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   streakValue: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    color: '#1e3a8a',
-    marginBottom: 4,
+    color: '#FF6B9D',
+    marginBottom: 6,
   },
   streakLabel: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#666',
     textAlign: 'center',
+    fontWeight: '600',
   },
 
   // Achievements
