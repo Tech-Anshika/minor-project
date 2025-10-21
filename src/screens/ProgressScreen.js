@@ -1600,12 +1600,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginTop: 12,
-    gap: 10,
   },
   streakItem: {
-    width: (width - 56) / 2,
-    maxWidth: (width - 56) / 2,
-    flex: 0,
+    width: '48%',
     alignItems: 'center',
     padding: 14,
     backgroundColor: 'rgba(255,107,157,0.08)',
@@ -1613,6 +1610,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,107,157,0.15)',
     minHeight: 110,
+    marginBottom: 10,
   },
   streakIcon: {
     width: 40,
