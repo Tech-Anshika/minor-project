@@ -315,7 +315,7 @@ export default function ProgressScreen() {
         </View>
 
         {/* Cycle Phase Card */}
-        <ModernCard type="glass" style={styles.cyclePhaseCard}>
+        <ModernCard type="glass" style={styles.cyclePhaseCard} shadow={false} gradient={false}>
           <View style={styles.cardHeader}>
             <View style={styles.cardTitleContainer}>
               <View style={[styles.phaseIcon, { backgroundColor: phaseInfo.color + '20' }]}>
@@ -335,7 +335,7 @@ export default function ProgressScreen() {
         </ModernCard>
 
         {/* Progress Summary */}
-        <ModernCard type="glass" style={styles.summaryCard}>
+        <ModernCard type="glass" style={styles.summaryCard} shadow={false} gradient={false}>
           <View style={styles.cardHeader}>
             <View style={styles.cardTitleContainer}>
               <Ionicons name="trending-up" size={24} color="#FF6B9D" />
@@ -401,7 +401,7 @@ export default function ProgressScreen() {
 
         {/* Current Streaks */}
         <Text style={styles.sectionTitle}>Current Streaks 🔥</Text>
-        <ModernCard type="glass" style={styles.streaksCard}>
+        <ModernCard type="glass" style={styles.streaksCard} shadow={false} gradient={false}>
           <View style={styles.cardHeader}>
             <View style={styles.cardTitleContainer}>
               <Ionicons name="flame" size={24} color="#FF6B9D" />
@@ -450,7 +450,7 @@ export default function ProgressScreen() {
   const renderHealth = () => (
     <View style={styles.tabContent}>
       {healthMetrics.map((metric) => (
-        <ModernCard key={metric.id} type="glass" style={styles.metricCard}>
+        <ModernCard key={metric.id} type="glass" style={styles.metricCard} shadow={false} gradient={false}>
           <View style={styles.metricHeader}>
             <View style={styles.metricTitleContainer}>
               <View style={[styles.metricIcon, { backgroundColor: metric.color + '20' }]}>
@@ -502,7 +502,7 @@ export default function ProgressScreen() {
 
   const renderFitness = () => (
     <View style={styles.tabContent}>
-      <ModernCard type="glass" style={styles.fitnessCard}>
+      <ModernCard type="glass" style={styles.fitnessCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="fitness" size={24} color="#E91E63" />
@@ -525,7 +525,7 @@ export default function ProgressScreen() {
         </View>
       </ModernCard>
 
-      <ModernCard type="info" style={styles.workoutCard}>
+      <ModernCard type="info" style={styles.workoutCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="barbell" size={24} color="#0d9488" />
@@ -557,7 +557,7 @@ export default function ProgressScreen() {
 
   const renderNutrition = () => (
     <View style={styles.tabContent}>
-      <ModernCard type="glass" style={styles.nutritionCard}>
+      <ModernCard type="glass" style={styles.nutritionCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="restaurant" size={24} color="#E91E63" />
@@ -580,7 +580,7 @@ export default function ProgressScreen() {
         </View>
       </ModernCard>
 
-      <ModernCard type="warning" style={styles.recommendationsCard}>
+      <ModernCard type="warning" style={styles.recommendationsCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="bulb" size={24} color="#be185d" />
@@ -609,7 +609,7 @@ export default function ProgressScreen() {
   const renderAchievements = () => (
     <View style={styles.tabContent}>
       {/* Achievements Overview */}
-      <ModernCard type="glass" style={styles.achievementsOverviewCard}>
+      <ModernCard type="glass" style={styles.achievementsOverviewCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="trophy" size={24} color="#E91E63" />
@@ -639,7 +639,7 @@ export default function ProgressScreen() {
 
       {/* Unlocked Achievements */}
       {achievements.length > 0 ? (
-        <ModernCard type="success" style={styles.unlockedAchievementsCard}>
+        <ModernCard type="success" style={styles.unlockedAchievementsCard} shadow={false} gradient={false}>
           <View style={styles.cardHeader}>
             <View style={styles.cardTitleContainer}>
               <Ionicons name="checkmark-circle" size={24} color="#1e3a8a" />
@@ -665,7 +665,7 @@ export default function ProgressScreen() {
           </View>
         </ModernCard>
       ) : (
-        <ModernCard type="info" style={styles.noAchievementsCard}>
+        <ModernCard type="info" style={styles.noAchievementsCard} shadow={false} gradient={false}>
           <View style={styles.cardHeader}>
             <View style={styles.cardTitleContainer}>
               <Ionicons name="trophy-outline" size={24} color="#0d9488" />
@@ -690,7 +690,7 @@ export default function ProgressScreen() {
       )}
 
       {/* Upcoming Achievements */}
-      <ModernCard type="warning" style={styles.upcomingAchievementsCard}>
+      <ModernCard type="warning" style={styles.upcomingAchievementsCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="star" size={24} color="#be185d" />
@@ -756,7 +756,7 @@ export default function ProgressScreen() {
   const renderInsights = () => (
     <View style={styles.tabContent}>
       {/* Cycle Insights */}
-      <ModernCard type="glass" style={styles.insightsCard}>
+      <ModernCard type="glass" style={styles.insightsCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="analytics" size={24} color="#E91E63" />
@@ -785,7 +785,7 @@ export default function ProgressScreen() {
       </ModernCard>
 
       {/* Supplement Recommendations */}
-      <ModernCard type="glass" style={styles.supplementsCard}>
+      <ModernCard type="glass" style={styles.supplementsCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="medical" size={24} color="#A855F7" />
@@ -819,7 +819,7 @@ export default function ProgressScreen() {
       </ModernCard>
 
       {/* Mood & Pain Management */}
-      <ModernCard type="glass" style={styles.managementCard}>
+      <ModernCard type="glass" style={styles.managementCard} shadow={false} gradient={false}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
             <Ionicons name="heart" size={24} color="#FF6B9D" />
@@ -962,11 +962,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
   },
   titleText: {
     flex: 1,
@@ -976,9 +971,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 4,
-    textShadowColor: 'rgba(0,0,0,0.3)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
   },
   modernSubtitle: {
     fontSize: 16,
@@ -995,11 +987,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
   },
   avatarEmoji: {
     fontSize: 35,
@@ -1026,11 +1013,6 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   tabText: {
     fontSize: 12,
@@ -1049,11 +1031,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 4,
     marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
   periodButton: {
     flex: 1,
@@ -1154,10 +1133,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#FF6B9D',
     marginLeft: 12,
+    flexShrink: 1,
+    flexWrap: 'wrap',
   },
   summaryBadge: {
     backgroundColor: '#FF6B9D',
