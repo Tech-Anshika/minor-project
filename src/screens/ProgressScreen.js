@@ -268,16 +268,6 @@ export default function ProgressScreen() {
       reason: 'Essential for hormone balance and recovery',
     },
     {
-      id: 'mood',
-      title: 'Mood',
-      current: progressData.mood.current,
-      target: progressData.mood.target,
-      unit: '/10',
-      color: '#FF6B9D',
-      icon: 'happy',
-      reason: 'Track emotional well-being',
-    },
-    {
       id: 'pain',
       title: 'Pain Level',
       current: progressData.pain.current,
@@ -383,7 +373,7 @@ export default function ProgressScreen() {
             return (
               <ModernCard key={metric.id} type="glass" style={styles.metricGridCard}>
                 <View style={[styles.metricGridIcon, { backgroundColor: metric.color + '15' }]}>
-                  <Ionicons name={metric.icon} size={28} color={metric.color} />
+                  <Ionicons name={metric.icon} size={24} color={metric.color} />
                 </View>
                 <Text style={styles.metricGridValue}>
                   {metric.current}
@@ -422,7 +412,7 @@ export default function ProgressScreen() {
           <View style={styles.streaksGrid}>
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="water" size={24} color="#60A5FA" />
+                <Ionicons name="water" size={20} color="#60A5FA" />
               </View>
               <Text style={styles.streakValue}>{streaks.water || 0}</Text>
               <Text style={styles.streakLabel}>Water Days</Text>
@@ -430,7 +420,7 @@ export default function ProgressScreen() {
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="walk" size={24} color="#A855F7" />
+                <Ionicons name="walk" size={20} color="#A855F7" />
               </View>
               <Text style={styles.streakValue}>{streaks.steps || 0}</Text>
               <Text style={styles.streakLabel}>Step Days</Text>
@@ -438,18 +428,18 @@ export default function ProgressScreen() {
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="fitness" size={24} color="#FF6B9D" />
+                <Ionicons name="moon" size={20} color="#8B5CF6" />
               </View>
-              <Text style={styles.streakValue}>{streaks.exercise || 0}</Text>
-              <Text style={styles.streakLabel}>Exercise Days</Text>
+              <Text style={styles.streakValue}>{streaks.sleep || 0}</Text>
+              <Text style={styles.streakLabel}>Sleep Days</Text>
             </View>
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="medical" size={24} color="#8B5CF6" />
+                <Ionicons name="fitness" size={20} color="#FF6B9D" />
               </View>
-              <Text style={styles.streakValue}>{streaks.medication || 0}</Text>
-              <Text style={styles.streakLabel}>Medication Days</Text>
+              <Text style={styles.streakValue}>{streaks.exercise || 0}</Text>
+              <Text style={styles.streakLabel}>Exercise Days</Text>
             </View>
           </View>
         </ModernCard>
@@ -1209,34 +1199,35 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginBottom: 20,
+    paddingHorizontal: 0,
   },
   metricGridCard: {
-    width: (width - 60) / 2,
+    width: '48%',
     marginBottom: 12,
-    padding: 16,
+    padding: 14,
     alignItems: 'center',
   },
   metricGridIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   metricGridValue: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 2,
   },
   metricGridUnit: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
     color: '#999',
   },
   metricGridLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
     marginBottom: 8,
     fontWeight: '600',
@@ -1587,34 +1578,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 12,
+    marginTop: 12,
   },
   streakItem: {
-    width: (width - 84) / 2,
+    width: '48%',
     alignItems: 'center',
-    padding: 14,
+    padding: 12,
     backgroundColor: 'rgba(255,107,157,0.08)',
-    borderRadius: 14,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: 'rgba(255,107,157,0.2)',
+    marginBottom: 10,
   },
   streakIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
   },
   streakValue: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#FF6B9D',
     marginBottom: 4,
   },
   streakLabel: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#666',
     textAlign: 'center',
     fontWeight: '600',
