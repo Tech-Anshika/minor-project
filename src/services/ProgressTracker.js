@@ -263,7 +263,7 @@ class ProgressTracker {
         title: 'Hydration Hero',
         description: 'Met water intake goal for 7 consecutive days',
         icon: 'water',
-        color: '#06B6D4',
+        color: '#2196F3',
         unlocked: true,
       });
     }
@@ -275,7 +275,7 @@ class ProgressTracker {
         title: 'Step Master',
         description: 'Achieved step goal for 7 consecutive days',
         icon: 'walk',
-        color: '#A855F7',
+        color: '#4CAF50',
         unlocked: true,
       });
     }
@@ -287,7 +287,7 @@ class ProgressTracker {
         title: 'Fitness Champion',
         description: 'Exercised for 5 consecutive days',
         icon: 'fitness',
-        color: '#F59E0B',
+        color: '#FF9800',
         unlocked: true,
       });
     }
@@ -299,7 +299,7 @@ class ProgressTracker {
         title: 'Consistency King',
         description: 'Took medication for 30 consecutive days',
         icon: 'medical',
-        color: '#8B5CF6',
+        color: '#9C27B0',
         unlocked: true,
       });
     }
@@ -312,7 +312,7 @@ class ProgressTracker {
         title: 'Pain Warrior',
         description: 'Maintained low pain levels for a week',
         icon: 'heart',
-        color: '#FF6B9D',
+        color: '#E91E63',
         unlocked: true,
       });
     }

@@ -371,7 +371,7 @@ export default function ProgressScreen() {
           {healthMetrics.map((metric) => {
             const percentage = metric.target > 0 ? Math.min(100, (metric.current / metric.target) * 100) : 0;
             return (
-              <ModernCard key={metric.id} type="glass" style={styles.metricGridCard}>
+              <View key={metric.id} style={styles.metricGridCard}>
                 <View style={[styles.metricGridIcon, { backgroundColor: metric.color + '15' }]}>
                   <Ionicons name={metric.icon} size={24} color={metric.color} />
                 </View>
@@ -394,7 +394,7 @@ export default function ProgressScreen() {
                   </View>
                   <Text style={styles.metricGridPercentage}>{Math.round(percentage)}%</Text>
                 </View>
-              </ModernCard>
+              </View>
             );
           })}
         </View>
@@ -1094,8 +1094,12 @@ const styles = StyleSheet.create({
 
   // Cycle Phase Card
   cyclePhaseCard: {
-    marginBottom: 20,
-    padding: 20,
+    marginBottom: 18,
+    padding: 18,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
   phaseIcon: {
     width: 56,
@@ -1131,8 +1135,12 @@ const styles = StyleSheet.create({
 
   // Summary Card
   summaryCard: {
-    marginBottom: 20,
-    padding: 20,
+    marginBottom: 18,
+    padding: 18,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -1193,64 +1201,73 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 
-  // Metrics Grid (New Design)
+  // Metrics Grid (Clean 2-Column Design)
   metricsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 20,
-    paddingHorizontal: 0,
+    marginBottom: 18,
+    gap: 10,
   },
   metricGridCard: {
-    width: '48%',
-    marginBottom: 12,
+    width: (width - 52) / 2,
+    maxWidth: (width - 52) / 2,
+    flex: 0,
+    marginBottom: 10,
     padding: 14,
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    minHeight: 130,
   },
   metricGridIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   metricGridValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 2,
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1F2937',
+    marginBottom: 4,
   },
   metricGridUnit: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: '#999',
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#9CA3AF',
   },
   metricGridLabel: {
     fontSize: 11,
-    color: '#666',
-    marginBottom: 8,
+    color: '#6B7280',
+    marginBottom: 10,
     fontWeight: '600',
+    textAlign: 'center',
   },
   metricGridProgressContainer: {
     width: '100%',
     alignItems: 'center',
   },
   metricGridProgressBar: {
-    height: 4,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 2,
+    height: 5,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 2.5,
     width: '100%',
-    marginBottom: 6,
+    marginBottom: 8,
+    overflow: 'hidden',
   },
   metricGridProgressFill: {
     height: '100%',
-    borderRadius: 2,
+    borderRadius: 2.5,
   },
   metricGridPercentage: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#666',
+    color: '#4B5563',
   },
 
   // Metric Cards
@@ -1569,45 +1586,52 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  // Streaks Card
+  // Streaks Card (Clean 2-Column Design)
   streaksCard: {
-    marginBottom: 20,
-    padding: 20,
+    marginBottom: 18,
+    padding: 18,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
   streaksGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginTop: 12,
+    gap: 10,
   },
   streakItem: {
-    width: '48%',
+    width: (width - 56) / 2,
+    maxWidth: (width - 56) / 2,
+    flex: 0,
     alignItems: 'center',
-    padding: 12,
+    padding: 14,
     backgroundColor: 'rgba(255,107,157,0.08)',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: 'rgba(255,107,157,0.2)',
-    marginBottom: 10,
+    borderColor: 'rgba(255,107,157,0.15)',
+    minHeight: 110,
   },
   streakIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   streakValue: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 26,
+    fontWeight: '700',
     color: '#FF6B9D',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   streakLabel: {
-    fontSize: 10,
-    color: '#666',
+    fontSize: 11,
+    color: '#6B7280',
     textAlign: 'center',
     fontWeight: '600',
   },

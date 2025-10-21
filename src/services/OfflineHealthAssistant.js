@@ -317,3 +317,4 @@ class OfflineHealthAssistant {
 // Export singleton instance
 export default new OfflineHealthAssistant();
 
+
