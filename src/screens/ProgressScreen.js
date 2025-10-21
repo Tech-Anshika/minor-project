@@ -1212,7 +1212,7 @@ const styles = StyleSheet.create({
   },
   metricGridCard: {
     width: (width - 60) / 2,
-    marginBottom: 16,
+    marginBottom: 12,
     padding: 16,
     alignItems: 'center',
   },
@@ -1225,20 +1225,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   metricGridValue: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 2,
   },
   metricGridUnit: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
     color: '#999',
   },
   metricGridLabel: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#666',
-    marginBottom: 10,
+    marginBottom: 8,
     fontWeight: '600',
   },
   metricGridProgressContainer: {
@@ -1246,18 +1246,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   metricGridProgressBar: {
-    height: 5,
+    height: 4,
     backgroundColor: '#F0F0F0',
-    borderRadius: 2.5,
+    borderRadius: 2,
     width: '100%',
     marginBottom: 6,
   },
   metricGridProgressFill: {
     height: '100%',
-    borderRadius: 3,
+    borderRadius: 2,
   },
   metricGridPercentage: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
     color: '#666',
   },
@@ -1594,8 +1594,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 14,
     backgroundColor: 'rgba(255,107,157,0.08)',
-    borderRadius: 16,
-    borderWidth: 2,
+    borderRadius: 14,
+    borderWidth: 1,
     borderColor: 'rgba(255,107,157,0.2)',
   },
   streakIcon: {
@@ -1608,13 +1608,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   streakValue: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#FF6B9D',
     marginBottom: 4,
   },
   streakLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
     textAlign: 'center',
     fontWeight: '600',
