@@ -354,18 +354,19 @@ export default function ProgressScreen() {
         </View>
 
         {/* Current Streaks */}
-        <ModernCard type="success" style={styles.streaksCard}>
+        <Text style={styles.sectionTitle}>Current Streaks 🔥</Text>
+        <ModernCard type="glass" style={styles.streaksCard}>
           <View style={styles.cardHeader}>
             <View style={styles.cardTitleContainer}>
-              <Ionicons name="flame" size={24} color="#1e3a8a" />
-              <Text style={styles.cardTitleColored}>Current Streaks</Text>
+              <Ionicons name="flame" size={24} color="#FF6B9D" />
+              <Text style={styles.cardTitle}>Keep Your Streaks Going!</Text>
             </View>
           </View>
           
           <View style={styles.streaksGrid}>
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="water" size={20} color="#2196F3" />
+                <Ionicons name="water" size={24} color="#60A5FA" />
               </View>
               <Text style={styles.streakValue}>{streaks.water || 0}</Text>
               <Text style={styles.streakLabel}>Water Days</Text>
@@ -373,7 +374,7 @@ export default function ProgressScreen() {
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="walk" size={20} color="#4CAF50" />
+                <Ionicons name="walk" size={24} color="#A855F7" />
               </View>
               <Text style={styles.streakValue}>{streaks.steps || 0}</Text>
               <Text style={styles.streakLabel}>Step Days</Text>
@@ -381,7 +382,7 @@ export default function ProgressScreen() {
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="fitness" size={20} color="#FF9800" />
+                <Ionicons name="fitness" size={24} color="#FF6B9D" />
               </View>
               <Text style={styles.streakValue}>{streaks.exercise || 0}</Text>
               <Text style={styles.streakLabel}>Exercise Days</Text>
@@ -389,7 +390,7 @@ export default function ProgressScreen() {
             
             <View style={styles.streakItem}>
               <View style={styles.streakIcon}>
-                <Ionicons name="medical" size={20} color="#9C27B0" />
+                <Ionicons name="medical" size={24} color="#8B5CF6" />
               </View>
               <Text style={styles.streakValue}>{streaks.medication || 0}</Text>
               <Text style={styles.streakLabel}>Medication Days</Text>
@@ -549,7 +550,7 @@ export default function ProgressScreen() {
           {recommendations.nutrition?.recommendations?.slice(0, 4).map((rec, index) => (
             <View key={index} style={styles.recommendationItem}>
               <View style={styles.recommendationIcon}>
-                <Ionicons name="leaf" size={16} color="#be185d" />
+                <Ionicons name="leaf" size={18} color="#FF6B9D" />
               </View>
               <Text style={styles.recommendationText}>{rec}</Text>
             </View>
@@ -738,10 +739,10 @@ export default function ProgressScreen() {
       </ModernCard>
 
       {/* Supplement Recommendations */}
-      <ModernCard type="success" style={styles.supplementsCard}>
+      <ModernCard type="glass" style={styles.supplementsCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="medical" size={24} color="#1e3a8a" />
+            <Ionicons name="medical" size={24} color="#A855F7" />
             <Text style={styles.cardTitleColored}>Supplement Recommendations</Text>
           </View>
         </View>
@@ -772,10 +773,10 @@ export default function ProgressScreen() {
       </ModernCard>
 
       {/* Mood & Pain Management */}
-      <ModernCard type="warning" style={styles.managementCard}>
+      <ModernCard type="glass" style={styles.managementCard}>
         <View style={styles.cardHeader}>
           <View style={styles.cardTitleContainer}>
-            <Ionicons name="heart" size={24} color="#be185d" />
+            <Ionicons name="heart" size={24} color="#FF6B9D" />
             <Text style={styles.cardTitleColored}>Mood & Pain Management</Text>
           </View>
         </View>
@@ -1321,7 +1322,7 @@ const styles = StyleSheet.create({
   cardTitleColored: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#0d9488',
+    color: '#FF6B9D',
     marginLeft: 12,
   },
   workoutList: {
@@ -1330,15 +1331,17 @@ const styles = StyleSheet.create({
   workoutItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
-    backgroundColor: '#F0FDF4',
+    padding: 16,
+    backgroundColor: 'rgba(255,107,157,0.08)',
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,107,157,0.2)',
   },
   workoutIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#0d9488',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#FF6B9D',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -1357,7 +1360,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   workoutButton: {
-    backgroundColor: '#0d9488',
+    backgroundColor: '#FF6B9D',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
@@ -1424,9 +1427,11 @@ const styles = StyleSheet.create({
   recommendationItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 8,
-    backgroundColor: '#FEF2F2',
+    padding: 12,
+    backgroundColor: 'rgba(255,107,157,0.08)',
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255,107,157,0.15)',
   },
   recommendationIcon: {
     marginRight: 12,
