@@ -19,9 +19,11 @@ A comprehensive React Native app designed to help women manage PCOD/PCOS symptom
 - [Changelog](CHANGELOG.md) - Version history and updates
 - [Contributing Guidelines](CONTRIBUTING.md) - How to contribute
 
-## 📱 Screenshots
+## 📱 Try the App
 
-> Coming soon - Add screenshots of your app here
+🚀 **Live Demo**: [View on Expo →](https://expo.dev/accounts/anshika-expo/projects/PcoSense/builds/5e6b51bb-6093-43f1-9344-d3aab9561063)
+
+Download **Expo Go** app on your phone and scan the QR code to test PcoSense instantly!
 
 ## ✨ Features
 
