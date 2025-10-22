@@ -39,12 +39,17 @@ A comprehensive React Native app designed to help women manage PCOD/PCOS symptom
 - Beautiful gradient UI with smooth animations
 
 ### 🤖 AI Health Assistant
-- Gemini AI-powered chatbot for personalized advice
-- Context-aware recommendations based on cycle phase
-- Symptom management suggestions
-- Progress analysis and insights
-- Bilingual support (English/Hindi)
-- Offline fallback mode
+- **Bilingual AI Chatbot** (English/Hindi) with intelligent language switching
+- **200+ PCOS-Specific Responses** covering symptoms, diet, exercise, fertility, mental health
+- **100% Offline & Free** - Rule-based AI, no API keys required
+- **Text-to-Speech Support** - Listen to responses in English/Hindi (Expo Speech)
+- **Voice Input Modal** - Type your questions easily
+- **Smart Keyword Matching** - Understands natural language queries
+- **Quick Suggestions** - 4 randomized question chips for easy interaction
+- **Context-Aware Greetings** - Time-based personalized welcomes
+- **Encouraging Messages** - Motivational prompts every 5 messages
+- **Firebase Chat History** - All conversations saved and synced
+- **Comprehensive Knowledge Base** - PCOS basics, symptoms (irregular periods, weight gain, acne, hair loss, mood swings), diet plans, exercise routines, yoga poses, fertility tips, medication info, emergency guidelines
 
 ### 🧘‍♀️ Yoga & Exercise
 - Phase-specific yoga poses and exercises
