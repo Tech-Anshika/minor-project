@@ -36,7 +36,7 @@ export default function HomeScreen({ navigation }) {
   });
   const [todayStats, setTodayStats] = useState({
     steps: 0,
-    water: 6,
+    water: 0,
     calories: 0,
     mood: 'happy',
   });
@@ -45,10 +45,13 @@ export default function HomeScreen({ navigation }) {
   const [resetCheckInterval, setResetCheckInterval] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
   const [phoneStepCounterAvailable, setPhoneStepCounterAvailable] = useState(false);
+  const [stepUpdateInterval, setStepUpdateInterval] = useState(null);
+  const [movementDetectorAvailable, setMovementDetectorAvailable] = useState(false);
 
   useEffect(() => {
     loadUserData();
     initializeStepCounter();
+    loadWaterData();
     
     // Start daily reset check (every minute)
     const resetInterval = setInterval(checkDailyReset, 60000);
@@ -58,6 +61,9 @@ export default function HomeScreen({ navigation }) {
     return () => {
       if (resetCheckInterval) {
         clearInterval(resetCheckInterval);
+      }
+      if (stepUpdateInterval) {
+        clearInterval(stepUpdateInterval);
       }
       // Stop phone step detection
       PhoneStepCounter.stopListening();
@@ -125,6 +131,43 @@ export default function HomeScreen({ navigation }) {
       setStepCounterAvailable(true);
     } finally {
       setIsLoadingSteps(false);
+    }
+  };
+
+  const loadWaterData = async () => {
+    try {
+      const today = new Date().toDateString();
+      const savedData = await AsyncStorage.getItem('waterTrackerData');
+      
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        if (data.date === today) {
+          console.log('Loading saved water intake for today:', data.glasses);
+          setTodayStats(prev => ({ ...prev, water: data.glasses || 0 }));
+        } else {
+          console.log('New day detected, resetting water intake to 0');
+          await saveWaterData(0);
+        }
+      } else {
+        console.log('No saved water data, starting fresh for today');
+        await saveWaterData(0);
+      }
+    } catch (error) {
+      console.error('Error loading water data:', error);
+    }
+  };
+
+  const saveWaterData = async (glasses) => {
+    try {
+      const today = new Date().toDateString();
+      const data = {
+        date: today,
+        glasses: glasses,
+        lastUpdate: new Date().toISOString()
+      };
+      await AsyncStorage.setItem('waterTrackerData', JSON.stringify(data));
+    } catch (error) {
+      console.error('Error saving water data:', error);
     }
   };
 
@@ -245,13 +288,15 @@ export default function HomeScreen({ navigation }) {
 
   // Reset daily steps and calories
   const resetDailySteps = async () => {
-    console.log('Resetting daily steps and calories...');
+    console.log('Resetting daily steps, calories, and water intake...');
     setTodayStats(prev => ({
       ...prev,
       steps: 0,
-      calories: 0
+      calories: 0,
+      water: 0
     }));
     await saveStepData(0);
+    await saveWaterData(0);
     
     // Reset phone step counter step count
     if (phoneStepCounterAvailable) {
@@ -488,10 +533,28 @@ export default function HomeScreen({ navigation }) {
                 </View>
               </View>
               <View style={styles.waterControls}>
-                <TouchableOpacity style={styles.waterButton} onPress={() => setTodayStats(prev => ({ ...prev, water: Math.max(0, prev.water - 1) }))}>
+                <TouchableOpacity 
+                  style={styles.waterButton} 
+                  onPress={() => {
+                    setTodayStats(prev => {
+                      const newWater = Math.max(0, prev.water - 1);
+                      saveWaterData(newWater);
+                      return { ...prev, water: newWater };
+                    });
+                  }}
+                >
                   <Ionicons name="remove" size={24} color="#ff6b6b" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.waterButton} onPress={() => setTodayStats(prev => ({ ...prev, water: Math.min(8, prev.water + 1) }))}>
+                <TouchableOpacity 
+                  style={styles.waterButton} 
+                  onPress={() => {
+                    setTodayStats(prev => {
+                      const newWater = Math.min(8, prev.water + 1);
+                      saveWaterData(newWater);
+                      return { ...prev, water: newWater };
+                    });
+                  }}
+                >
                   <Ionicons name="add" size={24} color="#4caf50" />
                 </TouchableOpacity>
               </View>
