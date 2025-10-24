@@ -31,9 +31,11 @@ yarn-error.*
 *.pem
 
 # local env files
-# .env files are needed for Firebase to work, but should contain env-specific values
+# .env files contain sensitive API keys - NEVER commit these!
+.env
 .env.local
 .env*.local
+*.env
 
 # typescript
 *.tsbuildinfo
