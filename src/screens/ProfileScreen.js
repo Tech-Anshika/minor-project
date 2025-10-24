@@ -168,18 +168,18 @@ export default function ProfileScreen() {
             <Ionicons name="person" size={40} color="#E91E63" />
           </View>
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>
-              {editing ? (
-                <TextInput
-                  style={styles.input}
-                  value={formData.name}
-                  onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
-                  placeholder="Enter your name"
-                />
-              ) : (
-                user?.name || 'User'
-              )}
-            </Text>
+            {editing ? (
+              <TextInput
+                style={[styles.input, styles.profileNameInput]}
+                value={formData.name}
+                onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
+                placeholder="Enter your name"
+              />
+            ) : (
+              <Text style={styles.profileName}>
+                {user?.name || 'User'}
+              </Text>
+            )}
             <Text style={styles.profileEmail}>{user?.email}</Text>
           </View>
         </View>
@@ -200,53 +200,53 @@ export default function ProfileScreen() {
 
         <View style={styles.statsGrid}>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>
-              {editing ? (
-                <TextInput
-                  style={styles.input}
-                  value={formData.age}
-                  onChangeText={(text) => setFormData(prev => ({ ...prev, age: text }))}
-                  placeholder="Age"
-                  keyboardType="numeric"
-                />
-              ) : (
-                formData.age || 'N/A'
-              )}
-            </Text>
+            {editing ? (
+              <TextInput
+                style={[styles.input, styles.statInput]}
+                value={formData.age}
+                onChangeText={(text) => setFormData(prev => ({ ...prev, age: text }))}
+                placeholder="Age"
+                keyboardType="numeric"
+              />
+            ) : (
+              <Text style={styles.statValue}>
+                {formData.age || 'N/A'}
+              </Text>
+            )}
             <Text style={styles.statLabel}>Age</Text>
           </View>
 
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>
-              {editing ? (
-                <TextInput
-                  style={styles.input}
-                  value={formData.weight}
-                  onChangeText={(text) => setFormData(prev => ({ ...prev, weight: text }))}
-                  placeholder="Weight"
-                  keyboardType="numeric"
-                />
-              ) : (
-                formData.weight ? `${formData.weight} kg` : 'N/A'
-              )}
-            </Text>
+            {editing ? (
+              <TextInput
+                style={[styles.input, styles.statInput]}
+                value={formData.weight}
+                onChangeText={(text) => setFormData(prev => ({ ...prev, weight: text }))}
+                placeholder="Weight"
+                keyboardType="numeric"
+              />
+            ) : (
+              <Text style={styles.statValue}>
+                {formData.weight ? `${formData.weight} kg` : 'N/A'}
+              </Text>
+            )}
             <Text style={styles.statLabel}>Weight</Text>
           </View>
 
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>
-              {editing ? (
-                <TextInput
-                  style={styles.input}
-                  value={formData.height}
-                  onChangeText={(text) => setFormData(prev => ({ ...prev, height: text }))}
-                  placeholder="Height"
-                  keyboardType="numeric"
-                />
-              ) : (
-                formData.height ? `${formData.height} cm` : 'N/A'
-              )}
-            </Text>
+            {editing ? (
+              <TextInput
+                style={[styles.input, styles.statInput]}
+                value={formData.height}
+                onChangeText={(text) => setFormData(prev => ({ ...prev, height: text }))}
+                placeholder="Height"
+                keyboardType="numeric"
+              />
+            ) : (
+              <Text style={styles.statValue}>
+                {formData.height ? `${formData.height} cm` : 'N/A'}
+              </Text>
+            )}
             <Text style={styles.statLabel}>Height</Text>
           </View>
 
@@ -603,6 +603,19 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     fontSize: 16,
     color: '#333',
+    backgroundColor: 'white',
+  },
+  profileNameInput: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  statInput: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 4,
+    minWidth: 80,
   },
   logoutButton: {
     flexDirection: 'row',
