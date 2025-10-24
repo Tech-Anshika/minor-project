@@ -2,7 +2,7 @@
   "expo": {
     "name": "PcoSense",
     "slug": "PcoSense",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anshikaexpo.PcoSense"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,10 +22,26 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anshikaexpo.PcoSense"
+      "package": "com.anshikaexpo.PcoSense",
+      "versionCode": 2,
+      "permissions": [
+        "ACTIVITY_RECOGNITION",
+        "NOTIFICATIONS",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff"
+        }
+      ]
+    ]
   }
 }
